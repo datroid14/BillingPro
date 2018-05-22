@@ -1,0 +1,90 @@
+<mat-card class="card-css">
+  <mat-card-header align="center">
+    <mat-card-title>
+      <h2>Quatation</h2>
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content class="container-css">
+
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker" [ngModel]="invoiceDate" placeholder="Choose a date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput [(ngModel)]="customerName" placeholder="Customer Name" required>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput [(ngModel)]="customerAddress" placeholder="Address" required>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput [(ngModel)]="contactPerson" placeholder="Contact Person" required>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput type="number" [(ngModel)]="contactNo" placeholder="Contact Number" required>
+    </mat-form-field>
+
+    <mat-card class="inner-card-css">
+
+      <table style="width:100%">
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Material</th>
+            <th>Description</th>
+            <th>Unit</th>
+            <th>Rate</th>
+          </tr>
+          <tr>
+            <th>
+            </th>
+            <th class="input-css">
+              <mat-form-field>
+                <input matInput [(ngModel)]="productName" required>
+              </mat-form-field>
+            </th>
+            <th class="input-css">
+              <mat-form-field>
+                <input matInput [(ngModel)]="productDesc" required>
+              </mat-form-field>
+            </th>
+            <th class="input-css">
+              <mat-form-field>
+                <input matInput [(ngModel)]="productUnit" required>
+              </mat-form-field>
+            </th>
+            <th class="input-css">
+              <mat-form-field>
+                <input matInput type="number" [(ngModel)]="productRate" (ngModelChange)="calculateTotal($event)" required>
+              </mat-form-field>
+            </th>
+            <th>
+              <img (click)="addProduct()" [src]="this.addImagePath">
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of products;let i=index">
+            <td>{{i+1}}</td>
+            <td class="input-css">{{product.name}}</td>
+            <td class="input-css">{{product.desc}}</td>
+            <td class="input-css">{{product.unit}}</td>
+            <td class="input-css">{{product.rate}}</td>
+            <td>
+              <img (click)="removeProduct(product)" [src]="this.removeImagePath">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-card>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="primary" (click)="createQuatation()">SAVE</button>
+    <button mat-raised-button color="primary">CANCEL</button>
+  </mat-card-actions>
+</mat-card>

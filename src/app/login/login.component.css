@@ -1,0 +1,12 @@
+.container-css {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .container-css > * {
+    width: 100%;
+  }
+
+  .card-css{
+    max-width: 40%;
+  }

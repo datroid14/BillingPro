@@ -1,0 +1,31 @@
+import { Observable } from 'rxjs/Observable';
+import { catchError, map, tap } from 'rxjs/operators';
+import { ProductResponse } from '../add-product/product.response';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AddResponse } from '../common/add.response';
+
+const httpOptions = {
+      headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Accept': 'q=0.8;application/json;q=0.9'
+      })
+};
+
+@Injectable()
+export class ProductService {
+
+    constructor(private http: HttpClient) {
+    }
+
+    getProducts(): Observable<ProductResponse> {
+        return this.http.post<ProductResponse>("http://localhost:3000/getProducts", null)
+              .pipe(tap(res => null));
+  }
+
+  addProduct(payload:Object): Observable<AddResponse> {
+    return this.http
+          .post<AddResponse>('http://localhost:3000/addProduct', payload, httpOptions)
+          .pipe(tap(res => null));
+}
+}

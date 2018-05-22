@@ -1,0 +1,132 @@
+<!-- <div class="container-horizontal">
+
+  <div class="container-vertical">
+    <mat-card style="margin: 18px;max-width: 80%;" (click)="showProduct();">
+        <mat-table #table [dataSource]="dataSource" >
+    
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+            <mat-cell *matCellDef="let product"> {{product.name}} </mat-cell>
+          </ng-container>
+    
+          <ng-container matColumnDef="unit">
+            <mat-header-cell *matHeaderCellDef> Unit </mat-header-cell>
+            <mat-cell *matCellDef="let product"> {{product.unit}} </mat-cell>
+          </ng-container>
+    
+          <ng-container matColumnDef="hsn">
+            <mat-header-cell *matHeaderCellDef> HSN Code </mat-header-cell>
+            <mat-cell *matCellDef="let product"> {{product.hsn}} </mat-cell>
+          </ng-container>
+    
+          <ng-container matColumnDef="rate">
+            <mat-header-cell *matHeaderCellDef> Rate </mat-header-cell>
+            <mat-cell *matCellDef="let product"> {{product.rate}} </mat-cell>
+          </ng-container>
+    
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showProductDetails(row);"></mat-row>
+        </mat-table>
+    
+        <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5]" [showFirstLastButtons]="false">
+        </mat-paginator>
+    </mat-card>
+
+    <mat-card style="margin: 18px;max-width: 80%;" (click)="showChalan();">
+      <mat-table #table [dataSource]="dataSource" >
+    
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+          <mat-cell *matCellDef="let product"> {{product.name}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="unit">
+          <mat-header-cell *matHeaderCellDef> Unit </mat-header-cell>
+          <mat-cell *matCellDef="let product"> {{product.unit}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="hsn">
+          <mat-header-cell *matHeaderCellDef> HSN Code </mat-header-cell>
+          <mat-cell *matCellDef="let product"> {{product.hsn}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="rate">
+          <mat-header-cell *matHeaderCellDef> Rate </mat-header-cell>
+          <mat-cell *matCellDef="let product"> {{product.rate}} </mat-cell>
+        </ng-container>
+  
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showProductDetails(row);"></mat-row>
+      </mat-table>
+  
+      <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5]" [showFirstLastButtons]="false">
+      </mat-paginator>
+    </mat-card>
+
+  </div>
+
+  <div class="container-vertical">
+    <mat-card style="margin: 18px;max-width: 90%;" (click)="showInvoice();">
+      <mat-table #table [dataSource]="dataSource" >
+    
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+          <mat-cell *matCellDef="let product"> {{product.name}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="unit">
+          <mat-header-cell *matHeaderCellDef> Unit </mat-header-cell>
+          <mat-cell *matCellDef="let product"> {{product.unit}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="hsn">
+          <mat-header-cell *matHeaderCellDef> HSN Code </mat-header-cell>
+          <mat-cell *matCellDef="let product"> {{product.hsn}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="rate">
+          <mat-header-cell *matHeaderCellDef> Rate </mat-header-cell>
+          <mat-cell *matCellDef="let product"> {{product.rate}} </mat-cell>
+        </ng-container>
+  
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showProductDetails(row);"></mat-row>
+      </mat-table>
+  
+      <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5]" [showFirstLastButtons]="false">
+      </mat-paginator>
+    </mat-card>
+
+    <mat-card style="margin: 18px;max-width: 90%;" (click)="showQuatation();">
+      <mat-table #table [dataSource]="dataSource" >
+    
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+          <mat-cell *matCellDef="let product"> {{product.name}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="unit">
+          <mat-header-cell *matHeaderCellDef> Unit </mat-header-cell>
+          <mat-cell *matCellDef="let product"> {{product.unit}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="hsn">
+          <mat-header-cell *matHeaderCellDef> HSN Code </mat-header-cell>
+          <mat-cell *matCellDef="let product"> {{product.hsn}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="rate">
+          <mat-header-cell *matHeaderCellDef> Rate </mat-header-cell>
+          <mat-cell *matCellDef="let product"> {{product.rate}} </mat-cell>
+        </ng-container>
+  
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showProductDetails(row);"></mat-row>
+      </mat-table>
+  
+      <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5]" [showFirstLastButtons]="false">
+      </mat-paginator>
+    </mat-card>
+  </div>
+</div> -->
+

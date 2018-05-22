@@ -1,0 +1,159 @@
+<style>
+  table,
+  th,
+  td {
+    border: 1px solid grey;
+    border-collapse: collapse;
+    padding: 2px;
+  }
+</style>
+
+<mat-card class="card-css">
+  <mat-card-header>
+    <mat-card-title>
+      <h2 align="right">Tax Invoice</h2>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+
+    <div class="container-css">
+      <label>
+        <b>M/S:</b> {{this.customerName}}</label>
+      <label align="right">
+        <b>Date:</b> {{this.invoiceDate}}</label>
+    </div>
+
+    <div class="container-css">
+      <label>{{this.customerAddress}}</label>
+      <label align="right">
+        <b>Invoice Number:</b> INV#1234 18-19</label>
+    </div>
+    <mat-card style="height:400px">
+
+      <table style="width:100%;">
+        <thead>
+          <tr>
+            <th class="input-css">Sr. No.</th>
+            <th class="input-css">Material</th>
+            <th class="input-css">HSN Code</th>
+            <th class="input-css">Unit</th>
+            <th class="input-css">Msr. Total</th>
+            <th class="input-css">Rate</th>
+            <th class="input-css">Amount In Rs.</th>
+          </tr>
+
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of products;let i=index">
+            <td class="input-css">{{i+1}}</td>
+            <td class="input-css">{{product.name}}</td>
+            <td class="input-css">{{product.hsn}}</td>
+            <td class="input-css">{{product.unit}}</td>
+            <td class="input-css">{{product.quantity}}</td>
+            <td class="input-css">{{product.rate}}</td>
+            <td class="input-css">{{product.total}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-card>
+
+    <div class="container-css">
+      <label>
+        <b>Bill Period From:</b> 15 Mar 2018 To: 30 Mar 2018</label>
+      <div class="container-vertical-css">
+        <label align="right">
+          <b>Total: </b>{{this.invoiceTotal}}</label>
+      </div>
+    </div>
+
+    <div class="container-css">
+      <table>
+        <thead>
+          <tr>
+            <th>Taxable Amount</th>
+            <th>Central Tax</th>
+            <th>State Tax</th>
+          </tr>
+          <tr>
+            <th>{{this.invoiceTotal}}</th>
+            <th>
+              <table style="width:100%">
+                <thead>
+                  <tr>
+                    <th>Rate</th>
+                    <th>Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>2.50%</th>
+                    <th>{{taxAmount}}</th>
+                  </tr>
+                </tbody>
+              </table>
+            </th>
+            <th>
+              <table style="width:100%">
+                <thead>
+                  <tr>
+                    <th>Rate</th>
+                    <th>Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>2.50%</th>
+                    <th>{{taxAmount}}</th>
+                  </tr>
+                </tbody>
+              </table>
+            </th>
+          </tr>
+        </thead>
+      </table>
+      <div class="container-vertical-css">
+        <label align="right">
+          <b>CGST(2.5%): </b>{{this.taxAmount}}</label>
+        <label align="right">
+          <b>SGST(2.5%): </b>{{this.taxAmount}}</label>
+        <label align="right">
+          <b>Net Total: </b>{{this.invoiceTotalAmount}}</label>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="container-css">
+      <label>
+        <b>Amount In Words:</b>Rupees Seventy Nine Thousand Three Hundred Eighty Only</label>
+      <label align="right">
+        <b>Round-Off Amount:</b>0.00</label>
+    </div>
+    <mat-divider></mat-divider>
+    <label class="input-css">
+      <b>GST No.:</b>27ABNFS5898QIZQ</label>
+    <div class="container-css">
+      <label>We declare that this invoice shows the actual price of the goods described and all particulars are true and correct</label>
+      <label align="center">
+        <b>Checked By:</b>
+      </label>
+      <label align="center">
+        For
+        <b>Shubham Enterprises:</b>
+      </label>
+    </div>
+    <mat-divider></mat-divider>
+
+    <div class="container-vertical-css">
+      <label class="input-css">
+        <b>Note:</b>
+      </label>
+      <label>1. Payment must be made by Account Payee Cheque/DD only.</label>
+      <label>2. Interest @24% will be charge after credit limit.</label>
+      <label>3. Measurement and Rate cannot be changed.</label>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="primary">BACK</button>
+    <button mat-raised-button color="primary">PRINT</button>
+  </mat-card-actions>
+</mat-card>

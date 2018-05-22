@@ -1,0 +1,34 @@
+import { Component } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { tap } from 'rxjs/operators';
+import { CustomerResponse } from '../add-customer/customer.response';
+import { AddResponse } from '../common/add.response';
+import { Customer } from '../add-customer/customer';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
+const httpOptions = {
+      headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Accept': 'q=0.8;application/json;q=0.9'
+      })
+};
+
+@Injectable()
+export class CustomerService {
+
+      constructor(private http: HttpClient) {
+      }
+
+      getCustomers(): Observable<CustomerResponse> {
+            return this.http
+                  .post<CustomerResponse>("http://localhost:3000/getCustomers", null)
+                  .pipe(tap(res => null));
+      }
+
+      addCustomer(payload: Object): Observable<AddResponse> {
+            return this.http
+                  .post<AddResponse>('http://localhost:3000/addCustomer', payload, httpOptions)
+                  .pipe(tap(res => null));
+      }
+}

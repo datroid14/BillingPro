@@ -1,0 +1,33 @@
+<mat-card class="card-css">
+  <mat-card-header>
+    <mat-card-title>
+      <h2>Vendor</h2>
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content class="container-css">
+    <mat-form-field>
+      <input matInput [(ngModel)]="vendorName" placeholder="Vendor Name" required>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput [(ngModel)]="vendorAddress" placeholder="Address" required>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput [(ngModel)]="contactPerson" placeholder="Contact Person" required>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput type="number" [(ngModel)]="contactNo" placeholder="Contact Number" required>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput [(ngModel)]="emailAddress" placeholder="Email Address" required />
+    </mat-form-field>
+  </mat-card-content>
+  <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="addVendor();">SAVE</button>
+      <button mat-raised-button color="primary">CANCEL</button>
+     </mat-card-actions>
+</mat-card>

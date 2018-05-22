@@ -1,0 +1,22 @@
+.container-css {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .container-css > * {
+    width: 100%;
+  }
+  
+  .card-css{
+    max-width: 70%;
+  }
+  
+  .inner-card-css{
+    max-width:96%;
+  }
+  
+  .input-css{
+    padding: 12px;
+  }
+  
+  

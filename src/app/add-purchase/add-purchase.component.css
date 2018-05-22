@@ -1,0 +1,32 @@
+.container-css {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .container-css > * {
+    width: 100%;
+  }
+  
+  .card-css{
+    max-width: 100%;
+  }
+  
+  .inner-card-css{
+    max-width:96%;
+  }
+  
+  .input-padding{
+    padding: 12px;
+  }
+  
+  .table-form-field {
+     width: 80px !important;
+     padding: 8px;
+  }
+
+  .table-form-wide-field {
+    width: 130px !important;
+    padding: 8px;
+    text-align: center;
+  }
+  

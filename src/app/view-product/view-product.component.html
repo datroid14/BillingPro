@@ -1,0 +1,39 @@
+<div class="example-container mat-elevation-z8" >
+
+  <mat-card style="padding:5px">
+    <mat-table #table [dataSource]="dataSource" >
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+        <mat-cell *matCellDef="let product"> {{product.prod_name}} </mat-cell>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="unit">
+        <mat-header-cell *matHeaderCellDef> Unit </mat-header-cell>
+        <mat-cell *matCellDef="let product"> {{product.prod_unit}} </mat-cell>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="rate">
+        <mat-header-cell *matHeaderCellDef> Rate </mat-header-cell>
+        <mat-cell *matCellDef="let product"> {{product.prod_rate}} </mat-cell>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="desc">
+        <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+        <mat-cell *matCellDef="let product"> {{product.prod_desc}} </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showProductDetails(row)"></mat-row>
+    </mat-table>
+
+    <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[10,20]" [showFirstLastButtons]="true">
+    </mat-paginator>
+  </mat-card>
+</div>
+
+

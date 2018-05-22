@@ -1,0 +1,134 @@
+<mat-card class="card-css">
+  <mat-card-header>
+    <mat-card-title>
+      <h2>Add Purchase Detail</h2>
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content class="container-css">
+
+    <mat-form-field>
+      <input matInput type="date" date-picker [(ngModel)]="purchaseDate" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select [(ngModel)]="vendorName" name="vendorName" placeholder="Supplier Name" required>
+        <mat-option *ngFor="let vendor of vendors" [value]="vendor.vend_name" (click)="setVendorDetail(vendor)">
+          {{vendor.vend_name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput [(ngModel)]="vendorAddress" placeholder="Address" required>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput type="number" [(ngModel)]="contactNo" placeholder="Contact Number" required>
+    </mat-form-field>
+
+    <mat-card class="inner-card-css">
+
+      <table>
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Challan No.</th>
+            <th>Challan Date</th>
+            <th>Vehicle No.</th>
+            <th>Material</th>
+            <th>HSN Code</th>
+            <th>Unit</th>
+            <th>Rate</th>
+            <th>Msr. Total</th>
+            <th>Total</th>
+          </tr>
+          <tr>
+            <th>
+            </th>
+            <th>
+              <mat-form-field class="table-form-wide-field">
+                <mat-select [(ngModel)]="chalanNo" name="chalanNo">
+                  <mat-option *ngFor="let chalan of chalanList" [value]="chalan.number" (click)="setChalanDetail(chalan)">
+                    {{chalan.number}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </th>
+            <th>
+              <mat-form-field class="table-form-wide-field">
+                <input matInput [(ngModel)]="chalanDate" required/>
+              </mat-form-field>
+            </th>
+            <th>
+              <mat-form-field class="table-form-wide-field">
+                <input matInput [(ngModel)]="vehicleNo" required />
+              </mat-form-field>
+            </th>
+            <th>
+              <mat-form-field style="width: 200px !important; padding: 8px;">
+                <mat-select [(ngModel)]="productName" name="productName">
+                  <mat-option *ngFor="let product of products" [value]="product.prod_name" (click)="setProductDetail(product)">
+                    {{product.prod_name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </th>
+            <th>
+              <mat-form-field class="table-form-field">
+                <input matInput [(ngModel)]="productHSN" required>
+              </mat-form-field>
+            </th>
+            <th>
+              <mat-form-field class="table-form-field">
+                <input matInput [(ngModel)]="productUnit" required>
+              </mat-form-field>
+            </th>
+            <th>
+              <mat-form-field class="table-form-field">
+                <input matInput type="number" [(ngModel)]="productRate" (ngModelChange)="calculateTotal($event)" required>
+              </mat-form-field>
+            </th>
+            <th>
+              <mat-form-field class="table-form-field">
+                <input matInput type="number" [(ngModel)]="productQuantity" (ngModelChange)="calculateTotal($event)" required>
+              </mat-form-field>
+            </th>
+            <th>
+              <mat-form-field class="table-form-field">
+                <input matInput type="number" [(ngModel)]="totalAmount" required>
+              </mat-form-field>
+            </th>
+            <th>
+              <img (click)="addProduct();" [src]="this.addImagePath">
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of productList;let i=index">
+            <td>{{i+1}}</td>
+            <td class="input-css">{{product.chalanNo}}</td>
+            <td class="input-css">{{product.date}}</td>
+            <td class="input-css">{{product.vehicleNo}}</td>
+            <td class="input-css">{{product.name}}</td>
+            <td class="input-css">{{product.hsn}}</td>
+            <td class="input-css">{{product.unit}}</td>
+            <td class="input-css">{{product.rate}}</td>
+            <td class="input-css">{{product.quantity}}</td>
+            <td class="input-css">{{product.total}}</td>
+            <td>
+              <img (click)="removeProduct(product)" [src]="this.removeImagePath">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <mat-form-field>
+        <input matInput type="number" [disabled]="true" [(ngModel)]="totalPurchaseAmount" required>
+      </mat-form-field>
+    </mat-card>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="primary" (click)="createInvoice()">SAVE</button>
+    <button mat-raised-button color="primary">UPDATE</button>
+  </mat-card-actions>
+</mat-card>
