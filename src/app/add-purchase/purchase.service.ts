@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { catchError, map, tap } from 'rxjs/operators';
-import { QuatationResponse } from '../create-quatation/quatation.response';
+import { PurchaseResponse } from '../add-purchase/purchase.response';
 import { ProductResponse } from '../add-product/product.response';
 import { AddResponse } from '../common/add.response';
-import { Quatation } from '../create-quatation/quatation';
+import { Purchase } from '../add-purchase/purchase';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -16,26 +16,26 @@ const httpOptions = {
 };
 
 @Injectable()
-export class QuatationService {
+export class PurchaseService {
 
       constructor(private http: HttpClient) {
       }
 
-      getQuatations(): Observable<QuatationResponse> {
+      getPurchases(): Observable<PurchaseResponse> {
             return this.http
-                  .post<QuatationResponse>("http://localhost:3000/getQuatations", null)
+                  .post<PurchaseResponse>("http://localhost:3000/getPurchases", null)
                   .pipe(tap(res => null));
       }
 
-      getQuatationProductsById(payload:Object): Observable<ProductResponse> {
+      getPurchaseProductsById(payload:Object): Observable<ProductResponse> {
             return this.http
-                  .post<ProductResponse>("http://localhost:3000/getQuatationProductsById", payload, httpOptions)
+                  .post<ProductResponse>("http://localhost:3000/getPurchaseProductsById", payload, httpOptions)
                   .pipe(tap(res => null));
       }
 
-      addQuatation(payload:Object): Observable<AddResponse> {
+      addPurchase(payload:Object): Observable<AddResponse> {
             return this.http
-                  .post<AddResponse>('http://localhost:3000/addQuatation', payload, httpOptions)
+                  .post<AddResponse>('http://localhost:3000/addPurchase', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 }

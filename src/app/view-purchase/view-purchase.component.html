@@ -1,32 +1,41 @@
-<mat-card class="inner-card-css">
-  <mat-card-header>
-    <mat-card-title>
-      <h2>Purchase Detail</h2>
-    </mat-card-title>
-  </mat-card-header>
+<div class="example-container mat-elevation-z8" >
 
-  <mat-card-content class="container-css">
-    <table style="width:100%">
-      <thead>
-        <tr fxLayout>
-          <th style="text-align: left" fxFlex="10%">No.</th>
-          <th style="text-align: left" fxFlex="20%">Name</th>
-          <th style="text-align: left" fxFlex="10%">Contact No.</th>
-          <th style="text-align: left" fxFlex="20%">Email</th>
-          <th style="text-align: left" fxFlex="40%">Address</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr fxLayout *ngFor="let vendor of vendors | async;let i=index" (click)="showDetails(vendor)">
-          <td style="padding: 12px" fxFlex="10%">{{i+1}}</td>
-          <td style="padding: 12px"fxFlex="20%" class="input-css">{{vendor.vend_name}}</td>
-          <td style="padding: 12px" fxFlex="10%" class="input-css">{{vendor.vend_contact}}</td>
-          <td style="padding: 12px" fxFlex="20%" class="input-css">{{vendor.vend_email}}</td>
-          <td style="padding: 12px" fxFlex="40%" class="input-css">{{vendor.vend_address}}</td>
-          <mat-divider></mat-divider>
-        </tr>
-      </tbody>
-    </table>
-  </mat-card-content>
-</mat-card>
+  <mat-card style="padding:5px">
+    <mat-table #table [dataSource]="dataSource" >
+
+      <!-- Date Column -->
+      <ng-container matColumnDef="date">
+        <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+        <mat-cell *matCellDef="let purchase"> {{purchase.pur_date}} </mat-cell>
+      </ng-container>
+
+      <!-- Customer Column -->
+      <ng-container matColumnDef="vendor">
+        <mat-header-cell *matHeaderCellDef> Vendor </mat-header-cell>
+        <mat-cell *matCellDef="let purchase"> {{purchase.pur_vendor}} </mat-cell>
+      </ng-container>
+
+      <!-- Contact Person Column -->
+      <ng-container matColumnDef="contact_person">
+        <mat-header-cell *matHeaderCellDef> Contact Person </mat-header-cell>
+        <mat-cell *matCellDef="let purchase"> {{purchase.pur_contact_person}} </mat-cell>
+      </ng-container>
+
+      <!-- Contact Column -->
+      <ng-container matColumnDef="contact">
+        <mat-header-cell *matHeaderCellDef> Contact No. </mat-header-cell>
+        <mat-cell *matCellDef="let purchase"> {{purchase.pur_contact}} </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showPurchaseDetails(row)"></mat-row>
+    </mat-table>
+
+    <mat-paginator #paginator [pageSize]="15" [pageSizeOptions]="[10,15]" [showFirstLastButtons]="true">
+    </mat-paginator>
+  </mat-card>
+</div>
+
+
+
 

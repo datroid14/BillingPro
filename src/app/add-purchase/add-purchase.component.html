@@ -24,6 +24,10 @@
     </mat-form-field>
 
     <mat-form-field>
+      <input matInput [(ngModel)]="contactPerson" placeholder="Contact Person" required>
+    </mat-form-field>
+
+    <mat-form-field>
       <input matInput type="number" [(ngModel)]="contactNo" placeholder="Contact Number" required>
     </mat-form-field>
 
@@ -105,7 +109,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let product of productList;let i=index">
+          <tr *ngFor="let product of localProductList;let i=index">
             <td>{{i+1}}</td>
             <td class="input-css">{{product.chalanNo}}</td>
             <td class="input-css">{{product.date}}</td>

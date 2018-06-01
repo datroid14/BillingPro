@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AppService } from './app.service';
+import { Observable } from "rxjs";
 
 @Component({
   selector: 'app-root',
@@ -8,11 +9,12 @@ import { AppService } from './app.service';
 })
 export class AppComponent {
 
-  isLoginPage: boolean;
+  isLoginPage : Observable<boolean>;
 
-  constructor(private appService: AppService) {
-    // this.isLoginPage = this.appService.getIsLogin();
+  constructor( public appService : AppService ) {
+    this.isLoginPage = appService.getIsLoginPage();
   }
+
 }
 
 

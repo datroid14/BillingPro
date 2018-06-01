@@ -29,6 +29,7 @@ export class CreateChallanComponent {
   productQuantity: number;
   vehicleId: number;
   vehicleNumber: string;
+  isLoginPage: boolean;
 
   constructor(private route: ActivatedRoute, private customerService: CustomerService, private productService: ProductService,
     private challanService: ChallanService, private router: Router, private appService: AppService, private location: Location,
@@ -45,7 +46,7 @@ export class CreateChallanComponent {
 
   ngOnInit() {
 
-    this.appService.setIsLogin(true);
+    this.appService.setIsLoginPage(true);
 
     this.customerService.getCustomers().subscribe(response => {
       this.customers = response.customers;
@@ -102,7 +103,6 @@ export class CreateChallanComponent {
 
   setCustomerDetail(customer) {
     this.customerId = customer.cust_id;
-    // this.customerName = customer.cust_name;
     this.customerAddress = customer.cust_address;
   }
 

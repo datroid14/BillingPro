@@ -40,14 +40,15 @@ import { ViewProductComponent } from './view-product/view-product.component';
 import { ViewChallanComponent } from './view-challan/view-challan.component';
 import { ViewPurchaseComponent } from './view-purchase/view-purchase.component';
 import { ViewQuatationComponent } from './view-quatation/view-quatation.component';
+import { AddVehicleComponent } from './add-vehicle/add-vehicle.component';
 
 import { CustomerService } from './add-customer/customer.service';
 import { VendorService } from './add-vendor/vendor.service';
 import { ProductService } from './add-product/product.service';
+import { PurchaseService } from './add-purchase/purchase.service';
 import { QuatationService } from './create-quatation/quatation.service';
 import { ChallanService } from './create-challan/challan.service';
 import { AppService } from './app.service';
-import { AddVehicleComponent } from './add-vehicle/add-vehicle.component';
 import { VehicleService } from './add-vehicle/vehicle.service';
 
 const appRoutes: Routes = [
@@ -117,7 +118,7 @@ const appRoutes: Routes = [
     HttpModule,
     HttpClientModule
   ],
-  providers: [AppService, CustomerService, VendorService, ProductService, QuatationService, ChallanService, VehicleService],
+  providers: [AppService, CustomerService, VendorService, ProductService, QuatationService, ChallanService, PurchaseService, VehicleService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

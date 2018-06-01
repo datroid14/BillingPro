@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationExtras } from '@angular/router';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { VendorService } from "../add-vendor/vendor.service";
 import { ProductService } from "../add-product/product.service";
+import { PurchaseService } from "../add-purchase/purchase.service";
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'add-purchase',
@@ -13,7 +15,7 @@ export class AddPurchaseComponent {
   // Variables used for products
   vendors;
   products;
-  productList;
+  localProductList;
 
   chalanList = [{ number: 12332, date: "22/03/2018", vehicle: "MH-14 DT-8286" },
   { number: 12652, date: "12/04/2018", vehicle: "MH-14 DT-8286" },
@@ -31,9 +33,11 @@ export class AddPurchaseComponent {
 
   // Variables used for purchase
   purchases = [];
+  purchaseId: number;
   purchaseDate: Date;
   vendorName: string;
   vendorAddress: string;
+  contactPerson:string;
   contactNo: number;
   totalPurchaseAmount: number;
 
@@ -41,7 +45,16 @@ export class AddPurchaseComponent {
   addImagePath: string;
   removeImagePath: string;
 
-  constructor(private vendorService: VendorService, private productService: ProductService, private router: Router) {
+  constructor(private vendorService: VendorService, private productService: ProductService, private router: Router,
+    private purchaseService: PurchaseService, private route: ActivatedRoute, private location: Location) {
+    this.route.queryParams.subscribe(params => {
+      this.purchaseId = params["pur_id"];
+      this.purchaseDate = params["pur_date"];
+      this.vendorName = params["pur_vendor"];
+      this.contactPerson = params["pur_cont_person"];
+      this.contactNo = params["pur_contact"];
+      this.vendorAddress = params["pur_address"];
+    });
     this.addImagePath = "assets/images/ic_add_circle.svg";
     this.removeImagePath = "assets/images/ic_remove_circle.svg";
   }
@@ -56,13 +69,23 @@ export class AddPurchaseComponent {
         console.log(error)
       });
 
-      this.productService.getProducts().subscribe(response => {
-        this.products = response.products;
-        console.log(this.products);
-      },
-        error => {
-          console.log(error)
-        });
+    this.productService.getProducts().subscribe(response => {
+      this.products = response.products;
+      console.log(this.products);
+    },
+      error => {
+        console.log(error)
+      });
+
+      const payload = { "data": { "pur_id": this.purchaseId } };
+
+    this.purchaseService.getPurchaseProductsById(payload).subscribe(response => {
+      this.localProductList = response.products;
+      console.log("Puchase Products " + JSON.stringify(this.localProductList));
+    },
+      error => {
+        console.log(error)
+      });
   }
 
   addProduct() {
@@ -70,7 +93,7 @@ export class AddPurchaseComponent {
       && this.productQuantity != undefined && this.productRate != undefined && this.totalAmount != undefined) {
       const product = new Product(this.chalanNo, this.chalanDate, this.vehicleNo, this.productName, this.productHSN, this.productUnit, this.productQuantity,
         this.productRate, this.totalAmount);
-      this.productList.push(product);
+      this.localProductList.push(product);
       this.calculatePurchaseTotal();
       this.clearProductFields();
     } else {

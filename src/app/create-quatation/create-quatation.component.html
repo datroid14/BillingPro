@@ -8,13 +8,17 @@
   <mat-card-content class="container-css">
 
     <mat-form-field>
-      <input matInput [matDatepicker]="picker" [ngModel]="invoiceDate" placeholder="Choose a date">
+      <input matInput [matDatepicker]="picker" [ngModel]="quatationDate" placeholder="Choose a date">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput [(ngModel)]="customerName" placeholder="Customer Name" required>
+      <mat-select [(ngModel)]="customerName" name="customerName" placeholder="Customer Name" required>
+        <mat-option *ngFor="let customer of customers" [value]="customer.cust_name" (click)="setCustomerDetail(customer)">
+          {{customer.cust_name}}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
 
     <mat-form-field>
@@ -45,7 +49,11 @@
             </th>
             <th class="input-css">
               <mat-form-field>
-                <input matInput [(ngModel)]="productName" required>
+                <mat-select [(ngModel)]="productName" name="productName" required>
+                  <mat-option *ngFor="let product of localProductList" [value]="product.prod_name" (click)="setProductDetail(product)">
+                    {{product.prod_name}}
+                  </mat-option>
+                </mat-select>
               </mat-form-field>
             </th>
             <th class="input-css">
@@ -69,12 +77,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let product of products;let i=index">
+          <tr *ngFor="let product of localProductList;let i=index">
             <td>{{i+1}}</td>
-            <td class="input-css">{{product.name}}</td>
-            <td class="input-css">{{product.desc}}</td>
-            <td class="input-css">{{product.unit}}</td>
-            <td class="input-css">{{product.rate}}</td>
+            <td class="input-css">{{product.prod_name}}</td>
+            <td class="input-css">{{product.prod_desc}}</td>
+            <td class="input-css">{{product.prod_unit}}</td>
+            <td class="input-css amount-css">{{product.prod_rate}}</td>
             <td>
               <img (click)="removeProduct(product)" [src]="this.removeImagePath">
             </td>

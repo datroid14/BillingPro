@@ -1,20 +1,18 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { BehaviorSubject, Observable } from "rxjs";
 import { map } from 'rxjs/operators';
 
 @Injectable()
 export class AppService {
-    private config = new BehaviorSubject({
-        isLoginPage: false
-    });
+    isLoginSubject = new BehaviorSubject<boolean>(false);
 
     constructor() { }
 
-    setIsLogin(isLogin: boolean) {
-        // this.config.next({ isLoginPage: isLogin });
+    setIsLoginPage(isLoginPage){
+        this.isLoginSubject.next(isLoginPage);
     }
 
-    getIsLogin() {
-        // return this.config.map(config => config.isLoginPage);
+    getIsLoginPage() : Observable<boolean> {
+        return this.isLoginSubject.asObservable();
     }
 }

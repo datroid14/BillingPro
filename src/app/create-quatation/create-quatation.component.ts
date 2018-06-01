@@ -1,45 +1,92 @@
 import { Component, OnInit } from '@angular/core';
+import { Product } from "../add-product/product";
+import { CustomerService } from "../add-customer/customer.service";
+import { ProductService } from "../add-product/product.service";
+import { QuatationService } from "../create-quatation/quatation.service";
+import { ActivatedRoute } from "@angular/router";
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'create-quatation',
   templateUrl: './create-quatation.component.html',
   styleUrls: ['./create-quatation.component.css']
 })
-export class CreateQuatationComponent {
+export class CreateQuatationComponent implements OnInit {
 
   // Variables used for products
-  products = [];
+  customers;
+  products;
+  quatationProducts;
+  localProductList: Product[];
+
+  quatationId: number;
+  productId: number;
   productName: string;
-  productHSN: string;
+  productDesc: string;
   productUnit: string;
   productQuantity: number;
   productRate: number;
   totalAmount: number;
 
   // Variables used for invoice
-  invoices = [];
-  invoiceDate: Date;
+  quatations = [];
+  quatationDate: Date;
   picker: Date;
+  customerId: number;
   customerName: string;
   customerAddress: string;
   contactNo: number;
+  contactPerson: string;
 
   // Variables for image paths
   addImagePath: string;
   removeImagePath: string;
 
-  constructor() {
+  constructor(private customerService: CustomerService, private productService: ProductService, private quatationService: QuatationService,
+    private route: ActivatedRoute, private location: Location) {
+    this.route.queryParams.subscribe(params => {
+      this.quatationId = params["quat_id"];
+      this.quatationDate = params["quat_date"];
+      this.customerName = params["quat_customer"];
+      this.contactPerson = params["quat_contact_person"];
+      this.contactNo = params["quat_contact"];
+      this.customerAddress = params["quat_address"];
+    });
     this.addImagePath = "assets/images/ic_add_circle.svg";
     this.removeImagePath = "assets/images/ic_remove_circle.svg";
   }
 
+  ngOnInit() {
+    this.customerService.getCustomers().subscribe(response => {
+      this.customers = response.customers;
+    },
+      error => {
+        console.log(error)
+      });
+
+    this.productService.getProducts().subscribe(response => {
+      this.products = response.products;
+    },
+      error => {
+        console.log(error)
+      });
+
+    const payload = { "data": { "quat_id": this.quatationId } };
+
+    this.quatationService.getQuatationProductsById(payload).subscribe(response => {
+      this.localProductList = response.products;
+      console.log("Quatation Products " + JSON.stringify(this.localProductList));
+    },
+      error => {
+        console.log(error)
+      });
+  }
+
   addProduct() {
-    if (this.productName != undefined && this.productHSN != undefined && this.productUnit != undefined
+    if (this.productName != undefined && this.productDesc != undefined && this.productUnit != undefined
       && this.productRate != undefined) {
-      const product = new Product(this.productName, this.productHSN, this.productUnit,
-        this.productRate);
-      this.products.push(product);
-      this.clearProductFields();
+      const product = new Product(this.productName, this.productDesc, this.productUnit, this.productRate);
+      this.localProductList.push(product);
     } else {
       alert('Please fill all mandatory fields');
     }
@@ -53,9 +100,20 @@ export class CreateQuatationComponent {
   createInvoice() {
     if (this.customerName != undefined && this.customerAddress != undefined
       && this.contactNo != undefined && (this.products != undefined && this.products.length > 0)) {
-      const invoice = new Quatation(this.invoiceDate, this.customerName, this.customerAddress, this.contactNo,
+      const invoice = new Quatation(this.quatationDate, this.customerName, this.customerAddress, this.contactNo,
         this.products);
-      this.invoices.push(invoice);
+      const payload = { "data": { "chal_cust_id": this.customerId, "chal_prod_id": this.productId, "chal_veh_id": this.productName, "chal_quantity": this.productQuantity } };
+      this.quatationService.addQuatation(payload).subscribe(response => {
+        if (response.status == 200) {
+
+        }
+        console.log("Add quatation " + response);
+      },
+        error => {
+          console.log(error)
+        });
+      this.quatations.push(invoice);
+      this.location.back();
       this.clearInvoiceFields();
       // Redirect it to View Invoice screen
       // this.router.navigate(['/view-invoice']);
@@ -66,32 +124,30 @@ export class CreateQuatationComponent {
 
   clearProductFields() {
     this.productName = '';
-    this.productHSN = '';
+    this.productDesc = '';
     this.productUnit = '';
     this.productRate = 0;
   }
 
   clearInvoiceFields() {
-    this.invoiceDate = null;
+    this.quatationDate = null;
     this.customerName = '';
     this.customerAddress = '';
     this.contactNo = 0;
     this.products = [];
   }
-}
 
-class Product {
+  setCustomerDetail(customer) {
+    this.customerId = customer.cust_id;
+    this.customerAddress = customer.cust_address;
+    this.contactNo = customer.cust_contact;
+    this.contactPerson = customer.cust_contact_person;
+  }
 
-  name: string;
-  hsn: string;
-  unit: string;
-  rate: number;
-
-  constructor(name, hsn, unit, rate) {
-    this.name = name;
-    this.hsn = hsn;
-    this.unit = unit;
-    this.rate = rate;
+  setProductDetail(product) {
+    this.productId = product.prod_id;
+    this.productUnit = product.prod_unit;
+    this.productRate = product.prod_rate;
   }
 }
 
