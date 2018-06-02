@@ -41,6 +41,7 @@ import { ViewChallanComponent } from './view-challan/view-challan.component';
 import { ViewPurchaseComponent } from './view-purchase/view-purchase.component';
 import { ViewQuatationComponent } from './view-quatation/view-quatation.component';
 import { AddVehicleComponent } from './add-vehicle/add-vehicle.component';
+import { ViewInvoiceCopyComponent } from './view-invoice-copy/view-invoice-copy.component';
 
 import { CustomerService } from './add-customer/customer.service';
 import { VendorService } from './add-vendor/vendor.service';
@@ -50,7 +51,7 @@ import { QuatationService } from './create-quatation/quatation.service';
 import { ChallanService } from './create-challan/challan.service';
 import { AppService } from './app.service';
 import { VehicleService } from './add-vehicle/vehicle.service';
-import { ViewInvoiceCopyComponent } from './view-invoice-copy/view-invoice-copy.component';
+import { InvoiceService } from './create-invoice/invoice.service';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -120,7 +121,7 @@ const appRoutes: Routes = [
     HttpModule,
     HttpClientModule
   ],
-  providers: [AppService, CustomerService, VendorService, ProductService, QuatationService, ChallanService, PurchaseService, VehicleService],
+  providers: [AppService, CustomerService, VendorService, ProductService, QuatationService, ChallanService, PurchaseService, VehicleService, InvoiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
