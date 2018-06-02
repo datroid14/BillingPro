@@ -50,6 +50,7 @@ import { QuatationService } from './create-quatation/quatation.service';
 import { ChallanService } from './create-challan/challan.service';
 import { AppService } from './app.service';
 import { VehicleService } from './add-vehicle/vehicle.service';
+import { ViewInvoiceCopyComponent } from './view-invoice-copy/view-invoice-copy.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -93,7 +94,8 @@ const appRoutes: Routes = [
     ViewChallanComponent,
     ViewPurchaseComponent,
     ViewQuatationComponent,
-    AddVehicleComponent
+    AddVehicleComponent,
+    ViewInvoiceCopyComponent
   ],
   imports: [
     BrowserModule,

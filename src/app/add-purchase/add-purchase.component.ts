@@ -37,7 +37,7 @@ export class AddPurchaseComponent {
   purchaseDate: Date;
   vendorName: string;
   vendorAddress: string;
-  contactPerson:string;
+  contactPerson: string;
   contactNo: number;
   totalPurchaseAmount: number;
 
@@ -51,7 +51,7 @@ export class AddPurchaseComponent {
       this.purchaseId = params["pur_id"];
       this.purchaseDate = params["pur_date"];
       this.vendorName = params["pur_vendor"];
-      this.contactPerson = params["pur_cont_person"];
+      this.contactPerson = params["pur_contact_person"];
       this.contactNo = params["pur_contact"];
       this.vendorAddress = params["pur_address"];
     });
@@ -77,11 +77,12 @@ export class AddPurchaseComponent {
         console.log(error)
       });
 
-      const payload = { "data": { "pur_id": this.purchaseId } };
+    const payload = { "data": { "pur_id": this.purchaseId } };
 
     this.purchaseService.getPurchaseProductsById(payload).subscribe(response => {
       this.localProductList = response.products;
       console.log("Puchase Products " + JSON.stringify(this.localProductList));
+      this.calculateTotal(null);
     },
       error => {
         console.log(error)

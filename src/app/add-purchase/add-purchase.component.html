@@ -111,15 +111,15 @@
         <tbody>
           <tr *ngFor="let product of localProductList;let i=index">
             <td>{{i+1}}</td>
-            <td class="input-css">{{product.chalanNo}}</td>
-            <td class="input-css">{{product.date}}</td>
-            <td class="input-css">{{product.vehicleNo}}</td>
-            <td class="input-css">{{product.name}}</td>
-            <td class="input-css">{{product.hsn}}</td>
-            <td class="input-css">{{product.unit}}</td>
-            <td class="input-css">{{product.rate}}</td>
-            <td class="input-css">{{product.quantity}}</td>
-            <td class="input-css">{{product.total}}</td>
+            <td class="input-css">{{product.chal_id}}</td>
+            <td class="input-css">{{product.chal_date}}</td>
+            <td class="input-css">{{product.veh_number}}</td>
+            <td class="input-css">{{product.prod_name}}</td>
+            <td class="input-css">{{product.prod_hsn}}</td>
+            <td class="input-css">{{product.prod_unit}}</td>
+            <td class="input-css">{{product.prod_rate}}</td>
+            <td class="input-css">{{product.prod_qty}}</td>
+            <td class="input-css">{{product.prod_total}}</td>
             <td>
               <img (click)="removeProduct(product)" [src]="this.removeImagePath">
             </td>
