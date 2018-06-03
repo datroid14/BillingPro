@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { Router, NavigationExtras } from '@angular/router';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { CustomerService } from "../add-customer/customer.service";
 import { ProductService } from "../add-product/product.service";
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'create-invoice',
@@ -25,10 +26,12 @@ export class CreateInvoiceComponent {
 
   // Variables used for invoice
   invoices = [];
+  invoiceId: number;
   invoiceDate: Date;
   picker: Date;
   customerName: string;
   customerAddress: string;
+  contactPerson: string;
   contactNo: number;
   totalInvoiceAmount: number;
 
@@ -36,7 +39,16 @@ export class CreateInvoiceComponent {
   addImagePath: string;
   removeImagePath: string;
 
-  constructor(private customerService: CustomerService, private productService: ProductService, private router: Router) {
+  constructor(private customerService: CustomerService, private productService: ProductService, private router: Router,
+    private route: ActivatedRoute, private location: Location) {
+    this.route.queryParams.subscribe(params => {
+      this.invoiceId = params["inv_id"];
+      this.invoiceDate = params["inv_date"];
+      this.customerName = params["inv_customer"];
+      this.contactPerson = params["inv_contact_person"];
+      this.contactNo = params["inv_contact"];
+      this.customerAddress = params["inv_address"];
+    });
     this.addImagePath = "assets/images/ic_add_circle.svg";
     this.removeImagePath = "assets/images/ic_remove_circle.svg";
   }
@@ -51,13 +63,13 @@ export class CreateInvoiceComponent {
         console.log(error)
       });
 
-      this.productService.getProducts().subscribe(response => {
-        this.products = response.products;
-        console.log(this.products);
-      },
-        error => {
-          console.log(error)
-        });
+    this.productService.getProducts().subscribe(response => {
+      this.products = response.products;
+      console.log(this.products);
+    },
+      error => {
+        console.log(error)
+      });
   }
 
   addProduct() {
@@ -140,7 +152,7 @@ export class CreateInvoiceComponent {
 }
 
 class Product {
-  date:Date;
+  date: Date;
   name: string;
   hsn: string;
   unit: string;

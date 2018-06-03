@@ -42,11 +42,11 @@ export class ViewInvoiceComponent {
 
   }
 
-  showPurchaseDetails(purchase) {
+  showInvoiceDetails(invoice) {
 
-    if (purchase != undefined) {
+    if (invoice != undefined) {
       let navigationExtras: NavigationExtras = {
-        queryParams: purchase
+        queryParams: invoice
       };
       // Redirect it to View Product screen
       this.router.navigate(['/create-invoice'], navigationExtras);

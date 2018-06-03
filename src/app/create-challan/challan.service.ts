@@ -31,4 +31,10 @@ export class ChallanService {
                   .post<AddResponse>('http://localhost:3000/addChallan', payload, httpOptions)
                   .pipe(tap(res => null));
       }
+
+      getChallansByCustomerId(payload:Object): Observable<ChallanResponse> {
+            return this.http
+                  .post<ChallanResponse>("http://localhost:3000/getChallansByCustomerId", payload, httpOptions)
+                  .pipe(tap(res => null));
+      }
 }

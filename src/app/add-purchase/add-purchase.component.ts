@@ -3,6 +3,7 @@ import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { VendorService } from "../add-vendor/vendor.service";
 import { ProductService } from "../add-product/product.service";
 import { PurchaseService } from "../add-purchase/purchase.service";
+import { ChallanService } from "../create-challan/challan.service";
 import { Location } from '@angular/common';
 
 @Component({
@@ -13,13 +14,10 @@ import { Location } from '@angular/common';
 export class AddPurchaseComponent {
 
   // Variables used for products
+  challans;
   vendors;
   products;
   localProductList;
-
-  chalanList = [{ number: 12332, date: "22/03/2018", vehicle: "MH-14 DT-8286" },
-  { number: 12652, date: "12/04/2018", vehicle: "MH-14 DT-8286" },
-  { number: 13732, date: "20/04/2018", vehicle: "MH-14 DT-8286" }];
 
   chalanNo: number;
   chalanDate: string;
@@ -46,7 +44,7 @@ export class AddPurchaseComponent {
   removeImagePath: string;
 
   constructor(private vendorService: VendorService, private productService: ProductService, private router: Router,
-    private purchaseService: PurchaseService, private route: ActivatedRoute, private location: Location) {
+    private purchaseService: PurchaseService, private challanService: ChallanService, private route: ActivatedRoute, private location: Location) {
     this.route.queryParams.subscribe(params => {
       this.purchaseId = params["pur_id"];
       this.purchaseDate = params["pur_date"];
@@ -60,6 +58,16 @@ export class AddPurchaseComponent {
   }
 
   ngOnInit() {
+
+    const challanPayload = { "data": { "chal_cust_id": 1 } };
+
+    this.challanService.getChallansByCustomerId(challanPayload).subscribe(response => {
+      this.challans = response.challans;
+      console.log("Add Purchase "+JSON.stringify(this.challans));
+    },
+      error => {
+        console.log(error)
+      });
 
     this.vendorService.getVendors().subscribe(response => {
       this.vendors = response.vendors;
@@ -77,9 +85,9 @@ export class AddPurchaseComponent {
         console.log(error)
       });
 
-    const payload = { "data": { "pur_id": this.purchaseId } };
+    const productPayload = { "data": { "pur_id": this.purchaseId } };
 
-    this.purchaseService.getPurchaseProductsById(payload).subscribe(response => {
+    this.purchaseService.getPurchaseProductsById(productPayload).subscribe(response => {
       this.localProductList = response.products;
       console.log("Puchase Products " + JSON.stringify(this.localProductList));
       this.calculateTotal(null);
@@ -170,9 +178,10 @@ export class AddPurchaseComponent {
     this.contactNo = vendor.vend_contact;
   }
 
-  setChalanDetail(chalan) {
-    this.chalanDate = chalan.date;
-    this.vehicleNo = chalan.vehicle;
+  setChallanDetail(challan) {
+    this.chalanDate = challan.chal_date;
+    this.vehicleNo = challan.veh_number;
+    this.productQuantity = challan.chal_quantity;
   }
 }
 

@@ -53,8 +53,8 @@
             <th>
               <mat-form-field class="table-form-wide-field">
                 <mat-select [(ngModel)]="chalanNo" name="chalanNo">
-                  <mat-option *ngFor="let chalan of chalanList" [value]="chalan.number" (click)="setChalanDetail(chalan)">
-                    {{chalan.number}}
+                  <mat-option *ngFor="let challan of challans" [value]="challan.chal_id" (click)="setChallanDetail(challan)">
+                    {{challan.chal_id}}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
