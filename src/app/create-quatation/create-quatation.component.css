@@ -17,10 +17,11 @@
   
   .input-css{
     padding: 12px;
+    text-align: center;
   }
 
   .amount-css{
-    text-align: right;
+    text-align: center;
   }
   
   

@@ -19,8 +19,8 @@ export class AddPurchaseComponent {
   products;
   localProductList;
 
-  chalanNo: number;
-  chalanDate: string;
+  challanNo: number;
+  challanDate: string;
   vehicleNo: string;
   productName: string;
   productHSN: string;
@@ -98,9 +98,9 @@ export class AddPurchaseComponent {
   }
 
   addProduct() {
-    if (this.chalanNo != undefined && this.chalanDate != undefined && this.vehicleNo != undefined && this.productName != undefined && this.productHSN != undefined && this.productUnit != undefined
+    if (this.challanNo != undefined && this.challanDate != undefined && this.vehicleNo != undefined && this.productName != undefined && this.productHSN != undefined && this.productUnit != undefined
       && this.productQuantity != undefined && this.productRate != undefined && this.totalAmount != undefined) {
-      const product = new Product(this.chalanNo, this.chalanDate, this.vehicleNo, this.productName, this.productHSN, this.productUnit, this.productQuantity,
+      const product = new Product(this.challanNo, this.challanDate, this.vehicleNo, this.productName, this.productHSN, this.productUnit, this.productQuantity,
         this.productRate, this.totalAmount);
       this.localProductList.push(product);
       this.calculatePurchaseTotal();
@@ -115,13 +115,13 @@ export class AddPurchaseComponent {
     this.products.splice(index, 1);
   }
 
-  createInvoice() {
+  createPurchase() {
     if (this.purchaseDate != undefined && this.vendorName != undefined && this.vendorAddress != undefined
       && this.contactNo != undefined && (this.products != undefined && this.products.length > 0)) {
       const purchase = new Purchase(this.purchaseDate, this.vendorName, this.vendorAddress, this.contactNo,
         this.totalPurchaseAmount, JSON.stringify(this.products));
       this.purchases.push(purchase);
-      this.clearInvoiceFields();
+      this.clearPurchaseFields();
       let navigationExtras: NavigationExtras = {
         queryParams: this.purchases[this.purchases.length - 1]
       };
@@ -133,8 +133,8 @@ export class AddPurchaseComponent {
   }
 
   clearProductFields() {
-    this.chalanNo = undefined;
-    this.chalanDate = undefined;
+    this.challanNo = undefined;
+    this.challanDate = undefined;
     this.vehicleNo = undefined;
     this.productName = undefined;
     this.productHSN = undefined;
@@ -144,7 +144,7 @@ export class AddPurchaseComponent {
     this.totalAmount = undefined;
   }
 
-  clearInvoiceFields() {
+  clearPurchaseFields() {
     this.purchaseDate = undefined;
     this.vendorName = undefined;
     this.vendorAddress = undefined;
@@ -168,7 +168,6 @@ export class AddPurchaseComponent {
   }
 
   setProductDetail(product) {
-    // this.productHSN = product.hsn;
     this.productRate = product.prod_rate;
     this.productUnit = product.prod_unit;
   }
@@ -179,7 +178,7 @@ export class AddPurchaseComponent {
   }
 
   setChallanDetail(challan) {
-    this.chalanDate = challan.chal_date;
+    this.challanDate = challan.chal_date;
     this.vehicleNo = challan.veh_number;
     this.productQuantity = challan.chal_quantity;
   }

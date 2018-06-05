@@ -7,14 +7,19 @@
 
   <mat-card-content class="container-css">
 
+    <div align="right">
+      <img (click)="addNewQuatation();" [src]="this.addImagePath">
+    </div>
+
     <mat-form-field>
-      <input matInput [matDatepicker]="picker" [ngModel]="quatationDate" placeholder="Choose a date">
+      <input matInput [matDatepicker]="picker" [ngModel]="quatationDate" placeholder="Choose a date" [disabled]="isFieldDisabled"
+        required>
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field>
-      <mat-select [(ngModel)]="customerName" name="customerName" placeholder="Customer Name" required>
+      <mat-select [(ngModel)]="customerName" name="customerName" placeholder="Customer Name" [disabled]="isFieldDisabled" required>
         <mat-option *ngFor="let customer of customers" [value]="customer.cust_name" (click)="setCustomerDetail(customer)">
           {{customer.cust_name}}
         </mat-option>
@@ -22,15 +27,15 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput [(ngModel)]="customerAddress" placeholder="Address" required>
+      <input matInput [(ngModel)]="customerAddress" placeholder="Address" [disabled]="isFieldDisabled" required>
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput [(ngModel)]="contactPerson" placeholder="Contact Person" required>
+      <input matInput [(ngModel)]="contactPerson" placeholder="Contact Person" [disabled]="isFieldDisabled" required>
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput type="number" [(ngModel)]="contactNo" placeholder="Contact Number" required>
+      <input matInput type="number" [(ngModel)]="contactNo" placeholder="Contact Number" [disabled]="isFieldDisabled" required>
     </mat-form-field>
 
     <mat-card class="inner-card-css">
@@ -44,13 +49,13 @@
             <th>Unit</th>
             <th>Rate</th>
           </tr>
-          <tr>
+          <tr *ngIf="!isFieldDisabled">
             <th>
             </th>
             <th class="input-css">
               <mat-form-field>
                 <mat-select [(ngModel)]="productName" name="productName" required>
-                  <mat-option *ngFor="let product of localProductList" [value]="product.prod_name" (click)="setProductDetail(product)">
+                  <mat-option *ngFor="let product of products" [value]="product.prod_name" (click)="setProductDetail(product)">
                     {{product.prod_name}}
                   </mat-option>
                 </mat-select>
@@ -78,12 +83,12 @@
         </thead>
         <tbody>
           <tr *ngFor="let product of localProductList;let i=index">
-            <td>{{i+1}}</td>
+            <td class="input-css">{{i+1}}</td>
             <td class="input-css">{{product.prod_name}}</td>
             <td class="input-css">{{product.prod_desc}}</td>
             <td class="input-css">{{product.prod_unit}}</td>
             <td class="input-css amount-css">{{product.prod_rate}}</td>
-            <td>
+            <td *ngIf="!isFieldDisabled">
               <img (click)="removeProduct(product)" [src]="this.removeImagePath">
             </td>
           </tr>
@@ -92,7 +97,7 @@
     </mat-card>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button color="primary" (click)="createQuatation()">SAVE</button>
-    <button mat-raised-button color="primary">CANCEL</button>
+    <button mat-raised-button color="primary" (click)="createQuatation()">{{buttonLabel}}</button>
+    <button mat-raised-button color="primary" (click)="cancelClicked()" [disabled]="isCancelDisabled">CANCEL</button>
   </mat-card-actions>
 </mat-card>

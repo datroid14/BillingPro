@@ -15,7 +15,7 @@
     </mat-form-field>
     
     <mat-form-field>
-      <input matInput [(ngModel)]="contactPerson" placeholder="Contact Person" required>
+      <input matInput [(ngModel)]="contactPerson" placeholder="Contact Person" [disabled]="isFieldDisabled" required>
     </mat-form-field>
 
     <mat-form-field>

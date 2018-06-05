@@ -52,7 +52,7 @@
             </th>
             <th>
               <mat-form-field class="table-form-wide-field">
-                <mat-select [(ngModel)]="chalanNo" name="chalanNo">
+                <mat-select [(ngModel)]="challanNo" name="challanNo">
                   <mat-option *ngFor="let challan of challans" [value]="challan.chal_id" (click)="setChallanDetail(challan)">
                     {{challan.chal_id}}
                   </mat-option>
@@ -61,7 +61,7 @@
             </th>
             <th>
               <mat-form-field class="table-form-wide-field">
-                <input matInput [(ngModel)]="chalanDate" required/>
+                <input matInput [(ngModel)]="challanDate" required/>
               </mat-form-field>
             </th>
             <th>

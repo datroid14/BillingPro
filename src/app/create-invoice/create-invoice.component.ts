@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { CustomerService } from "../add-customer/customer.service";
+import { ChallanService } from "../create-challan/challan.service";
 import { ProductService } from "../add-product/product.service";
 import { Location } from '@angular/common';
 
@@ -13,10 +14,14 @@ export class CreateInvoiceComponent {
 
   // Variables used for products
   customers;
+  challans;
   products;
-  productList;
+  localProductList:Product[];
 
-  orderDate: Date;
+  challanId:number;
+  challanDate: Date;
+  vehicleNo: string;
+  productId: number;
   productName: string;
   productHSN: string;
   productUnit: string;
@@ -29,6 +34,7 @@ export class CreateInvoiceComponent {
   invoiceId: number;
   invoiceDate: Date;
   picker: Date;
+  customerId: number;
   customerName: string;
   customerAddress: string;
   contactPerson: string;
@@ -40,10 +46,11 @@ export class CreateInvoiceComponent {
   removeImagePath: string;
 
   constructor(private customerService: CustomerService, private productService: ProductService, private router: Router,
-    private route: ActivatedRoute, private location: Location) {
+    private challanService: ChallanService, private route: ActivatedRoute, private location: Location) {
     this.route.queryParams.subscribe(params => {
       this.invoiceId = params["inv_id"];
       this.invoiceDate = params["inv_date"];
+      this.customerId = params["inv_cust_id"];
       this.customerName = params["inv_customer"];
       this.contactPerson = params["inv_contact_person"];
       this.contactNo = params["inv_contact"];
@@ -63,6 +70,16 @@ export class CreateInvoiceComponent {
         console.log(error)
       });
 
+    const challanPayload = { "data": { "chal_cust_id": this.customerId } };
+
+    this.challanService.getChallansByCustomerId(challanPayload).subscribe(response => {
+      this.challans = response.challans;
+      console.log("Add Invoice " + JSON.stringify(this.challans));
+    },
+      error => {
+        console.log(error)
+      });
+
     this.productService.getProducts().subscribe(response => {
       this.products = response.products;
       console.log(this.products);
@@ -73,11 +90,10 @@ export class CreateInvoiceComponent {
   }
 
   addProduct() {
-    if (this.orderDate != undefined && this.productName != undefined && this.productHSN != undefined && this.productUnit != undefined
+    if (this.challanDate != undefined && this.productName != undefined && this.productHSN != undefined && this.productUnit != undefined
       && this.productQuantity != undefined && this.productRate != undefined && this.totalAmount != undefined) {
-      const product = new Product(this.orderDate, this.productName, this.productHSN, this.productUnit, this.productQuantity,
-        this.productRate, this.totalAmount);
-      this.products.push(product);
+      const product = new Product(this.challanId, this.productId, this.productQuantity, this.totalAmount);
+      this.localProductList.push(product);
       this.calculateInvoiceTotal();
       this.clearProductFields();
     } else {
@@ -108,7 +124,7 @@ export class CreateInvoiceComponent {
   }
 
   clearProductFields() {
-    this.orderDate = undefined;
+    this.challanDate = undefined;
     this.productName = '';
     this.productHSN = '';
     this.productUnit = '';
@@ -146,28 +162,30 @@ export class CreateInvoiceComponent {
   }
 
   setProductDetail(product) {
+    this.productId = product.prod_id;
     this.productUnit = product.prod_unit;
     this.productRate = product.prod_rate;
+  }
+
+  setChallanDetail(challan) {
+    this.challanId = challan.chal_id;
+    this.challanDate = challan.chal_date;
+    this.vehicleNo = challan.veh_number;
+    this.productQuantity = challan.chal_quantity;
   }
 }
 
 class Product {
-  date: Date;
-  name: string;
-  hsn: string;
-  unit: string;
-  quantity: number;
-  rate: number;
-  total: number;
+  prod_id: number;
+  prod_qty: number;
+  chal_id: number;
+  prod_total_amount: number;
 
-  constructor(date, name, hsn, unit, qty, rate, total) {
-    this.date = date;
-    this.name = name;
-    this.hsn = hsn;
-    this.unit = unit;
-    this.quantity = qty;
-    this.rate = rate;
-    this.total = total;
+  constructor(prod_id, prod_qty, chal_id, total) {
+    this.prod_id = prod_id;
+    this.prod_qty = prod_qty;
+    this.chal_id = chal_id;
+    this.prod_total_amount = total;
   }
 }
 
