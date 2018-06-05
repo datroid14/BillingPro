@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CustomerService } from "../add-customer/customer.service";
 import { ChallanService } from "../create-challan/challan.service";
 import { ProductService } from "../add-product/product.service";
+import { InvoiceService } from "../create-invoice/invoice.service";
 import { Location } from '@angular/common';
 
 @Component({
@@ -16,9 +17,13 @@ export class CreateInvoiceComponent {
   customers;
   challans;
   products;
-  localProductList:Product[];
+  invoiceProducts;
+  localProductList: InvoiceProduct[];
 
-  challanId:number;
+  buttonLabel: string;
+  isFieldDisabled: boolean;
+  isCancelDisabled: boolean;
+  challanId: number;
   challanDate: Date;
   vehicleNo: string;
   productId: number;
@@ -46,7 +51,7 @@ export class CreateInvoiceComponent {
   removeImagePath: string;
 
   constructor(private customerService: CustomerService, private productService: ProductService, private router: Router,
-    private challanService: ChallanService, private route: ActivatedRoute, private location: Location) {
+    private challanService: ChallanService, private invoiceService:InvoiceService, private route: ActivatedRoute, private location: Location) {
     this.route.queryParams.subscribe(params => {
       this.invoiceId = params["inv_id"];
       this.invoiceDate = params["inv_date"];
@@ -64,7 +69,6 @@ export class CreateInvoiceComponent {
 
     this.customerService.getCustomers().subscribe(response => {
       this.customers = response.customers;
-      console.log(this.customers);
     },
       error => {
         console.log(error)
@@ -74,7 +78,6 @@ export class CreateInvoiceComponent {
 
     this.challanService.getChallansByCustomerId(challanPayload).subscribe(response => {
       this.challans = response.challans;
-      console.log("Add Invoice " + JSON.stringify(this.challans));
     },
       error => {
         console.log(error)
@@ -82,7 +85,6 @@ export class CreateInvoiceComponent {
 
     this.productService.getProducts().subscribe(response => {
       this.products = response.products;
-      console.log(this.products);
     },
       error => {
         console.log(error)
@@ -92,10 +94,9 @@ export class CreateInvoiceComponent {
   addProduct() {
     if (this.challanDate != undefined && this.productName != undefined && this.productHSN != undefined && this.productUnit != undefined
       && this.productQuantity != undefined && this.productRate != undefined && this.totalAmount != undefined) {
-      const product = new Product(this.challanId, this.productId, this.productQuantity, this.totalAmount);
+      const product = new InvoiceProduct(this.challanId, this.productId, this.productQuantity, this.totalAmount);
       this.localProductList.push(product);
       this.calculateInvoiceTotal();
-      this.clearProductFields();
     } else {
       alert('Please fill all mandatory fields');
     }
@@ -108,16 +109,18 @@ export class CreateInvoiceComponent {
 
   createInvoice() {
     if (this.invoiceDate != undefined && this.customerName != undefined && this.customerAddress != undefined
-      && this.contactNo != undefined && (this.products != undefined && this.products.length > 0)) {
-      const invoice = new Invoice(this.invoiceDate, this.customerName, this.customerAddress, this.contactNo,
-        this.totalInvoiceAmount, JSON.stringify(this.products));
-      this.invoices.push(invoice);
-      this.clearInvoiceFields();
-      let navigationExtras: NavigationExtras = {
-        queryParams: this.invoices[this.invoices.length - 1]
-      };
-      // Redirect it to View Invoice screen
-      this.router.navigate(['/view-invoice'], navigationExtras);
+      && this.contactNo != undefined && (this.localProductList != undefined && this.localProductList.length > 0)) {
+      const payload = { "data": { "inv_date": "2018-05-24", "inv_cust_id": this.customerId, "inv_total_amount": this.totalInvoiceAmount, "quat_products": this.localProductList } };
+      this.invoiceService.addInvoice(payload).subscribe(response => {
+        if (response.status == 200) {
+          this.buttonLabel = "EDIT";
+          console.log("Add invoice " + response.message);
+        }
+      },
+        error => {
+          console.log(error)
+        });
+      this.location.back();
     } else {
       alert('Please fill all mandatory fields');
     }
@@ -175,15 +178,16 @@ export class CreateInvoiceComponent {
   }
 }
 
-class Product {
+class InvoiceProduct {
   prod_id: number;
-  prod_qty: number;
+  inv_prod_qty: number;
+  inv_id: number;
   chal_id: number;
   prod_total_amount: number;
 
   constructor(prod_id, prod_qty, chal_id, total) {
     this.prod_id = prod_id;
-    this.prod_qty = prod_qty;
+    this.inv_prod_qty = prod_qty;
     this.chal_id = chal_id;
     this.prod_total_amount = total;
   }
@@ -191,19 +195,15 @@ class Product {
 
 class Invoice {
 
-  invoiceDate: Date;
-  customerName: string;
-  customerAddress: string;
-  contactNo: number;
-  invoiceTotal: number;
-  product: Object[];
+  inv_date: Date;
+  inv_cust_id: string;
+  inv_total_amount: number;
+  inv_products: Object[];
 
-  constructor(date, name, address, phone, total, product) {
-    this.invoiceDate = date;
-    this.customerName = name;
-    this.customerAddress = address;
-    this.contactNo = phone;
-    this.invoiceTotal = total;
-    this.product = product;
+  constructor(date, cust_id, total, products) {
+    this.inv_date = date;
+    this.inv_cust_id = name;
+    this.inv_total_amount = total;
+    this.inv_products = products;
   }
 }

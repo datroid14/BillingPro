@@ -136,8 +136,7 @@ export class CreateQuatationComponent implements OnInit {
       debugger;
       if (this.customerName != undefined && this.customerAddress != undefined && this.contactPerson != undefined
         && this.contactNo != undefined && (this.localProductList != undefined && this.localProductList.length > 0)) {
-        const payload = { "data": { "quat_date": "2018-05-24", "quat_cust_id": this.customerId, "quat_products":this.localProductList } };
-        console.log(payload);
+        const payload = { "data": { "quat_date": "2018-05-24", "quat_cust_id": this.customerId, "quat_products": this.localProductList } };
         this.quatationService.addQuatation(payload).subscribe(response => {
           if (response.status == 200) {
             this.buttonLabel = "EDIT";
@@ -148,8 +147,6 @@ export class CreateQuatationComponent implements OnInit {
             console.log(error)
           });
         this.location.back();
-        // Redirect it to View Invoice screen
-        // this.router.navigate(['/view-invoice']);
       } else {
         alert('Please fill all mandatory fields');
       }

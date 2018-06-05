@@ -6,6 +6,11 @@
   </mat-card-header>
 
   <mat-card-content class="container-css">
+
+    <div align="right">
+      <img (click)="addNewProduct();" [src]="this.addImagePath">
+    </div>
+
     <mat-form-field>
       <input matInput [(ngModel)]="productName" placeholder="Product Name" required>
     </mat-form-field>
@@ -26,6 +31,6 @@
   <mat-card-actions>
     <button mat-raised-button color="primary" (click)="addProduct();">SAVE</button>
     <button mat-raised-button color="primary">CANCEL</button>
-   </mat-card-actions>
-   
+  </mat-card-actions>
+
 </mat-card>

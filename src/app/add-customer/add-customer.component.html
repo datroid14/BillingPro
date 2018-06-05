@@ -6,6 +6,11 @@
   </mat-card-header>
 
   <mat-card-content class="container-css">
+
+    <div align="right">
+      <img (click)="addNewCustomer();" [src]="this.addImagePath">
+    </div>
+
     <mat-form-field>
       <input matInput [(ngModel)]="customerName" placeholder="Customer Name" [disabled]="isFieldDisabled" required>
     </mat-form-field>
@@ -13,7 +18,7 @@
     <mat-form-field>
       <input matInput [(ngModel)]="customerAddress" placeholder="Address" [disabled]="isFieldDisabled" required>
     </mat-form-field>
-    
+
     <mat-form-field>
       <input matInput [(ngModel)]="contactPerson" placeholder="Contact Person" [disabled]="isFieldDisabled" required>
     </mat-form-field>

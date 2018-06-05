@@ -7,6 +7,10 @@
 
   <mat-card-content class="container-css">
 
+    <div align="right">
+      <img (click)="addNewChallan();" [src]="this.addImagePath">
+    </div>
+
     <mat-form-field>
       <mat-select [(ngModel)]="customerName" name="customerName" placeholder="Customer Name" required>
         <mat-option *ngFor="let customer of customers" [value]="customer.cust_name" (click)="setCustomerDetail(customer)">

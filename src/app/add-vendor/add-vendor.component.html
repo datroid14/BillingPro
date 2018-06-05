@@ -6,6 +6,11 @@
   </mat-card-header>
 
   <mat-card-content class="container-css">
+
+    <div align="right">
+      <img (click)="addNewVendor();" [src]="this.addImagePath">
+    </div>
+
     <mat-form-field>
       <input matInput [(ngModel)]="vendorName" placeholder="Vendor Name" required>
     </mat-form-field>
@@ -27,7 +32,7 @@
     </mat-form-field>
   </mat-card-content>
   <mat-card-actions>
-      <button mat-raised-button color="primary" (click)="addVendor();">SAVE</button>
-      <button mat-raised-button color="primary">CANCEL</button>
-     </mat-card-actions>
+    <button mat-raised-button color="primary" (click)="addVendor();">SAVE</button>
+    <button mat-raised-button color="primary">CANCEL</button>
+  </mat-card-actions>
 </mat-card>

@@ -6,9 +6,11 @@
   </mat-card-header>
 
   <mat-card-content class="container-css">
+
     <div align="right">
-      <img (click)="addProduct();" [src]="this.addImagePath">
+      <img (click)="addNewInvoice();" [src]="this.addImagePath">
     </div>
+
     <mat-form-field>
       <input matInput type="date" date-picker [(ngModel)]="invoiceDate" />
     </mat-form-field>
