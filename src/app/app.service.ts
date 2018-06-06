@@ -8,11 +8,11 @@ export class AppService {
 
     constructor() { }
 
-    setIsLoginPage(isLoginPage){
-        this.isLoginSubject.next(isLoginPage);
+    showDrawer(isShown){
+        this.isLoginSubject.next(isShown);
     }
 
-    getIsLoginPage() : Observable<boolean> {
+    isDrawerShown() : Observable<boolean> {
         return this.isLoginSubject.asObservable();
     }
 }

@@ -20,6 +20,11 @@ export class CreateChallanComponent {
   customers;
   products;
   vehicles;
+
+  buttonLabel: string;
+  isFieldDisabled: boolean;
+  isCancelDisabled: boolean;
+
   customerId: number;
   customerName: string;
   customerAddress: string;
@@ -46,7 +51,17 @@ export class CreateChallanComponent {
 
   ngOnInit() {
 
-    this.appService.setIsLoginPage(true);
+    // Show drawer
+    this.appService.showDrawer(true);
+
+    // Disable all fields for view mode
+    this.isFieldDisabled = true;
+
+    // Disable cancel button initially
+    this.isCancelDisabled = true;
+
+    // Change button label to save
+    this.changeButtonLabel(this.isFieldDisabled);
 
     this.customerService.getCustomers().subscribe(response => {
       this.customers = response.customers;
@@ -77,22 +92,53 @@ export class CreateChallanComponent {
       });
   }
 
-  addVehicle() {
-    if (this.customerId != undefined && this.productId != undefined && this.vehicleId != undefined &&
-      this.productQuantity != undefined) {
-      const payload = { "data": { "chal_cust_id": this.customerId, "chal_prod_id": this.productId, "chal_veh_id": this.vehicleId, "chal_quantity": this.productQuantity } };
-      this.challanService.addChallan(payload).subscribe(response => {
-        if (response.status == 200) {
-
-        }
-        console.log("Add challan " + response);
-      },
-        error => {
-          console.log(error)
-        });
-      this.location.back();
+  changeButtonLabel(isDisabled) {
+    if (isDisabled) {
+      this.buttonLabel = "EDIT";
     } else {
-      alert('Please fill all mandatory fields');
+      this.buttonLabel = "SAVE";
+    }
+  }
+
+  addNewChallan() {
+    this.isFieldDisabled = false;
+    this.isCancelDisabled = true;
+    this.changeButtonLabel(this.isFieldDisabled);
+    this.clearChallanFields();
+  }
+
+  cancelClicked() {
+    this.isFieldDisabled = !this.isFieldDisabled;
+    this.isCancelDisabled = !this.isCancelDisabled;
+    if (this.buttonLabel == "SAVE") {
+      this.buttonLabel = "EDIT";
+      // Show first record
+    } else {
+      this.buttonLabel = "SAVE";
+    }
+  }
+
+  addChallan() {
+    if (this.buttonLabel == "SAVE") {
+      if (this.customerId != undefined && this.productId != undefined && this.vehicleId != undefined &&
+        this.productQuantity != undefined) {
+        const payload = { "data": { "chal_cust_id": this.customerId, "chal_prod_id": this.productId, "chal_veh_id": this.vehicleId, "chal_quantity": this.productQuantity } };
+        this.challanService.addChallan(payload).subscribe(response => {
+          if (response.status == 200) {
+            console.log("Add challan " + response);
+            this.location.back();
+          }
+        },
+          error => {
+            console.log(error)
+          });
+      } else {
+        alert('Please fill all mandatory fields');
+      }
+    } else {
+      this.buttonLabel = "SAVE";
+      this.isFieldDisabled = false;
+      this.isCancelDisabled = false;
     }
   }
 
@@ -112,8 +158,17 @@ export class CreateChallanComponent {
   }
 
   setVehicleDetail(vehicle) {
-    debugger;
     this.vehicleId = vehicle.veh_id;
+  }
+
+  clearChallanFields() {
+
+    this.customerName = undefined;
+    this.customerAddress = undefined;
+    this.productName = undefined;
+    this.productUnit = undefined;
+    this.productQuantity = undefined;
+    this.vehicleNumber = undefined;
   }
 }
 

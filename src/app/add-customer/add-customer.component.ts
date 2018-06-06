@@ -3,6 +3,7 @@ import { CustomerService } from "../add-customer/customer.service";
 import { Customer } from '../add-customer/customer';
 import { ActivatedRoute } from "@angular/router";
 import { Location } from '@angular/common';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'add-customer',
@@ -21,10 +22,11 @@ export class AddCustomerComponent implements OnInit {
   // Flag for editing fields
   isEditMode: boolean;
   // Flag for enabling/disabling add button
-  isAddDisabled: boolean;
+  isCancelDisabled: boolean;
   buttonLabel: string;
 
-  public constructor(private route: ActivatedRoute, private customerService: CustomerService, private location: Location) {
+  public constructor(private route: ActivatedRoute, private appService: AppService, private customerService: CustomerService,
+    private location: Location) {
     this.route.queryParams.subscribe(params => {
       this.customerName = params["cust_name"];
       this.contactNo = params["cust_contact"];
@@ -34,33 +36,37 @@ export class AddCustomerComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Disable all fields for view mode
     this.isFieldDisabled = true;
+
+    // Disable cancel button initially
+    this.isCancelDisabled = true;
+
+    // Change button label to save
     this.changeButtonLabel(this.isFieldDisabled);
   }
 
   addCustomer() {
 
-    if (this.buttonLabel == ("EDIT")) {
-      this.isEditMode = true;
-      this.isAddDisabled = true;
-      this.isFieldDisabled = !this.isFieldDisabled;
-      this.changeButtonLabel(this.isFieldDisabled);
-    } else {
+    if (this.buttonLabel == "SAVE") {
       if (this.customerName != undefined && this.customerAddress != undefined && this.contactNo != undefined) {
         const payload = { "data": { "cust_name": this.customerName, "cust_contact": this.contactNo, "cust_email": this.emailAddress, "cust_address": this.customerAddress } };
         this.customerService.addCustomer(payload).subscribe(response => {
           if (response.status == 200) {
-              
+            console.log("Add customer " + response);
+            this.location.back();
           }
-          console.log("Add customer " + response);
         },
           error => {
             console.log(error)
           });
-        this.location.back();
       } else {
         alert('Please fill all mandatory fields');
       }
+    } else {
+      this.buttonLabel = "SAVE";
+      this.isFieldDisabled = false;
+      this.isCancelDisabled = false;
     }
   }
 
@@ -85,21 +91,20 @@ export class AddCustomerComponent implements OnInit {
 
   addNewCustomer() {
 
-    this.clearFields();
-    this.isEditMode = false;
-    this.isFieldDisabled = !this.isFieldDisabled;
+    this.isFieldDisabled = false;
+    this.isCancelDisabled = true;
     this.changeButtonLabel(this.isFieldDisabled);
-    this.isAddDisabled = true;
+    this.clearFields();
   }
 
-  cancel() {
-    if (this.isEditMode) {
-      this.isEditMode = false;
-    } else {
-      // Show last fetched record
-    }
-    this.isAddDisabled = false;
+  cancelClicked() {
     this.isFieldDisabled = !this.isFieldDisabled;
-    this.changeButtonLabel(this.isFieldDisabled);
+    this.isCancelDisabled = !this.isCancelDisabled;
+    if (this.buttonLabel == "SAVE") {
+      this.buttonLabel = "EDIT";
+      // Show first record
+    } else {
+      this.buttonLabel = "SAVE";
+    }
   }
 }

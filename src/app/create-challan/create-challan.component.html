@@ -12,7 +12,7 @@
     </div>
 
     <mat-form-field>
-      <mat-select [(ngModel)]="customerName" name="customerName" placeholder="Customer Name" required>
+      <mat-select [(ngModel)]="customerName" name="customerName" placeholder="Customer Name" [disabled]="isFieldDisabled" required>
         <mat-option *ngFor="let customer of customers" [value]="customer.cust_name" (click)="setCustomerDetail(customer)">
           {{customer.cust_name}}
         </mat-option>
@@ -20,11 +20,11 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput [(ngModel)]="customerAddress" placeholder="Address">
+      <input matInput [(ngModel)]="customerAddress" placeholder="Address" [disabled]="isFieldDisabled" required>
     </mat-form-field>
 
     <mat-form-field>
-      <mat-select [(ngModel)]="productName" name="productName" placeholder="Material Name" required>
+      <mat-select [(ngModel)]="productName" name="productName" placeholder="Material Name" [disabled]="isFieldDisabled" required>
         <mat-option *ngFor="let product of products" [value]="product.prod_name" (click)="setProductDetail(product)">
           {{product.prod_name}}
         </mat-option>
@@ -32,15 +32,15 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput [(ngModel)]="productUnit" placeholder="Unit" required>
+      <input matInput [(ngModel)]="productUnit" placeholder="Unit" [disabled]="isFieldDisabled" required>
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput type="number" [(ngModel)]="productQuantity" placeholder="Quantity" required>
+      <input matInput type="number" [(ngModel)]="productQuantity" placeholder="Quantity" [disabled]="isFieldDisabled" required>
     </mat-form-field>
 
     <mat-form-field>
-      <mat-select [(ngModel)]="vehicleNumber" name="vehicleNumber" placeholder="Vehicle Number" required>
+      <mat-select [(ngModel)]="vehicleNumber" name="vehicleNumber" placeholder="Vehicle Number" [disabled]="isFieldDisabled" required>
         <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle.veh_number" (click)="setVehicleDetail(vehicle);">
           {{vehicle.veh_number}}
         </mat-option>
@@ -49,7 +49,7 @@
 
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button color="primary" (click)="addVehicle();">SAVE</button>
-    <button mat-raised-button color="primary">UPDATE</button>
+    <button mat-raised-button color="primary" (click)="addChallan();">{{buttonLabel}}</button>
+    <button mat-raised-button color="primary" (click)="cancelClicked()" [disabled]="isCancelDisabled">CANCEL</button>
   </mat-card-actions>
 </mat-card>

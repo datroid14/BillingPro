@@ -12,27 +12,27 @@
     </div>
 
     <mat-form-field>
-      <input matInput [(ngModel)]="vendorName" placeholder="Vendor Name" required>
+      <input matInput [(ngModel)]="vendorName" placeholder="Vendor Name" [disabled]="isFieldDisabled" required>
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput [(ngModel)]="vendorAddress" placeholder="Address" required>
+      <input matInput [(ngModel)]="vendorAddress" placeholder="Address" [disabled]="isFieldDisabled" required>
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput [(ngModel)]="contactPerson" placeholder="Contact Person" required>
+      <input matInput [(ngModel)]="contactPerson" placeholder="Contact Person" [disabled]="isFieldDisabled" required>
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput type="number" [(ngModel)]="contactNo" placeholder="Contact Number" required>
+      <input matInput type="number" [(ngModel)]="contactNo" placeholder="Contact Number" [disabled]="isFieldDisabled" required>
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput [(ngModel)]="emailAddress" placeholder="Email Address" required />
+      <input matInput [(ngModel)]="emailAddress" placeholder="Email Address" [disabled]="isFieldDisabled" required />
     </mat-form-field>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button color="primary" (click)="addVendor();">SAVE</button>
-    <button mat-raised-button color="primary">CANCEL</button>
+    <button mat-raised-button color="primary" (click)="addVendor();">{{buttonLabel}}</button>
+    <button mat-raised-button color="primary" (click)="cancelClicked()" [disabled]="isCancelDisabled">CANCEL</button>
   </mat-card-actions>
 </mat-card>

@@ -2,6 +2,7 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { VendorService } from "../add-vendor/vendor.service";
 import { Router, NavigationExtras } from '@angular/router';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'view-vendor',
@@ -19,10 +20,13 @@ export class ViewVendorComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private vendorService: VendorService, private router: Router) {
+  constructor(private vendorService: VendorService, private appService: AppService, private router: Router) {
   }
 
   ngOnInit() {
+
+    this.appService.showDrawer(true);
+
     this.vendorService.getVendors().subscribe(response => {
       this.vendors = response.vendors;
       this.dataSource = new MatTableDataSource<VENDOR>(this.vendors);

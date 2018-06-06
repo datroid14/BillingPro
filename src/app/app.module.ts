@@ -71,6 +71,7 @@ const appRoutes: Routes = [
   { path: 'view-vendor', component: ViewVendorComponent },
   { path: 'create-challan', component: CreateChallanComponent },
   { path: 'create-quatation', component: CreateQuatationComponent },
+  { path: 'create-invoice-copy', component: ViewInvoiceCopyComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/create-challan', pathMatch: 'full' },
 ];

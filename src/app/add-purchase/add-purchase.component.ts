@@ -5,6 +5,7 @@ import { ProductService } from "../add-product/product.service";
 import { PurchaseService } from "../add-purchase/purchase.service";
 import { ChallanService } from "../create-challan/challan.service";
 import { Location } from '@angular/common';
+import { AppService } from "../app.service"
 
 @Component({
   selector: 'add-purchase',
@@ -19,9 +20,14 @@ export class AddPurchaseComponent {
   products;
   localProductList;
 
+  buttonLabel: string;
+  isFieldDisabled: boolean;
+  isCancelDisabled: boolean;
+
   challanNo: number;
   challanDate: string;
   vehicleNo: string;
+  productId: number;
   productName: string;
   productHSN: string;
   productUnit: string;
@@ -33,6 +39,7 @@ export class AddPurchaseComponent {
   purchases = [];
   purchaseId: number;
   purchaseDate: Date;
+  vendorId: number;
   vendorName: string;
   vendorAddress: string;
   contactPerson: string;
@@ -44,10 +51,12 @@ export class AddPurchaseComponent {
   removeImagePath: string;
 
   constructor(private vendorService: VendorService, private productService: ProductService, private router: Router,
-    private purchaseService: PurchaseService, private challanService: ChallanService, private route: ActivatedRoute, private location: Location) {
+    private purchaseService: PurchaseService, private challanService: ChallanService, private route: ActivatedRoute,
+    private appService: AppService, private location: Location) {
     this.route.queryParams.subscribe(params => {
       this.purchaseId = params["pur_id"];
       this.purchaseDate = params["pur_date"];
+      this.vendorId = params["pur_vend_id"];
       this.vendorName = params["pur_vendor"];
       this.contactPerson = params["pur_contact_person"];
       this.contactNo = params["pur_contact"];
@@ -58,12 +67,23 @@ export class AddPurchaseComponent {
   }
 
   ngOnInit() {
+    // Show drawer
+    this.appService.showDrawer(true);
 
-    const challanPayload = { "data": { "chal_cust_id": 1 } };
+    // Disable all fields for view mode
+    this.isFieldDisabled = true;
+
+    // Disable cancel button initially
+    this.isCancelDisabled = true;
+
+    // Change button label to save
+    this.changeButtonLabel(this.isFieldDisabled);
+
+    const challanPayload = { "data": { "chal_vend_id": this.vendorId } };
 
     this.challanService.getChallansByCustomerId(challanPayload).subscribe(response => {
       this.challans = response.challans;
-      console.log("Add Purchase "+JSON.stringify(this.challans));
+      console.log("Add Purchase " + JSON.stringify(this.challans));
     },
       error => {
         console.log(error)
@@ -97,16 +117,43 @@ export class AddPurchaseComponent {
       });
   }
 
+  changeButtonLabel(isDisabled) {
+    if (isDisabled) {
+      this.buttonLabel = "EDIT";
+    } else {
+      this.buttonLabel = "SAVE";
+    }
+  }
+
+  addNewPurchase() {
+    this.isFieldDisabled = false;
+    this.isCancelDisabled = true;
+    this.changeButtonLabel(this.isFieldDisabled);
+    this.clearPurchaseFields();
+    this.clearProductFields();
+  }
+
+  cancelClicked() {
+    this.isFieldDisabled = !this.isFieldDisabled;
+    this.isCancelDisabled = !this.isCancelDisabled;
+    if (this.buttonLabel == "SAVE") {
+      this.buttonLabel = "EDIT";
+      // Show first record
+    } else {
+      this.buttonLabel = "SAVE";
+    }
+  }
+
   addProduct() {
-    if (this.challanNo != undefined && this.challanDate != undefined && this.vehicleNo != undefined && this.productName != undefined && this.productHSN != undefined && this.productUnit != undefined
+    if (this.challanNo == undefined && this.challanDate != undefined && this.vehicleNo != undefined && this.productName != undefined && this.productHSN != undefined && this.productUnit != undefined
       && this.productQuantity != undefined && this.productRate != undefined && this.totalAmount != undefined) {
-      const product = new Product(this.challanNo, this.challanDate, this.vehicleNo, this.productName, this.productHSN, this.productUnit, this.productQuantity,
+      const product = new PurchaseProduct(1, this.challanDate, this.vehicleNo, this.productId, this.productName, this.productHSN, this.productUnit, this.productQuantity,
         this.productRate, this.totalAmount);
       this.localProductList.push(product);
       this.calculatePurchaseTotal();
       this.clearProductFields();
     } else {
-      alert('Please fill all mandatory fields');
+      alert('Please fill all mandatory Product fields');
     }
   }
 
@@ -115,20 +162,27 @@ export class AddPurchaseComponent {
     this.products.splice(index, 1);
   }
 
-  createPurchase() {
-    if (this.purchaseDate != undefined && this.vendorName != undefined && this.vendorAddress != undefined
-      && this.contactNo != undefined && (this.products != undefined && this.products.length > 0)) {
-      const purchase = new Purchase(this.purchaseDate, this.vendorName, this.vendorAddress, this.contactNo,
-        this.totalPurchaseAmount, JSON.stringify(this.products));
-      this.purchases.push(purchase);
-      this.clearPurchaseFields();
-      let navigationExtras: NavigationExtras = {
-        queryParams: this.purchases[this.purchases.length - 1]
-      };
-      // Redirect it to View Invoice screen
-      this.router.navigate(['/view-invoice'], navigationExtras);
+  addPurchase() {
+    if (this.buttonLabel == "SAVE") {
+      if (this.purchaseDate != undefined && this.vendorName != undefined && this.vendorAddress != undefined
+        && this.contactNo != undefined && (this.localProductList != undefined && this.localProductList.length > 0)) {
+        const payload = { "data": { "pur_date": "2018-05-24", "pur_total_amount": 14000, "pur_vendor_id": this.vendorId, "pur_products": this.localProductList } };
+        this.purchaseService.addPurchase(payload).subscribe(response => {
+          if (response.status == 200) {
+            console.log("Add purchase " + response.message);
+            this.location.back();
+          }
+        },
+          error => {
+            console.log(error)
+          });
+      } else {
+        alert('Please fill all mandatory Invoice fields');
+      }
     } else {
-      alert('Please fill all mandatory fields');
+      this.buttonLabel = "SAVE";
+      this.isFieldDisabled = false;
+      this.isCancelDisabled = false;
     }
   }
 
@@ -148,8 +202,9 @@ export class AddPurchaseComponent {
     this.purchaseDate = undefined;
     this.vendorName = undefined;
     this.vendorAddress = undefined;
+    this.contactPerson = undefined;
     this.contactNo = undefined;
-    this.products = [];
+    this.localProductList = [];
   }
 
   calculateTotal(event) {
@@ -168,13 +223,16 @@ export class AddPurchaseComponent {
   }
 
   setProductDetail(product) {
+    this.productId = product.prod_id;
     this.productRate = product.prod_rate;
     this.productUnit = product.prod_unit;
   }
 
   setVendorDetail(vendor) {
+    this.vendorId = vendor.vend_id;
     this.vendorAddress = vendor.vend_address;
     this.contactNo = vendor.vend_contact;
+    this.contactPerson = vendor.vend_contact_person;
   }
 
   setChallanDetail(challan) {
@@ -184,27 +242,29 @@ export class AddPurchaseComponent {
   }
 }
 
-class Product {
-  chalanNo: number;
-  date: string;
-  vehicleNo: string;
-  name: string;
-  hsn: string;
-  unit: string;
-  quantity: number;
-  rate: number;
-  total: number;
+class PurchaseProduct {
+  chal_id: number;
+  chal_date: string;
+  veh_number: string;
+  prod_id: number;
+  prod_name: string;
+  prod_hsn: string;
+  prod_unit: string;
+  prod_qty: number;
+  prod_rate: number;
+  prod_total: number;
 
-  constructor(chalanNo, date, vehicle, name, hsn, unit, qty, rate, total) {
-    this.chalanNo = chalanNo;
-    this.date = date;
-    this.vehicleNo = vehicle;
-    this.name = name;
-    this.hsn = hsn;
-    this.unit = unit;
-    this.quantity = qty;
-    this.rate = rate;
-    this.total = total;
+  constructor(chalanNo, date, vehicle, prod_id, name, hsn, unit, qty, rate, total) {
+    this.chal_id = chalanNo;
+    this.chal_date = date;
+    this.veh_number = vehicle;
+    this.prod_id = prod_id;
+    this.prod_name = name;
+    this.prod_hsn = hsn;
+    this.prod_unit = unit;
+    this.prod_qty = qty;
+    this.prod_rate = rate;
+    this.prod_total = total;
   }
 }
 

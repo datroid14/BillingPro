@@ -2,6 +2,7 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { CustomerService } from "../add-customer/customer.service";
 import { Router, NavigationExtras } from '@angular/router';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'view-customer',
@@ -17,11 +18,13 @@ export class ViewCustomerComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private customerService: CustomerService, private router: Router) {
+  constructor(private customerService: CustomerService, private appService: AppService, private router: Router) {
   }
 
   ngOnInit() {
 
+    this.appService.showDrawer(true);
+    
     this.customerService.getCustomers().subscribe(response => {
       this.customers = response.customers;
       this.dataSource = new MatTableDataSource<CUSTOMER>(this.customers);

@@ -2,6 +2,7 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { QuatationService } from "../create-quatation/quatation.service";
 import { Router, NavigationExtras } from '@angular/router';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'view-quatation',
@@ -17,10 +18,12 @@ export class ViewQuatationComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private quatationService: QuatationService, private router: Router) {
+  constructor(private quatationService: QuatationService, private appService: AppService, private router: Router) {
   }
 
   ngOnInit() {
+
+    this.appService.showDrawer(true);
 
     this.quatationService.getQuatations().subscribe(response => {
       this.quatations = response.quatations;

@@ -5,6 +5,7 @@ import { ProductService } from "../add-product/product.service";
 import { QuatationService } from "../create-quatation/quatation.service";
 import { ActivatedRoute } from "@angular/router";
 import { Location } from '@angular/common';
+import { AppService } from "../app.service"
 
 @Component({
   selector: 'create-quatation',
@@ -45,8 +46,8 @@ export class CreateQuatationComponent implements OnInit {
   addImagePath: string;
   removeImagePath: string;
 
-  constructor(private customerService: CustomerService, private productService: ProductService, private quatationService: QuatationService,
-    private route: ActivatedRoute, private location: Location) {
+  constructor(private customerService: CustomerService, private productService: ProductService, private appService: AppService,
+    private quatationService: QuatationService, private route: ActivatedRoute, private location: Location) {
     this.route.queryParams.subscribe(params => {
       this.quatationId = params["quat_id"];
       this.quatationDate = params["quat_date"];
@@ -60,6 +61,8 @@ export class CreateQuatationComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.appService.showDrawer(true);
 
     this.isFieldDisabled = true;
     this.isCancelDisabled = true;
@@ -111,8 +114,13 @@ export class CreateQuatationComponent implements OnInit {
   }
 
   cancelClicked() {
+    this.isFieldDisabled = !this.isFieldDisabled;
+    this.isCancelDisabled = !this.isCancelDisabled;
     if (this.buttonLabel == "SAVE") {
+      this.buttonLabel = "EDIT";
       // Show first record
+    }else{
+      this.buttonLabel = "SAVE";
     }
   }
 
@@ -133,7 +141,6 @@ export class CreateQuatationComponent implements OnInit {
 
   createQuatation() {
     if (this.buttonLabel == "SAVE") {
-      debugger;
       if (this.customerName != undefined && this.customerAddress != undefined && this.contactPerson != undefined
         && this.contactNo != undefined && (this.localProductList != undefined && this.localProductList.length > 0)) {
         const payload = { "data": { "quat_date": "2018-05-24", "quat_cust_id": this.customerId, "quat_products": this.localProductList } };
@@ -153,6 +160,7 @@ export class CreateQuatationComponent implements OnInit {
     } else {
       this.buttonLabel = "SAVE";
       this.isFieldDisabled = false;
+      this.isCancelDisabled = false;
     }
   }
 

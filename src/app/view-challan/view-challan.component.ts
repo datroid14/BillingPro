@@ -2,6 +2,7 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { ChallanService } from "../create-challan/challan.service";
 import { Router, NavigationExtras } from '@angular/router';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'view-chalan',
@@ -18,10 +19,12 @@ export class ViewChallanComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private challanService: ChallanService, private router: Router) {
+  constructor(private challanService: ChallanService, private appService: AppService, private router: Router) {
   }
 
   ngOnInit() {
+
+    this.appService.showDrawer(true);
 
     this.challanService.getChallans().subscribe(response => {
       this.challans = response.challans;

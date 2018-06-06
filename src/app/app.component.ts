@@ -12,7 +12,7 @@ export class AppComponent {
   isLoginPage : Observable<boolean>;
 
   constructor( public appService : AppService ) {
-    this.isLoginPage = appService.getIsLoginPage();
+    this.isLoginPage = appService.isDrawerShown();
   }
 
 }

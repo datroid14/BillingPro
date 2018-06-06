@@ -2,6 +2,7 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { PurchaseService } from "../add-purchase/purchase.service";
 import { Router, NavigationExtras } from '@angular/router';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'view-purchase',
@@ -18,16 +19,18 @@ export class ViewPurchaseComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private purchaseService: PurchaseService, private router: Router) {
+  constructor(private purchaseService: PurchaseService, private appService: AppService, private router: Router) {
   }
 
   ngOnInit() {
+
+    this.appService.showDrawer(true);
 
     this.purchaseService.getPurchases().subscribe(response => {
       this.purchases = response.purchases;
       this.dataSource = new MatTableDataSource<PURCHASE>(this.purchases);
       this.dataSource.paginator = this.paginator;
-      console.log("Purchase "+this.purchases);
+      console.log("Purchase "+JSON.stringify(this.purchases));
     },
       error => {
         console.log(error)
@@ -43,7 +46,6 @@ export class ViewPurchaseComponent implements OnInit {
   }
 
   showPurchaseDetails(purchase) {
-
     if (purchase != undefined) {
       let navigationExtras: NavigationExtras = {
         queryParams: purchase

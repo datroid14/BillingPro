@@ -2,6 +2,7 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { ProductService } from "../add-product/product.service";
 import { Router, NavigationExtras } from '@angular/router';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'view-product',
@@ -18,10 +19,13 @@ export class ViewProductComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private productService: ProductService, private router: Router) {
+  constructor(private productService: ProductService, private appService: AppService, private router: Router) {
   }
 
   ngOnInit() {
+
+    this.appService.showDrawer(true);
+
     this.productService.getProducts().subscribe(response => {
       this.products = response.products;
       this.dataSource = new MatTableDataSource<PRODUCT>(this.products);

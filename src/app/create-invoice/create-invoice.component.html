@@ -12,11 +12,11 @@
     </div>
 
     <mat-form-field>
-      <input matInput type="date" date-picker [(ngModel)]="invoiceDate" />
+      <input matInput type="date" date-picker [(ngModel)]="invoiceDate" [disabled]="isFieldDisabled" required/>
     </mat-form-field>
 
     <mat-form-field>
-      <mat-select [(ngModel)]="customerName" name="customerName" placeholder="Customer Name" required>
+      <mat-select [(ngModel)]="customerName" name="customerName" placeholder="Customer Name" [disabled]="isFieldDisabled" required>
         <mat-option *ngFor="let customer of customers" [value]="customer.cust_name" (click)="setCustomerDetail(customer)">
           {{customer.cust_name}}
         </mat-option>
@@ -24,15 +24,15 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput [(ngModel)]="customerAddress" placeholder="Address" required>
+      <input matInput [(ngModel)]="customerAddress" placeholder="Address" [disabled]="isFieldDisabled" required>
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput [(ngModel)]="contactPerson" placeholder="Contact Person" required>
+      <input matInput [(ngModel)]="contactPerson" placeholder="Contact Person" [disabled]="isFieldDisabled" required>
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput type="number" [(ngModel)]="contactNo" placeholder="Contact Number" required>
+      <input matInput type="number" [(ngModel)]="contactNo" placeholder="Contact Number" [disabled]="isFieldDisabled" required>
     </mat-form-field>
 
     <mat-card class="inner-card-css">
@@ -51,7 +51,7 @@
             <th>Msr. Total</th>
             <th>Total</th>
           </tr>
-          <tr>
+          <tr *ngIf="!isFieldDisabled">
             <th class="input-css">
             </th>
             <th>
@@ -122,9 +122,9 @@
             <td class="input-css">{{product.prod_hsn}}</td>
             <td class="input-css">{{product.prod_unit}}</td>
             <td class="input-css">{{product.prod_rate}}</td>
-            <td class="input-css">{{product.chal_quantity}}</td>
+            <td class="input-css">{{product.prod_qty}}</td>
             <td class="input-css">{{product.prod_total_amount}}</td>
-            <td>
+            <td *ngIf="!isFieldDisabled">
               <img (click)="removeProduct(product)" [src]="this.removeImagePath">
             </td>
           </tr>
@@ -136,7 +136,7 @@
     </mat-card>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button color="primary" (click)="createInvoice()">SAVE</button>
-    <button mat-raised-button color="primary">UPDATE</button>
+    <button mat-raised-button color="primary" (click)="createInvoice()">{{buttonLabel}}</button>
+    <button mat-raised-button color="primary" (click)="cancelClicked()" [disabled]="isCancelDisabled">CANCEL</button>
   </mat-card-actions>
 </mat-card>

@@ -1,22 +1,21 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
-
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit{
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private appService: AppService) { }
 
   products = [{ name: "Sand", unit: "Brass", hsn: "567888", rate: 5500 },
   { name: "Crush", unit: "Brass", hsn: "567888", rate: 4500 },
   { name: "Dust", unit: "Brass", hsn: "567888", rate: 3500 },
   { name: "Water", unit: "litre", hsn: "567888", rate: 1500 }];
-
 
   productName: string;
   productDesc: string;
@@ -25,6 +24,10 @@ export class DashboardComponent {
 
   displayedColumns = ['name', 'unit', 'hsn', 'rate'];
   dataSource = undefined;
+
+  ngOnInit(){
+    this.appService.showDrawer(true);
+  }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 

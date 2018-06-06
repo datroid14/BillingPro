@@ -18,14 +18,14 @@ export class LoginComponent {
     this.userName = "admin";
     this.password = "admin";
 
-    appService.setIsLoginPage(false);
+    appService.showDrawer(false);
   }
 
   logIn() {
 
     if (this.userName == "admin" && this.password == "admin") {
       // Redirect it to customer screen
-      this.router.navigate(['/create-challan']);
+      this.router.navigate(['/view-invoice-copy']);
     }else {
       alert("Invalid credentials...");
     }

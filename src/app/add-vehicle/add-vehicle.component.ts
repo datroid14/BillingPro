@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AppService } from "../app.service"
 
 @Component({
   selector: 'app-add-vehicle',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddVehicleComponent implements OnInit {
 
-  constructor() { }
+  constructor(private appService:AppService) { }
 
   ngOnInit() {
+    this.appService.showDrawer(true);
   }
 
 }

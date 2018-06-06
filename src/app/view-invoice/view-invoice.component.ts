@@ -3,6 +3,7 @@ import { ActivatedRoute } from "@angular/router";
 import { InvoiceService } from "../create-invoice/invoice.service";
 import { Router, NavigationExtras } from '@angular/router';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'view-invoice',
@@ -18,10 +19,12 @@ export class ViewInvoiceComponent {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private invoiceService: InvoiceService, private router: Router) {
+  constructor(private invoiceService: InvoiceService, private appService: AppService, private router: Router) {
   }
 
   ngOnInit() {
+
+    this.appService.showDrawer(true);
 
     this.invoiceService.getInvoices().subscribe(response => {
       this.invoices = response.invoices;

@@ -5,6 +5,7 @@ import { ChallanService } from "../create-challan/challan.service";
 import { ProductService } from "../add-product/product.service";
 import { InvoiceService } from "../create-invoice/invoice.service";
 import { Location } from '@angular/common';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'create-invoice',
@@ -51,7 +52,8 @@ export class CreateInvoiceComponent {
   removeImagePath: string;
 
   constructor(private customerService: CustomerService, private productService: ProductService, private router: Router,
-    private challanService: ChallanService, private invoiceService:InvoiceService, private route: ActivatedRoute, private location: Location) {
+    private challanService: ChallanService, private invoiceService: InvoiceService, private route: ActivatedRoute,
+    private appService: AppService, private location: Location) {
     this.route.queryParams.subscribe(params => {
       this.invoiceId = params["inv_id"];
       this.invoiceDate = params["inv_date"];
@@ -66,6 +68,12 @@ export class CreateInvoiceComponent {
   }
 
   ngOnInit() {
+
+    this.appService.showDrawer(true);
+
+    this.isFieldDisabled = true;
+    this.isCancelDisabled = true;
+    this.changeButtonLabel(this.isFieldDisabled);
 
     this.customerService.getCustomers().subscribe(response => {
       this.customers = response.customers;
@@ -91,10 +99,43 @@ export class CreateInvoiceComponent {
       });
   }
 
+  addNewInvoice() {
+    this.isFieldDisabled = false;
+    this.isCancelDisabled = true;
+    this.changeButtonLabel(this.isFieldDisabled);
+    this.invoiceDate = undefined;
+    this.customerName = undefined;
+    this.customerAddress = undefined;
+    this.contactPerson = undefined;
+    this.contactNo = undefined;
+    this.localProductList = [];
+    this.clearProductFields();
+  }
+
+  changeButtonLabel(isDisabled) {
+    if (isDisabled) {
+      this.buttonLabel = "EDIT";
+    } else {
+      this.buttonLabel = "SAVE";
+    }
+  }
+
+  cancelClicked() {
+    this.isFieldDisabled = !this.isFieldDisabled;
+    this.isCancelDisabled = !this.isCancelDisabled;
+    if (this.buttonLabel == "SAVE") {
+      this.buttonLabel = "EDIT";
+      // Show first record
+    } else {
+      this.buttonLabel = "SAVE";
+    }
+  }
+
   addProduct() {
+    debugger;
     if (this.challanDate != undefined && this.productName != undefined && this.productHSN != undefined && this.productUnit != undefined
       && this.productQuantity != undefined && this.productRate != undefined && this.totalAmount != undefined) {
-      const product = new InvoiceProduct(this.challanId, this.productId, this.productQuantity, this.totalAmount);
+      const product = new InvoiceProduct(this.productId, this.challanId, this.challanDate, this.vehicleNo, this.productName, this.productHSN, this.productUnit, this.productRate, this.productQuantity, this.totalAmount);
       this.localProductList.push(product);
       this.calculateInvoiceTotal();
     } else {
@@ -108,39 +149,44 @@ export class CreateInvoiceComponent {
   }
 
   createInvoice() {
-    if (this.invoiceDate != undefined && this.customerName != undefined && this.customerAddress != undefined
-      && this.contactNo != undefined && (this.localProductList != undefined && this.localProductList.length > 0)) {
-      const payload = { "data": { "inv_date": "2018-05-24", "inv_cust_id": this.customerId, "inv_total_amount": this.totalInvoiceAmount, "quat_products": this.localProductList } };
-      this.invoiceService.addInvoice(payload).subscribe(response => {
-        if (response.status == 200) {
-          this.buttonLabel = "EDIT";
-          console.log("Add invoice " + response.message);
-        }
-      },
-        error => {
-          console.log(error)
-        });
-      this.location.back();
+    if (this.buttonLabel == "SAVE") {
+      if (this.invoiceDate != undefined && this.customerName != undefined && this.customerAddress != undefined
+        && this.contactNo != undefined && (this.localProductList != undefined && this.localProductList.length > 0)) {
+        const payload = { "data": { "inv_date": "2018-05-24", "inv_cust_id": this.customerId, "inv_total_amount": 12000, "inv_products": this.localProductList } };
+        this.invoiceService.addInvoice(payload).subscribe(response => {
+          if (response.status == 200) {
+            this.buttonLabel = "EDIT";
+            console.log("Add invoice " + response.message);
+          }
+        },
+          error => {
+            console.log(error)
+          });
+        this.location.back();
+      } else {
+        alert('Please fill all mandatory fields');
+      }
     } else {
-      alert('Please fill all mandatory fields');
+      this.buttonLabel = "SAVE";
+      this.isFieldDisabled = false;
     }
   }
 
   clearProductFields() {
     this.challanDate = undefined;
-    this.productName = '';
-    this.productHSN = '';
-    this.productUnit = '';
-    this.productQuantity = 0;
-    this.productRate = 0;
-    this.totalAmount = 0;
+    this.productName = undefined;
+    this.productHSN = undefined;
+    this.productUnit = undefined;
+    this.productQuantity = undefined;
+    this.productRate = undefined;
+    this.totalAmount = undefined;
   }
 
   clearInvoiceFields() {
     this.invoiceDate = undefined;
-    this.customerName = '';
-    this.customerAddress = '';
-    this.contactNo = 0;
+    this.customerName = undefined;
+    this.customerAddress = undefined;
+    this.contactNo = undefined;
     this.products = [];
   }
 
@@ -180,15 +226,27 @@ export class CreateInvoiceComponent {
 
 class InvoiceProduct {
   prod_id: number;
-  inv_prod_qty: number;
+  prod_qty: number;
   inv_id: number;
   chal_id: number;
+  chal_date: Date;
+  veh_number: string;
+  prod_name: string;
+  prod_hsn: number;
+  prod_unit: string;
+  prod_rate: number;
   prod_total_amount: number;
 
-  constructor(prod_id, prod_qty, chal_id, total) {
+  constructor(prod_id, chal_id, date, vehicle, name, hsn, unit, rate, qty, total) {
     this.prod_id = prod_id;
-    this.inv_prod_qty = prod_qty;
+    this.prod_qty = qty;
     this.chal_id = chal_id;
+    this.chal_date = date;
+    this.veh_number = vehicle;
+    this.prod_name = name;
+    this.prod_hsn = hsn;
+    this.prod_unit = unit;
+    this.prod_rate = rate;
     this.prod_total_amount = total;
   }
 }
