@@ -15,17 +15,34 @@ const httpOptions = {
 @Injectable()
 export class ProductService {
 
-    constructor(private http: HttpClient) {
-    }
+      constructor(private http: HttpClient) {
+      }
 
-    getProducts(): Observable<ProductResponse> {
-        return this.http.post<ProductResponse>("http://localhost:3000/getProducts", null)
-              .pipe(tap(res => null));
-  }
+      getProducts(): Observable<ProductResponse> {
+            return this.http.post<ProductResponse>("http://localhost:3000/getProducts", null)
+                  .pipe(tap(res => null));
+      }
 
-  addProduct(payload:Object): Observable<AddResponse> {
-    return this.http
-          .post<AddResponse>('http://localhost:3000/addProduct', payload, httpOptions)
-          .pipe(tap(res => null));
-}
+      getProductById(payload: Object): Observable<ProductResponse> {
+            return this.http.post<ProductResponse>("http://localhost:3000/getProductById", payload, httpOptions)
+                  .pipe(tap(res => null));
+      }
+
+      addProduct(payload: Object): Observable<AddResponse> {
+            return this.http
+                  .post<AddResponse>('http://localhost:3000/addProduct', payload, httpOptions)
+                  .pipe(tap(res => null));
+      }
+
+      updateProduct(payload: Object): Observable<AddResponse> {
+            return this.http
+                .post<AddResponse>('http://localhost:3000/updateProduct', payload, httpOptions)
+                .pipe(tap(res => null));
+        }
+    
+        deleteProduct(payload: Object): Observable<AddResponse> {
+            return this.http
+                .post<AddResponse>('http://localhost:3000/deleteProduct', payload, httpOptions)
+                .pipe(tap(res => null));
+        }
 }

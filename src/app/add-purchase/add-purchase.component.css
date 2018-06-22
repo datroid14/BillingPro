@@ -18,6 +18,11 @@
   .input-padding{
     padding: 12px;
   }
+
+  .input-css{
+    padding: 12px;
+    text-align: center;
+  }
   
   .table-form-field {
      width: 80px !important;

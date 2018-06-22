@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { catchError, map, tap } from 'rxjs/operators';
 import { InvoiceResponse } from '../create-invoice/invoice.response';
-import { ProductResponse } from '../add-product/product.response';
+import { InvoiceProductResponse } from '../create-invoice/invoice.product.response';
 import { AddResponse } from '../common/add.response';
 import { Purchase } from '../add-purchase/purchase';
 import { Injectable } from '@angular/core';
@@ -27,9 +27,9 @@ export class InvoiceService {
                   .pipe(tap(res => null));
       }
 
-      getInvoiceProductsById(payload:Object): Observable<ProductResponse> {
+      getInvoiceProductsById(payload:Object): Observable<InvoiceProductResponse> {
             return this.http
-                  .post<ProductResponse>("http://localhost:3000/getInvoiceProductsById", payload, httpOptions)
+                  .post<InvoiceProductResponse>("http://localhost:3000/getInvoiceProductsById", payload, httpOptions)
                   .pipe(tap(res => null));
       }
 

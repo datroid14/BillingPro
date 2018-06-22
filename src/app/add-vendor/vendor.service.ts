@@ -23,9 +23,26 @@ export class VendorService {
             .pipe(tap(res => null));
     }
 
+    getVendorById(payload: Object): Observable<VendorResponse> {
+        return this.http.post<VendorResponse>("http://localhost:3000/getVendorById", payload, httpOptions)
+            .pipe(tap(res => null));
+    }
+
     addVendor(payload: Object): Observable<AddResponse> {
         return this.http
             .post<AddResponse>('http://localhost:3000/addVendor', payload, httpOptions)
+            .pipe(tap(res => null));
+    }
+
+    updateVendor(payload: Object): Observable<AddResponse> {
+        return this.http
+            .post<AddResponse>('http://localhost:3000/updateVendor', payload, httpOptions)
+            .pipe(tap(res => null));
+    }
+
+    deleteVendor(payload: Object): Observable<AddResponse> {
+        return this.http
+            .post<AddResponse>('http://localhost:3000/deleteVendor', payload, httpOptions)
             .pipe(tap(res => null));
     }
 }

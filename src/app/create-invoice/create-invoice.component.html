@@ -12,7 +12,7 @@
     </div>
 
     <mat-form-field>
-      <input matInput type="date" date-picker [(ngModel)]="invoiceDate" [disabled]="isFieldDisabled" required/>
+      <input matInput type="date" date-picker [(ngModel)]="invoiceDate" [disabled]="isFieldDisabled" placeholder="Invoice Date" required/>
     </mat-form-field>
 
     <mat-form-field>
@@ -37,7 +37,7 @@
 
     <mat-card class="inner-card-css">
 
-      <table>
+      <table style="width: 100%;">
         <thead>
           <tr>
             <th>No.</th>
@@ -114,7 +114,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let product of localProductList;let i=index">
-            <td>{{i+1}}</td>
+            <td class="input-css">{{i+1}}</td>
             <td class="input-css">{{product.chal_id}}</td>
             <td class="input-css">{{product.chal_date}}</td>
             <td class="input-css">{{product.veh_number}}</td>
@@ -138,5 +138,6 @@
   <mat-card-actions>
     <button mat-raised-button color="primary" (click)="createInvoice()">{{buttonLabel}}</button>
     <button mat-raised-button color="primary" (click)="cancelClicked()" [disabled]="isCancelDisabled">CANCEL</button>
+    <button mat-raised-button color="primary" (click)="printInvoiceDetail()">PRINT</button>
   </mat-card-actions>
 </mat-card>

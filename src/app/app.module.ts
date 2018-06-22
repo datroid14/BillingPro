@@ -42,6 +42,9 @@ import { ViewPurchaseComponent } from './view-purchase/view-purchase.component';
 import { ViewQuatationComponent } from './view-quatation/view-quatation.component';
 import { AddVehicleComponent } from './add-vehicle/add-vehicle.component';
 import { ViewInvoiceCopyComponent } from './view-invoice-copy/view-invoice-copy.component';
+import { ViewVehicleComponent } from './view-vehicle/view-vehicle.component';
+import { ViewGstComponent } from './view-gst/view-gst.component';
+import { AddGstComponent } from './add-gst/add-gst.component';
 
 import { CustomerService } from './add-customer/customer.service';
 import { VendorService } from './add-vendor/vendor.service';
@@ -52,28 +55,33 @@ import { ChallanService } from './create-challan/challan.service';
 import { AppService } from './app.service';
 import { VehicleService } from './add-vehicle/vehicle.service';
 import { InvoiceService } from './create-invoice/invoice.service';
+import { GSTService } from './add-gst/gst.service';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'table-view', component: TableViewComponent },
   { path: 'add-customer', component: AddCustomerComponent },
+  { path: 'add-gst', component: AddGstComponent },
   { path: 'add-product', component: AddProductComponent },
   { path: 'add-purchase', component: AddPurchaseComponent },
   { path: 'add-vendor', component: AddVendorComponent },
+  { path: 'add-vehicle', component: AddVehicleComponent },
   { path: 'create-invoice', component: CreateInvoiceComponent },
+  { path: 'create-challan', component: CreateChallanComponent },
+  { path: 'create-quatation', component: CreateQuatationComponent },
   { path: 'view-challan', component: ViewChallanComponent },
   { path: 'view-customer', component: ViewCustomerComponent },
+  { path: 'view-gst', component: ViewGstComponent },
   { path: 'view-invoice', component: ViewInvoiceComponent },
   { path: 'view-product', component: ViewProductComponent },
   { path: 'view-purchase', component: ViewPurchaseComponent },
   { path: 'view-quatation', component: ViewQuatationComponent },
   { path: 'view-vendor', component: ViewVendorComponent },
-  { path: 'create-challan', component: CreateChallanComponent },
-  { path: 'create-quatation', component: CreateQuatationComponent },
-  { path: 'create-invoice-copy', component: ViewInvoiceCopyComponent },
+  { path: 'view-vehicle', component: ViewVehicleComponent },
+  { path: 'view-invoice-copy', component: ViewInvoiceCopyComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: '**', redirectTo: '/create-challan', pathMatch: 'full' },
+  { path: '**', redirectTo: '/view-customer', pathMatch: 'full' },
 ];
 
 @NgModule({
@@ -97,7 +105,10 @@ const appRoutes: Routes = [
     ViewPurchaseComponent,
     ViewQuatationComponent,
     AddVehicleComponent,
-    ViewInvoiceCopyComponent
+    ViewInvoiceCopyComponent,
+    ViewVehicleComponent,
+    ViewGstComponent,
+    AddGstComponent
   ],
   imports: [
     BrowserModule,
@@ -122,7 +133,7 @@ const appRoutes: Routes = [
     HttpModule,
     HttpClientModule
   ],
-  providers: [AppService, CustomerService, VendorService, ProductService, QuatationService, ChallanService, PurchaseService, VehicleService, InvoiceService],
+  providers: [AppService, CustomerService, VendorService, ProductService, QuatationService, ChallanService, PurchaseService, VehicleService, InvoiceService, GSTService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

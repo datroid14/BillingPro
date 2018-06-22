@@ -46,7 +46,6 @@ export class ViewInvoiceComponent {
   }
 
   showInvoiceDetails(invoice) {
-
     if (invoice != undefined) {
       let navigationExtras: NavigationExtras = {
         queryParams: invoice

@@ -26,9 +26,27 @@ export class VehicleService {
                   .pipe(tap(res => null));
       }
 
+      getVehicleById(payload: Object): Observable<VehicleResponse> {
+            return this.http.post<VehicleResponse>("http://localhost:3000/getVehicleById", payload, httpOptions)
+                  .pipe(tap(res => null));
+      }
+
       addVehicle(payload: Object): Observable<AddResponse> {
             return this.http
                   .post<AddResponse>('http://localhost:3000/addVehicle', payload, httpOptions)
                   .pipe(tap(res => null));
       }
+
+
+      updateVehicle(payload: Object): Observable<AddResponse> {
+            return this.http
+                .post<AddResponse>('http://localhost:3000/updateVehicle', payload, httpOptions)
+                .pipe(tap(res => null));
+        }
+    
+        deleteVehicle(payload: Object): Observable<AddResponse> {
+            return this.http
+                .post<AddResponse>('http://localhost:3000/deleteVehicle', payload, httpOptions)
+                .pipe(tap(res => null));
+        }
 }

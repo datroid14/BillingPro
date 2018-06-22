@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { CustomerService } from "../add-customer/customer.service";
 import { ChallanService } from "../create-challan/challan.service";
 import { ProductService } from "../add-product/product.service";
 import { InvoiceService } from "../create-invoice/invoice.service";
+import { InvoiceProduct } from "../create-invoice/invoice.product";
 import { Location } from '@angular/common';
 import { AppService } from '../app.service';
+import { Invoice } from '../create-invoice/invoice';
 
 @Component({
   selector: 'create-invoice',
@@ -62,6 +64,7 @@ export class CreateInvoiceComponent {
       this.contactPerson = params["inv_contact_person"];
       this.contactNo = params["inv_contact"];
       this.customerAddress = params["inv_address"];
+      this.totalInvoiceAmount = params["inv_total_amount"];
     });
     this.addImagePath = "assets/images/ic_add_circle.svg";
     this.removeImagePath = "assets/images/ic_remove_circle.svg";
@@ -93,6 +96,15 @@ export class CreateInvoiceComponent {
 
     this.productService.getProducts().subscribe(response => {
       this.products = response.products;
+    },
+      error => {
+        console.log(error)
+      });
+
+    const payload = { "data": { "inv_id": this.invoiceId } };
+
+    this.invoiceService.getInvoiceProductsById(payload).subscribe(response => {
+      this.localProductList = response.products;
     },
       error => {
         console.log(error)
@@ -132,7 +144,6 @@ export class CreateInvoiceComponent {
   }
 
   addProduct() {
-    debugger;
     if (this.challanDate != undefined && this.productName != undefined && this.productHSN != undefined && this.productUnit != undefined
       && this.productQuantity != undefined && this.productRate != undefined && this.totalAmount != undefined) {
       const product = new InvoiceProduct(this.productId, this.challanId, this.challanDate, this.vehicleNo, this.productName, this.productHSN, this.productUnit, this.productRate, this.productQuantity, this.totalAmount);
@@ -156,13 +167,12 @@ export class CreateInvoiceComponent {
         this.invoiceService.addInvoice(payload).subscribe(response => {
           if (response.status == 200) {
             this.buttonLabel = "EDIT";
-            console.log("Add invoice " + response.message);
+            this.location.back();
           }
         },
           error => {
             console.log(error)
           });
-        this.location.back();
       } else {
         alert('Please fill all mandatory fields');
       }
@@ -222,46 +232,15 @@ export class CreateInvoiceComponent {
     this.vehicleNo = challan.veh_number;
     this.productQuantity = challan.chal_quantity;
   }
-}
 
-class InvoiceProduct {
-  prod_id: number;
-  prod_qty: number;
-  inv_id: number;
-  chal_id: number;
-  chal_date: Date;
-  veh_number: string;
-  prod_name: string;
-  prod_hsn: number;
-  prod_unit: string;
-  prod_rate: number;
-  prod_total_amount: number;
-
-  constructor(prod_id, chal_id, date, vehicle, name, hsn, unit, rate, qty, total) {
-    this.prod_id = prod_id;
-    this.prod_qty = qty;
-    this.chal_id = chal_id;
-    this.chal_date = date;
-    this.veh_number = vehicle;
-    this.prod_name = name;
-    this.prod_hsn = hsn;
-    this.prod_unit = unit;
-    this.prod_rate = rate;
-    this.prod_total_amount = total;
-  }
-}
-
-class Invoice {
-
-  inv_date: Date;
-  inv_cust_id: string;
-  inv_total_amount: number;
-  inv_products: Object[];
-
-  constructor(date, cust_id, total, products) {
-    this.inv_date = date;
-    this.inv_cust_id = name;
-    this.inv_total_amount = total;
-    this.inv_products = products;
+  printInvoiceDetail() {
+    const invoiceObj = new Invoice(this.invoiceId, this.invoiceDate, this.customerName, this.customerAddress, this.contactPerson, this.contactNo, this.totalInvoiceAmount, JSON.stringify(this.localProductList));
+    if (invoiceObj != undefined) {
+      let navigationExtras: NavigationExtras = {
+        queryParams: invoiceObj
+      };
+      // Redirect it to View Product screen
+      this.router.navigate(['/view-invoice-copy'], navigationExtras);
+    }
   }
 }

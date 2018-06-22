@@ -37,7 +37,7 @@
 
     <mat-card class="inner-card-css">
 
-      <table>
+      <table style="width: 100%;">
         <thead>
           <tr>
             <th>No.</th>
@@ -114,7 +114,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let product of localProductList;let i=index">
-            <td>{{i+1}}</td>
+            <td class="input-css">{{i+1}}</td>
             <td class="input-css">{{product.chal_id}}</td>
             <td class="input-css">{{product.chal_date}}</td>
             <td class="input-css">{{product.veh_number}}</td>

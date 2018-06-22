@@ -36,14 +36,6 @@ export class ViewProductComponent implements OnInit {
       });
   }
 
-  /**
-  * Set the paginator after the view init since this component will
-  * be able to query its view for the initialized paginator.
-  */
-  ngAfterViewInit() {
-
-  }
-
   showProductDetails(product) {
 
     if (product != undefined) {

@@ -13,7 +13,7 @@ export class ViewCustomerComponent implements OnInit {
 
   customers;
 
-  displayedColumns = ['name', 'address', 'contact', 'email'];
+  displayedColumns = ['name', 'contact_person', 'contact', 'email', 'address'];
   dataSource;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -22,14 +22,13 @@ export class ViewCustomerComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    // Show drawer
     this.appService.showDrawer(true);
     
     this.customerService.getCustomers().subscribe(response => {
       this.customers = response.customers;
       this.dataSource = new MatTableDataSource<CUSTOMER>(this.customers);
       this.dataSource.paginator = this.paginator;
-      console.log(this.customers);
     },
       error => {
         console.log(error)
@@ -59,6 +58,8 @@ export class ViewCustomerComponent implements OnInit {
 export interface CUSTOMER {
   cust_id: number;
   cust_name: string;
+  cust_contact: string;
+  cust_contact_person: string;
   cust_address: string;
   cust_email: string;
 }

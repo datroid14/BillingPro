@@ -3,26 +3,32 @@
   <mat-card style="padding:5px">
     <mat-table #table [dataSource]="dataSource" >
 
-      <!-- Position Column -->
+      <!-- Name Column -->
       <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
         <mat-cell *matCellDef="let vendor"> {{vendor.vend_name}} </mat-cell>
       </ng-container>
 
-      <!-- Name Column -->
-      <ng-container matColumnDef="address">
+      <!-- Contact Person Column -->
+      <ng-container matColumnDef="contact_person">
+        <mat-header-cell *matHeaderCellDef> Contact Person </mat-header-cell>
+        <mat-cell *matCellDef="let vendor"> {{vendor.vend_contact_person}} </mat-cell>
+      </ng-container>
+
+      <!-- Contac Number Column -->
+      <ng-container matColumnDef="contact">
         <mat-header-cell *matHeaderCellDef> Contact No. </mat-header-cell>
         <mat-cell *matCellDef="let vendor"> {{vendor.vend_contact}} </mat-cell>
       </ng-container>
 
-      <!-- Weight Column -->
-      <ng-container matColumnDef="contact">
+      <!-- Email Column -->
+      <ng-container matColumnDef="email">
         <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
         <mat-cell *matCellDef="let vendor"> {{vendor.vend_email}} </mat-cell>
       </ng-container>
 
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="email">
+      <!-- Address Column -->
+      <ng-container matColumnDef="address">
         <mat-header-cell *matHeaderCellDef> Address </mat-header-cell>
         <mat-cell *matCellDef="let vendor"> {{vendor.vend_address}} </mat-cell>
       </ng-container>

@@ -15,7 +15,7 @@ export class ViewVendorComponent implements OnInit {
   vendors;
   isLogin = false;
 
-  displayedColumns = ['name', 'address', 'contact', 'email'];
+  displayedColumns = ['name', 'contact_person', 'contact', 'email', 'address'];
   dataSource;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -61,6 +61,7 @@ export class ViewVendorComponent implements OnInit {
 export interface VENDOR {
   vend_id: number;
   vend_name: string;
+  vend_contact_person: string;
   vend_contact: string;
   vend_address: string;
   vend_email: string;

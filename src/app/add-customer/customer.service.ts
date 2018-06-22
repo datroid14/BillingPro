@@ -31,4 +31,16 @@ export class CustomerService {
                   .post<AddResponse>('http://localhost:3000/addCustomer', payload, httpOptions)
                   .pipe(tap(res => null));
       }
+
+      updateCustomer(payload: Object): Observable<AddResponse> {
+            return this.http
+                  .post<AddResponse>('http://localhost:3000/updateCustomer', payload, httpOptions)
+                  .pipe(tap(res => null));
+      }
+
+      deleteCustomer(payload: Object): Observable<AddResponse> {
+            return this.http
+                  .post<AddResponse>('http://localhost:3000/deleteCustomer', payload, httpOptions)
+                  .pipe(tap(res => null));
+      }
 }

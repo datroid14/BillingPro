@@ -182,6 +182,8 @@ export class CreateQuatationComponent implements OnInit {
     this.productId = product.prod_id;
     this.productUnit = product.prod_unit;
     this.productRate = product.prod_rate;
+    this.productDesc = product.prod_desc;
+
   }
 }
 

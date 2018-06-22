@@ -36,6 +36,10 @@ export class CreateChallanComponent {
   vehicleNumber: string;
   isLoginPage: boolean;
 
+  // Variables for image paths
+  addImagePath: string;
+  removeImagePath: string;
+
   constructor(private route: ActivatedRoute, private customerService: CustomerService, private productService: ProductService,
     private challanService: ChallanService, private router: Router, private appService: AppService, private location: Location,
     private vehicleService: VehicleService) {
@@ -47,6 +51,8 @@ export class CreateChallanComponent {
       this.productQuantity = params["chal_quantity"];
       this.vehicleNumber = params["chal_veh_no"];
     });
+    this.addImagePath = "assets/images/ic_add_circle.svg";
+    this.removeImagePath = "assets/images/ic_remove_circle.svg";
   }
 
   ngOnInit() {

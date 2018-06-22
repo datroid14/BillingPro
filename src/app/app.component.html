@@ -4,7 +4,7 @@
 <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.xs="0">
 
 
-  <div style="height:600px;" fxFlex="20%" *ngIf="isLoginPage | async">
+  <div style="height:1000px;" fxFlex="20%" *ngIf="isLoginPage | async">
     <mat-card>
 
       <nav [ngClass]="'menu'" fxLayout="column">
@@ -15,11 +15,13 @@
         <a routerLink="/view-challan" routerLinkActive="active-link" style="margin:12px;">Delivery Challans</a>
         <a routerLink="/view-purchase" routerLinkActive="active-link" style="margin:12px;">Purchases</a>
         <a routerLink="/view-quatation" routerLinkActive="active-link" style="margin:12px;">Quatations</a>
+        <a routerLink="/view-vehicle" routerLinkActive="active-link" style="margin:12px;">Vehicles</a>
+        <a routerLink="/view-gst" routerLinkActive="active-link" style="margin:12px;">GST</a>
       </nav>
 
     </mat-card>
   </div>
   <div fxFlex="80%">
     <router-outlet></router-outlet>
-  </div>
+  </div> 
 </div>

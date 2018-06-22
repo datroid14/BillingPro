@@ -31,6 +31,7 @@
   <mat-card-actions>
     <button mat-raised-button color="primary" (click)="addProduct();">{{buttonLabel}}</button>
     <button mat-raised-button color="primary" (click)="cancelClicked()" [disabled]="isCancelDisabled">CANCEL</button>
+    <button mat-raised-button color="primary" (click)="deleteProduct();" [disabled]="isDeleteDisabled">DELETE</button>
   </mat-card-actions>
 
 </mat-card>

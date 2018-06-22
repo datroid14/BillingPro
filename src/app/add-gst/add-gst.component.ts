@@ -1,15 +1,15 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
-import { ProductService } from "../add-product/product.service";
+import { GSTService } from "../add-gst/gst.service";
 import { Location } from '@angular/common';
 import { AppService } from "../app.service"
 
 @Component({
-  selector: 'add-product',
-  templateUrl: './add-product.component.html',
-  styleUrls: ['./add-product.component.css']
+  selector: 'add-gst',
+  templateUrl: './add-gst.component.html',
+  styleUrls: ['./add-gst.component.css']
 })
-export class AddProductComponent implements OnInit {
+export class AddGstComponent implements OnInit {
 
   buttonLabel: string;
   isFieldDisabled: boolean;
@@ -17,25 +17,23 @@ export class AddProductComponent implements OnInit {
   isEditClicked: boolean;
   isDeleteDisabled: boolean;
 
-  products = [];
-  productId: number;
-  productName: string;
-  productDesc: string;
-  productUnit: number;
-  productPrice: number;
+  gstDetails = [];
+  gstId: number;
+  gstHSN: string;
+  gstPercentage: number;
+  gstDesc: string;
 
   // Variables for image paths
   addImagePath: string;
   removeImagePath: string;
 
-  public constructor(private route: ActivatedRoute, private appService: AppService, private productService: ProductService,
+  public constructor(private route: ActivatedRoute, private appService: AppService, private gstService: GSTService,
     private location: Location) {
     this.route.queryParams.subscribe(params => {
-      this.productId = params["prod_id"];
-      this.productName = params["prod_name"];
-      this.productDesc = params["prod_desc"];
-      this.productUnit = params["prod_unit"];
-      this.productPrice = params["prod_rate"];
+      this.gstId = params["gst_id"];
+      this.gstHSN = params["gst_hsn"];
+      this.gstPercentage = params["gst_percentage"];
+      this.gstDesc = params["gst_desc"];
     });
     this.addImagePath = "assets/images/ic_add_circle.svg";
     this.removeImagePath = "assets/images/ic_remove_circle.svg";
@@ -63,25 +61,26 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  addNewProduct() {
+  addNewGSTDetail() {
     this.isFieldDisabled = false;
     this.isCancelDisabled = false;
     this.isDeleteDisabled = true;
     this.changeButtonLabel(this.isFieldDisabled);
-    this.clearProductFields();
+    this.clearGSTFields();
   }
 
   cancelClicked() {
+    debugger;
     this.isFieldDisabled = !this.isFieldDisabled;
     this.isCancelDisabled = !this.isCancelDisabled;
     if (this.buttonLabel == "SAVE") {
       this.buttonLabel = "EDIT";
       // Show last shown record
-      const payload = { "data": { "prod_id": this.productId } };
-      this.productService.getProductById(payload).subscribe(response => {
+      const payload = { "data": { "gst_id": this.gstId } };
+      this.gstService.getGSTDetailsById(payload).subscribe(response => {
         if (response.status == 200) {
-          if (response.products != undefined && response.products.length > 0) {
-            this.setProductDetail(response.products[0]);
+          if (response.gst_details != undefined && response.gst_details.length > 0) {
+            this.setGSTDetail(response.gst_details[0]);
           }
         }
       },
@@ -93,14 +92,17 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  addProduct() {
+  addGSTDetail() {
     if (this.buttonLabel == "SAVE") {
-      if (this.productName != undefined && this.productUnit != undefined && this.productPrice != undefined) {
+      if (this.gstHSN != undefined && this.gstPercentage != undefined) {
+        if (this.gstDesc == undefined){
+            this.gstDesc = "";
+        }
         this.isDeleteDisabled = false;
 
         if (this.isEditClicked) {
-          const updatePayload = { "data": { "prod_id": this.productId, "prod_name": this.productName, "prod_desc": this.productDesc, "prod_unit": this.productUnit, "prod_rate": this.productPrice } };
-          this.productService.updateProduct(updatePayload).subscribe(response => {
+          const updatePayload = { "data": { "gst_id": this.gstId, "gst_hsn": this.gstHSN, "gst_percentage": this.gstPercentage, "gst_desc": this.gstDesc } };
+          this.gstService.updateGSTDetails(updatePayload).subscribe(response => {
             if (response.status == 200) {
               console.log("Add product " + response);
               this.location.back();
@@ -110,10 +112,9 @@ export class AddProductComponent implements OnInit {
               console.log(error)
             });
         } else {
-          const addPayload = { "data": { "prod_name": this.productName, "prod_desc": this.productDesc, "prod_unit": this.productUnit, "prod_rate": this.productPrice } };
-          this.productService.addProduct(addPayload).subscribe(response => {
+          const addPayload = { "data": { "gst_hsn": this.gstHSN, "gst_percentage": this.gstPercentage, "gst_desc": this.gstDesc } };
+          this.gstService.addGSTDetails(addPayload).subscribe(response => {
             if (response.status == 200) {
-              console.log("Add product " + response);
               this.location.back();
             }
           },
@@ -133,20 +134,19 @@ export class AddProductComponent implements OnInit {
   }
 
   removeProduct(product) {
-    const index = this.products.indexOf(product);
-    this.products.splice(index, 1);
+    const index = this.gstDetails.indexOf(product);
+    this.gstDetails.splice(index, 1);
   }
 
-  clearProductFields() {
-    this.productName = undefined;
-    this.productUnit = undefined;
-    this.productPrice = undefined;
-    this.productDesc = undefined;
+  clearGSTFields() {
+    this.gstHSN = undefined;
+    this.gstPercentage = undefined;
+    this.gstDesc = undefined;
   }
 
-  deleteProduct() {
-    const deletePayload = { "data": { "prod_id": this.productId } };
-    this.productService.deleteProduct(deletePayload).subscribe(response => {
+  deleteGSTDetail() {
+    const deletePayload = { "data": { "gst_id": this.gstId } };
+    this.gstService.deleteGSTDetails(deletePayload).subscribe(response => {
       if (response.status == 200) {
         console.log("Delete vendor " + response);
         this.location.back();
@@ -157,10 +157,9 @@ export class AddProductComponent implements OnInit {
       });
   }
 
-  setProductDetail(product) {
-    this.productName = product.prod_name;
-    this.productUnit = product.prod_unit;
-    this.productPrice = product.prod_rate;
-    this.productDesc = product.prod_desc;
+  setGSTDetail(gst) {
+    this.gstHSN = gst.gst_hsn;
+    this.gstPercentage = gst.gst_percentage;
+    this.gstDesc = gst.gst_desc;
   }
 }
