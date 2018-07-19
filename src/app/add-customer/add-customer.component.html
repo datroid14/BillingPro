@@ -7,8 +7,8 @@
 
   <mat-card-content class="container-css">
 
-    <div align="right">
-      <img (click)="addNewCustomer();" [src]="this.addImagePath">
+    <div align="right" style="height: 32px;">
+      <img (click)="addNewCustomer();" [src]="this.addImagePath" *ngIf="isFieldDisabled">
     </div>
 
     <mat-form-field>
@@ -34,6 +34,6 @@
   <mat-card-actions>
     <button mat-raised-button color="primary" (click)="addCustomer();">{{buttonLabel}}</button>
     <button mat-raised-button color="primary" (click)="cancelClicked();" [disabled]="isCancelDisabled">CANCEL</button>
-    <button mat-raised-button color="primary" (click)="deleteCustomer();">DELETE</button>
+    <button mat-raised-button color="primary" (click)="deleteCustomer();" [disabled]="isDeleteDisabled">DELETE</button>
   </mat-card-actions>
 </mat-card>

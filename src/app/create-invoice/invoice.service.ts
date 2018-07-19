@@ -1,10 +1,8 @@
-import { Component } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { catchError, map, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { InvoiceResponse } from '../create-invoice/invoice.response';
 import { InvoiceProductResponse } from '../create-invoice/invoice.product.response';
 import { AddResponse } from '../common/add.response';
-import { Purchase } from '../add-purchase/purchase';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -24,6 +22,12 @@ export class InvoiceService {
       getInvoices(): Observable<InvoiceResponse> {
             return this.http
                   .post<InvoiceResponse>("http://localhost:3000/getInvoices", null)
+                  .pipe(tap(res => null));
+      }
+
+      getInvoiceById(payload:Object): Observable<InvoiceResponse> {
+            return this.http
+                  .post<InvoiceResponse>("http://localhost:3000/getInvoiceById", payload, httpOptions)
                   .pipe(tap(res => null));
       }
 

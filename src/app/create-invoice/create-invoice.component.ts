@@ -8,12 +8,14 @@ import { InvoiceProduct } from "../create-invoice/invoice.product";
 import { Location } from '@angular/common';
 import { AppService } from '../app.service';
 import { Invoice } from '../create-invoice/invoice';
+import { GSTService } from "../add-gst/gst.service";
 
 @Component({
   selector: 'create-invoice',
   templateUrl: './create-invoice.component.html',
   styleUrls: ['./create-invoice.component.css'],
 })
+
 export class CreateInvoiceComponent {
 
   // Variables used for products
@@ -21,12 +23,13 @@ export class CreateInvoiceComponent {
   challans;
   products;
   invoiceProducts;
+  gstDetails;
   localProductList: InvoiceProduct[];
 
   buttonLabel: string;
   isFieldDisabled: boolean;
   isCancelDisabled: boolean;
-  challanId: number;
+  challanNo: number;
   challanDate: Date;
   vehicleNo: string;
   productId: number;
@@ -46,8 +49,9 @@ export class CreateInvoiceComponent {
   customerName: string;
   customerAddress: string;
   contactPerson: string;
-  contactNo: number;
+  contactNo: string;
   totalInvoiceAmount: number;
+  gstId: number;
 
   // Variables for image paths
   addImagePath: string;
@@ -55,16 +59,16 @@ export class CreateInvoiceComponent {
 
   constructor(private customerService: CustomerService, private productService: ProductService, private router: Router,
     private challanService: ChallanService, private invoiceService: InvoiceService, private route: ActivatedRoute,
-    private appService: AppService, private location: Location) {
+    private appService: AppService, private location: Location, private gstService: GSTService) {
     this.route.queryParams.subscribe(params => {
       this.invoiceId = params["inv_id"];
-      this.invoiceDate = params["inv_date"];
-      this.customerId = params["inv_cust_id"];
-      this.customerName = params["inv_customer"];
-      this.contactPerson = params["inv_contact_person"];
-      this.contactNo = params["inv_contact"];
-      this.customerAddress = params["inv_address"];
-      this.totalInvoiceAmount = params["inv_total_amount"];
+      // this.invoiceDate = params["inv_date"];
+      // this.customerId = params["inv_cust_id"];
+      // this.customerName = params["inv_customer"];
+      // this.contactPerson = params["inv_contact_person"];
+      // this.contactNo = params["inv_contact"];
+      // this.customerAddress = params["inv_address"];
+      // this.totalInvoiceAmount = params["inv_total_amount"];
     });
     this.addImagePath = "assets/images/ic_add_circle.svg";
     this.removeImagePath = "assets/images/ic_remove_circle.svg";
@@ -78,17 +82,10 @@ export class CreateInvoiceComponent {
     this.isCancelDisabled = true;
     this.changeButtonLabel(this.isFieldDisabled);
 
+    this.getInvoiceDetailById();
+
     this.customerService.getCustomers().subscribe(response => {
       this.customers = response.customers;
-    },
-      error => {
-        console.log(error)
-      });
-
-    const challanPayload = { "data": { "chal_cust_id": this.customerId } };
-
-    this.challanService.getChallansByCustomerId(challanPayload).subscribe(response => {
-      this.challans = response.challans;
     },
       error => {
         console.log(error)
@@ -101,26 +98,21 @@ export class CreateInvoiceComponent {
         console.log(error)
       });
 
-    const payload = { "data": { "inv_id": this.invoiceId } };
-
-    this.invoiceService.getInvoiceProductsById(payload).subscribe(response => {
-      this.localProductList = response.products;
+    this.gstService.getGSTDetails().subscribe(response => {
+      this.gstDetails = response.gst_details;
     },
       error => {
         console.log(error)
       });
+
+    this.getInvoiceProducts();
   }
 
   addNewInvoice() {
-    this.isFieldDisabled = false;
-    this.isCancelDisabled = true;
+    this.isFieldDisabled = !this.isFieldDisabled;
+    this.isCancelDisabled = !this.isCancelDisabled;
     this.changeButtonLabel(this.isFieldDisabled);
-    this.invoiceDate = undefined;
-    this.customerName = undefined;
-    this.customerAddress = undefined;
-    this.contactPerson = undefined;
-    this.contactNo = undefined;
-    this.localProductList = [];
+    this.clearInvoiceFields();
     this.clearProductFields();
   }
 
@@ -137,7 +129,8 @@ export class CreateInvoiceComponent {
     this.isCancelDisabled = !this.isCancelDisabled;
     if (this.buttonLabel == "SAVE") {
       this.buttonLabel = "EDIT";
-      // Show first record
+      // Show last shown record
+      this.getInvoiceDetailById();
     } else {
       this.buttonLabel = "SAVE";
     }
@@ -146,25 +139,21 @@ export class CreateInvoiceComponent {
   addProduct() {
     if (this.challanDate != undefined && this.productName != undefined && this.productHSN != undefined && this.productUnit != undefined
       && this.productQuantity != undefined && this.productRate != undefined && this.totalAmount != undefined) {
-      const product = new InvoiceProduct(this.productId, this.challanId, this.challanDate, this.vehicleNo, this.productName, this.productHSN, this.productUnit, this.productRate, this.productQuantity, this.totalAmount);
+      const product = new InvoiceProduct(this.productId, this.challanNo, this.challanDate, this.vehicleNo, this.productName, this.productHSN, this.productUnit, this.productRate, this.productQuantity, this.totalAmount);
       this.localProductList.push(product);
       this.calculateInvoiceTotal();
+      this.clearProductFields();
     } else {
       alert('Please fill all mandatory fields');
     }
-  }
-
-  removeProduct(product) {
-    const index = this.products.indexOf(product);
-    this.products.splice(index, 1);
   }
 
   createInvoice() {
     if (this.buttonLabel == "SAVE") {
       if (this.invoiceDate != undefined && this.customerName != undefined && this.customerAddress != undefined
         && this.contactNo != undefined && (this.localProductList != undefined && this.localProductList.length > 0)) {
-        const payload = { "data": { "inv_date": "2018-05-24", "inv_cust_id": this.customerId, "inv_total_amount": 12000, "inv_products": this.localProductList } };
-        this.invoiceService.addInvoice(payload).subscribe(response => {
+        const invoicePayload = { "data": { "inv_date": "2018-05-24", "inv_cust_id": this.customerId, "inv_total_amount": this.totalInvoiceAmount, "inv_products": this.localProductList } };
+        this.invoiceService.addInvoice(invoicePayload).subscribe(response => {
           if (response.status == 200) {
             this.buttonLabel = "EDIT";
             this.location.back();
@@ -179,11 +168,14 @@ export class CreateInvoiceComponent {
     } else {
       this.buttonLabel = "SAVE";
       this.isFieldDisabled = false;
+      this.isCancelDisabled = false;
     }
   }
 
   clearProductFields() {
+    this.challanNo = undefined;
     this.challanDate = undefined;
+    this.vehicleNo= undefined;
     this.productName = undefined;
     this.productHSN = undefined;
     this.productUnit = undefined;
@@ -197,10 +189,13 @@ export class CreateInvoiceComponent {
     this.customerName = undefined;
     this.customerAddress = undefined;
     this.contactNo = undefined;
-    this.products = [];
+    this.contactPerson = undefined;
+    this.totalInvoiceAmount = undefined;
+    this.localProductList = [];
   }
 
-  calculateTotal(event) {
+  calculateTotal() {
+    console.log("Other");
     if (this.productQuantity != undefined && this.productRate != undefined) {
       this.totalAmount = this.productQuantity * this.productRate;
     }
@@ -208,26 +203,48 @@ export class CreateInvoiceComponent {
 
   calculateInvoiceTotal() {
     this.totalInvoiceAmount = 0;
-    if (this.products != undefined && this.products.length > 0) {
-      for (let i = 0; i < this.products.length; i++) {
-        this.totalInvoiceAmount += this.products[i].total;
+
+    if (this.localProductList != undefined && this.localProductList.length > 0) {
+      for (let i = 0; i < this.localProductList.length; i++) {
+        this.totalInvoiceAmount += this.localProductList[i].prod_total_amount;
       }
     }
   }
 
+  calculateForJCB() {
+    console.log("JCB");
+    let hours = 0;
+    let timeArr = this.productQuantity.toString().split('.');
+    if (timeArr.length == 2) {
+      let minuteStr = timeArr[1];
+      if (minuteStr.length == 1) {
+        hours = parseInt(minuteStr) * 10 / 60;
+      } else {
+        hours = parseInt(minuteStr) / 60;
+      }
+    }
+    let totalHours = parseInt(timeArr[0]) + hours;
+    this.totalAmount = totalHours * this.productRate;
+  }
+
   setCustomerDetail(customer) {
+    this.customerId = customer.cust_id;
     this.customerAddress = customer.cust_address;
+    this.contactPerson = customer.cust_contact_person;
     this.contactNo = customer.cust_contact;
+
+    this.getChallansByCustomerId();
   }
 
   setProductDetail(product) {
     this.productId = product.prod_id;
     this.productUnit = product.prod_unit;
     this.productRate = product.prod_rate;
+    this.productHSN = product.prod_hsn;
   }
 
   setChallanDetail(challan) {
-    this.challanId = challan.chal_id;
+    this.challanNo = challan.chal_id;
     this.challanDate = challan.chal_date;
     this.vehicleNo = challan.veh_number;
     this.productQuantity = challan.chal_quantity;
@@ -242,5 +259,56 @@ export class CreateInvoiceComponent {
       // Redirect it to View Product screen
       this.router.navigate(['/view-invoice-copy'], navigationExtras);
     }
+  }
+
+  setInvoiceDetail(invoice) {
+    this.invoiceDate = invoice.inv_date;
+    this.customerId = invoice.inv_cust_id;
+    this.customerName = invoice.inv_customer;
+    this.customerAddress = invoice.inv_address;
+    this.contactNo = invoice.inv_contact;
+    this.contactPerson = invoice.inv_contact_person;
+
+    this.getInvoiceProducts();
+  }
+
+  getInvoiceProducts() {
+    const productPayload = { "data": { "inv_id": this.invoiceId } };
+
+    this.invoiceService.getInvoiceProductsById(productPayload).subscribe(response => {
+      this.localProductList = response.products;
+    },
+      error => {
+        console.log(error)
+      });
+  }
+
+  getInvoiceDetailById() {
+    const payload = { "data": { "inv_id": this.invoiceId } };
+    this.invoiceService.getInvoiceById(payload).subscribe(response => {
+      if (response.status == 200) {
+        if (response.invoices != undefined && response.invoices.length > 0) {
+          this.setInvoiceDetail(response.invoices[0]);
+        }
+      }
+    },
+      error => {
+        console.log(error)
+      });
+  }
+
+  setGSTDetail(gst) {
+    this.gstId = gst.gst_id;
+  }
+
+  getChallansByCustomerId(){
+    const challanPayload = { "data": { "chal_cust_id": this.customerId } };
+
+    this.challanService.getChallansByCustomerId(challanPayload).subscribe(response => {
+      this.challans = response.challans;
+    },
+      error => {
+        console.log(error)
+      });
   }
 }

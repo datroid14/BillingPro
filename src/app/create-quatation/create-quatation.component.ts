@@ -49,6 +49,7 @@ export class CreateQuatationComponent implements OnInit {
   constructor(private customerService: CustomerService, private productService: ProductService, private appService: AppService,
     private quatationService: QuatationService, private route: ActivatedRoute, private location: Location) {
     this.route.queryParams.subscribe(params => {
+      debugger;
       this.quatationId = params["quat_id"];
       this.quatationDate = params["quat_date"];
       this.customerName = params["quat_customer"];
@@ -82,14 +83,7 @@ export class CreateQuatationComponent implements OnInit {
         console.log(error)
       });
 
-    const payload = { "data": { "quat_id": this.quatationId } };
-
-    this.quatationService.getQuatationProductsById(payload).subscribe(response => {
-      this.localProductList = response.products;
-    },
-      error => {
-        console.log(error)
-      });
+      this.getQuatationProducts();
   }
 
   changeButtonLabel(isDisabled) {
@@ -101,8 +95,8 @@ export class CreateQuatationComponent implements OnInit {
   }
 
   addNewQuatation() {
-    this.isFieldDisabled = false;
-    this.isCancelDisabled = true;
+    this.isFieldDisabled = !this.isFieldDisabled;
+    this.isCancelDisabled = !this.isCancelDisabled;
     this.changeButtonLabel(this.isFieldDisabled);
     this.quatationDate = undefined;
     this.customerName = undefined;
@@ -118,8 +112,19 @@ export class CreateQuatationComponent implements OnInit {
     this.isCancelDisabled = !this.isCancelDisabled;
     if (this.buttonLabel == "SAVE") {
       this.buttonLabel = "EDIT";
-      // Show first record
-    }else{
+      // Show last shown record
+      const payload = { "data": { "quat_id": this.quatationId } };
+      this.quatationService.getQuatationById(payload).subscribe(response => {
+        if (response.status == 200) {
+          if (response.quatations != undefined && response.quatations.length > 0) {
+            this.setQuatationDetail(response.quatations[0]);
+          }
+        }
+      },
+        error => {
+          console.log(error)
+        });
+    } else {
       this.buttonLabel = "SAVE";
     }
   }
@@ -129,25 +134,20 @@ export class CreateQuatationComponent implements OnInit {
       && this.productRate != undefined) {
       const product = new Product(this.productId, this.productName, this.productDesc, this.productUnit, this.productRate);
       this.localProductList.push(product);
+      this.clearProductFields();
     } else {
       alert('Please fill all mandatory fields');
     }
-  }
-
-  removeProduct(product) {
-    const index = this.products.indexOf(product);
-    this.products.splice(index, 1);
   }
 
   createQuatation() {
     if (this.buttonLabel == "SAVE") {
       if (this.customerName != undefined && this.customerAddress != undefined && this.contactPerson != undefined
         && this.contactNo != undefined && (this.localProductList != undefined && this.localProductList.length > 0)) {
-        const payload = { "data": { "quat_date": "2018-05-24", "quat_cust_id": this.customerId, "quat_products": this.localProductList } };
+        const payload = { "data": { "quat_date": this.quatationDate, "quat_cust_id": this.customerId, "quat_products": this.localProductList } };
         this.quatationService.addQuatation(payload).subscribe(response => {
           if (response.status == 200) {
             this.buttonLabel = "EDIT";
-            console.log("Add quatation " + response.message);
           }
         },
           error => {
@@ -183,7 +183,28 @@ export class CreateQuatationComponent implements OnInit {
     this.productUnit = product.prod_unit;
     this.productRate = product.prod_rate;
     this.productDesc = product.prod_desc;
+  }
 
+  setQuatationDetail(quatation) {
+    this.quatationId = quatation.quat_id;
+    this.quatationDate = quatation.quat_date;
+    this.customerName = quatation.quat_customer;
+    this.contactPerson = quatation.quat_contact_person;
+    this.customerAddress = quatation.quat_address;
+    this.contactNo = quatation.quat_contact;
+
+    this.getQuatationProducts();
+  }
+
+  getQuatationProducts(){
+    const payload = { "data": { "quat_id": this.quatationId } };
+
+    this.quatationService.getQuatationProductsById(payload).subscribe(response => {
+      this.localProductList = response.products;
+    },
+      error => {
+        console.log(error)
+      });
   }
 }
 

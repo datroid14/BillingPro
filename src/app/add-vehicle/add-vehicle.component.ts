@@ -99,7 +99,6 @@ export class AddVehicleComponent implements OnInit {
         if(this.vehicleDesc == undefined){
           this.vehicleDesc = "";
         }
-        this.isDeleteDisabled = false;
 
         if (this.isEditClicked) {
           const updatePayload = { "data": { "veh_id": this.vehicleId, "veh_name": this.vehicleName, "veh_number": this.vehicleNumber, "veh_desc": this.vehicleDesc } };
@@ -130,6 +129,7 @@ export class AddVehicleComponent implements OnInit {
       this.isEditClicked = true;
       this.isFieldDisabled = false;
       this.isCancelDisabled = false;
+      this.isDeleteDisabled = true;
     }
   }
 

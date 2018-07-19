@@ -27,6 +27,12 @@ export class QuatationService {
                   .pipe(tap(res => null));
       }
 
+      getQuatationById(payload:Object): Observable<QuatationResponse> {
+            return this.http
+                  .post<QuatationResponse>("http://localhost:3000/getQuatationById", payload, httpOptions)
+                  .pipe(tap(res => null));
+      }
+
       getQuatationProductsById(payload:Object): Observable<ProductResponse> {
             return this.http
                   .post<ProductResponse>("http://localhost:3000/getQuatationProductsById", payload, httpOptions)

@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { ProductService } from "../add-product/product.service";
 import { Location } from '@angular/common';
@@ -74,6 +74,8 @@ export class AddProductComponent implements OnInit {
   cancelClicked() {
     this.isFieldDisabled = !this.isFieldDisabled;
     this.isCancelDisabled = !this.isCancelDisabled;
+    this.isDeleteDisabled = false;
+
     if (this.buttonLabel == "SAVE") {
       this.buttonLabel = "EDIT";
       // Show last shown record
@@ -129,6 +131,7 @@ export class AddProductComponent implements OnInit {
       this.isEditClicked = true;
       this.isFieldDisabled = false;
       this.isCancelDisabled = false;
+      this.isDeleteDisabled = true;
     }
   }
 

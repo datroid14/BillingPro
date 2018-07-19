@@ -1,9 +1,7 @@
-import { Component } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { tap } from 'rxjs/operators';
 import { CustomerResponse } from '../add-customer/customer.response';
 import { AddResponse } from '../common/add.response';
-import { Customer } from '../add-customer/customer';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -23,6 +21,12 @@ export class CustomerService {
       getCustomers(): Observable<CustomerResponse> {
             return this.http
                   .post<CustomerResponse>("http://localhost:3000/getCustomers", null)
+                  .pipe(tap(res => null));
+      }
+
+      getCustomerById(payload: Object): Observable<CustomerResponse> {
+            return this.http
+                  .post<CustomerResponse>("http://localhost:3000/getCustomerById", payload, httpOptions)
                   .pipe(tap(res => null));
       }
 

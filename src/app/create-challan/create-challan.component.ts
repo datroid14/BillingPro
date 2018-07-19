@@ -25,6 +25,8 @@ export class CreateChallanComponent {
   isFieldDisabled: boolean;
   isCancelDisabled: boolean;
 
+  challanId: number;
+  challanDate: Date;
   customerId: number;
   customerName: string;
   customerAddress: string;
@@ -44,12 +46,7 @@ export class CreateChallanComponent {
     private challanService: ChallanService, private router: Router, private appService: AppService, private location: Location,
     private vehicleService: VehicleService) {
     this.route.queryParams.subscribe(params => {
-      this.customerName = params["chal_cust_name"];
-      this.customerAddress = params["chal_cust_address"];
-      this.productName = params["chal_prod_name"];
-      this.productUnit = params["chal_prod_unit"];
-      this.productQuantity = params["chal_quantity"];
-      this.vehicleNumber = params["chal_veh_no"];
+      this.challanId = params["chal_id"];
     });
     this.addImagePath = "assets/images/ic_add_circle.svg";
     this.removeImagePath = "assets/images/ic_remove_circle.svg";
@@ -68,6 +65,8 @@ export class CreateChallanComponent {
 
     // Change button label to save
     this.changeButtonLabel(this.isFieldDisabled);
+
+    this.getChallanDetailById();
 
     this.customerService.getCustomers().subscribe(response => {
       this.customers = response.customers;
@@ -107,18 +106,20 @@ export class CreateChallanComponent {
   }
 
   addNewChallan() {
-    this.isFieldDisabled = false;
-    this.isCancelDisabled = true;
+    this.isFieldDisabled = !this.isFieldDisabled;
+    this.isCancelDisabled = !this.isCancelDisabled;
     this.changeButtonLabel(this.isFieldDisabled);
     this.clearChallanFields();
   }
 
   cancelClicked() {
+    debugger;
     this.isFieldDisabled = !this.isFieldDisabled;
     this.isCancelDisabled = !this.isCancelDisabled;
     if (this.buttonLabel == "SAVE") {
       this.buttonLabel = "EDIT";
-      // Show first record
+      // Show last shown record
+      this.getChallanDetailById();
     } else {
       this.buttonLabel = "SAVE";
     }
@@ -128,10 +129,9 @@ export class CreateChallanComponent {
     if (this.buttonLabel == "SAVE") {
       if (this.customerId != undefined && this.productId != undefined && this.vehicleId != undefined &&
         this.productQuantity != undefined) {
-        const payload = { "data": { "chal_cust_id": this.customerId, "chal_prod_id": this.productId, "chal_veh_id": this.vehicleId, "chal_quantity": this.productQuantity } };
+        const payload = { "data": { "chal_date": "2018-07-12", "chal_cust_id": this.customerId, "chal_prod_id": this.productId, "chal_veh_id": this.vehicleId, "chal_quantity": this.productQuantity } };
         this.challanService.addChallan(payload).subscribe(response => {
           if (response.status == 200) {
-            console.log("Add challan " + response);
             this.location.back();
           }
         },
@@ -148,11 +148,6 @@ export class CreateChallanComponent {
     }
   }
 
-  removeChalan(chalan) {
-    const index = this.challans.indexOf(chalan);
-    this.challans.splice(index, 1);
-  }
-
   setCustomerDetail(customer) {
     this.customerId = customer.cust_id;
     this.customerAddress = customer.cust_address;
@@ -165,6 +160,29 @@ export class CreateChallanComponent {
 
   setVehicleDetail(vehicle) {
     this.vehicleId = vehicle.veh_id;
+  }
+
+  getChallanDetailById() {
+    const payload = { "data": { "chal_id": this.challanId } };
+    this.challanService.getChallanById(payload).subscribe(response => {
+      if (response.status == 200) {
+        if (response.challans != undefined && response.challans.length > 0) {
+          this.setChallanDetail(response.challans[0]);
+        }
+      }
+    },
+      error => {
+        console.log(error)
+      });
+  }
+
+  setChallanDetail(challan) {
+    this.customerName = challan.chal_cust_name;
+    this.customerAddress = challan.chal_cust_address;
+    this.productName = challan.chal_prod_name;
+    this.productUnit = challan.chal_prod_unit;
+    this.productQuantity = challan.chal_quantity;
+    this.vehicleNumber = challan.chal_veh_no;
   }
 
   clearChallanFields() {

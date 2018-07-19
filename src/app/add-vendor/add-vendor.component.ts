@@ -70,9 +70,10 @@ export class AddVendorComponent implements OnInit {
   }
 
   addNewVendor() {
+    
+    this.isFieldDisabled = !this.isFieldDisabled;
+    this.isCancelDisabled = !this.isCancelDisabled;
     this.isDeleteDisabled = true;
-    this.isFieldDisabled = false;
-    this.isCancelDisabled = true;
     this.changeButtonLabel(this.isFieldDisabled);
     this.clearVendorFields();
   }
@@ -80,8 +81,11 @@ export class AddVendorComponent implements OnInit {
   cancelClicked() {
     this.isFieldDisabled = !this.isFieldDisabled;
     this.isCancelDisabled = !this.isCancelDisabled;
+
     if (this.buttonLabel == "SAVE") {
       this.buttonLabel = "EDIT";
+      this.isDeleteDisabled = false;
+
       // Show first record
       const payload = { "data": { "vend_id": this.vendorId} };
       this.vendorService.getVendorById(payload).subscribe(response => {
@@ -133,6 +137,7 @@ export class AddVendorComponent implements OnInit {
       this.isEditClicked = true;
       this.isFieldDisabled = false;
       this.isCancelDisabled = false;
+      this.isDeleteDisabled = true;
     }
   }
 

@@ -30,7 +30,6 @@ export class ViewInvoiceComponent {
       this.invoices = response.invoices;
       this.dataSource = new MatTableDataSource<INVOICE>(this.invoices);
       this.dataSource.paginator = this.paginator;
-      console.log("View Invoice "+this.invoices);
     },
       error => {
         console.log(error)
@@ -48,7 +47,7 @@ export class ViewInvoiceComponent {
   showInvoiceDetails(invoice) {
     if (invoice != undefined) {
       let navigationExtras: NavigationExtras = {
-        queryParams: invoice
+        queryParams: { inv_id: invoice.inv_id}
       };
       // Redirect it to View Product screen
       this.router.navigate(['/create-invoice'], navigationExtras);
@@ -58,9 +57,10 @@ export class ViewInvoiceComponent {
 
 export interface INVOICE {
   inv_id: number;
+  inv_date: Date;
   inv_cust_id : number;
   inv_cust_name: string;
-  inv_cust_address: string;
+  inv_address: string;
   inv_contact_person: string;
-  inv_contact_no: string;
+  inv_contact: string;
 }

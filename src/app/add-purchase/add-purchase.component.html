@@ -7,8 +7,8 @@
 
   <mat-card-content class="container-css">
 
-    <div align="right">
-      <img (click)="addNewPurchase();" [src]="this.addImagePath">
+    <div align="right" style="height: 32px;">
+      <img (click)="addNewPurchase();" [src]="this.addImagePath" *ngIf="isFieldDisabled">
     </div>
 
     <mat-form-field>

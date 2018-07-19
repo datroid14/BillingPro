@@ -26,6 +26,12 @@ export class ChallanService {
                   .pipe(tap(res => null));
       }
 
+      getChallanById(payload:Object): Observable<ChallanResponse> {
+            return this.http
+                  .post<ChallanResponse>("http://localhost:3000/getChallanById", payload, httpOptions)
+                  .pipe(tap(res => null));
+      }
+
       addChallan(payload:Object): Observable<AddResponse> {
             return this.http
                   .post<AddResponse>('http://localhost:3000/addChallan', payload, httpOptions)

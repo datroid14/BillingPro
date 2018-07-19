@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CustomerService } from "../add-customer/customer.service";
-import { Customer } from '../add-customer/customer';
 import { ActivatedRoute } from "@angular/router";
 import { Location } from '@angular/common';
 import { AppService } from '../app.service';
@@ -31,6 +30,8 @@ export class AddCustomerComponent implements OnInit {
 
   isEditClicked: boolean;
 
+  isDeleteDisabled: boolean;
+
   // Variables for image paths
   addImagePath: string;
   removeImagePath: string;
@@ -39,11 +40,6 @@ export class AddCustomerComponent implements OnInit {
     private location: Location) {
     this.route.queryParams.subscribe(params => {
       this.customerId = params["cust_id"];
-      this.customerName = params["cust_name"];
-      this.contactPerson = params["cust_contact_person"];
-      this.contactNo = params["cust_contact"];
-      this.emailAddress = params["cust_email"];
-      this.customerAddress = params["cust_address"];
     });
     // Image paths
     this.addImagePath = "assets/images/ic_add_circle.svg";
@@ -62,6 +58,9 @@ export class AddCustomerComponent implements OnInit {
 
     // Change button label to save
     this.changeButtonLabel(this.isFieldDisabled);
+
+    // Get details of customer by id fetched from view customer
+    this.getCustomerDetailById();
   }
 
   addCustomer() {
@@ -72,7 +71,6 @@ export class AddCustomerComponent implements OnInit {
           const updatePayload = { "data": { "cust_id": this.customerId, "cust_name": this.customerName, "cust_contact_person": this.contactPerson, "cust_contact": this.contactNo, "cust_email": this.emailAddress, "cust_address": this.customerAddress } };
           this.customerService.updateCustomer(updatePayload).subscribe(response => {
             if (response.status == 200) {
-              console.log("Update customer " + response);
               this.location.back();
             }
           },
@@ -98,12 +96,9 @@ export class AddCustomerComponent implements OnInit {
       this.isEditClicked = true;
       this.buttonLabel = "SAVE";
       this.isFieldDisabled = false;
-      this.isCancelDisabled = false;
+      this.isCancelDisabled = false;    
+      this.isDeleteDisabled = true;
     }
-  }
-
-  removeCustomer(customer) {
-
   }
 
   clearFields() {
@@ -124,8 +119,9 @@ export class AddCustomerComponent implements OnInit {
 
   addNewCustomer() {
 
-    this.isFieldDisabled = false;
-    this.isCancelDisabled = true;
+    this.isFieldDisabled = !this.isFieldDisabled;
+    this.isCancelDisabled = !this.isCancelDisabled;
+    this.isDeleteDisabled = true;
     this.changeButtonLabel(this.isFieldDisabled);
     this.clearFields();
   }
@@ -133,9 +129,12 @@ export class AddCustomerComponent implements OnInit {
   cancelClicked() {
     this.isFieldDisabled = !this.isFieldDisabled;
     this.isCancelDisabled = !this.isCancelDisabled;
+    this.isDeleteDisabled = false;
+
     if (this.buttonLabel == "SAVE") {
       this.buttonLabel = "EDIT";
-      // Show first record
+      // Show last shown record
+      this.getCustomerDetailById();
     } else {
       this.buttonLabel = "SAVE";
     }
@@ -152,5 +151,29 @@ export class AddCustomerComponent implements OnInit {
       error => {
         console.log(error)
       });
+  }
+
+  getCustomerDetailById(){
+
+    const payload = { "data": { "cust_id": this.customerId } };
+      this.customerService.getCustomerById(payload).subscribe(response => {
+        if (response.status == 200) {
+          if (response.customers != undefined && response.customers.length > 0) {
+            this.setCustomerDetail(response.customers[0]);
+          }
+        }
+      },
+        error => {
+          console.log(error)
+        });
+  }
+
+  setCustomerDetail(customer){
+
+    this.customerName = customer.cust_name;
+    this.customerAddress = customer.cust_address;
+    this.contactNo = customer.cust_contact;
+    this.contactPerson = customer.cust_contact_person;
+    this.emailAddress = customer.cust_email;
   }
 }

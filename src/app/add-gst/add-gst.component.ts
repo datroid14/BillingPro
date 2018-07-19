@@ -70,11 +70,12 @@ export class AddGstComponent implements OnInit {
   }
 
   cancelClicked() {
-    debugger;
     this.isFieldDisabled = !this.isFieldDisabled;
     this.isCancelDisabled = !this.isCancelDisabled;
     if (this.buttonLabel == "SAVE") {
       this.buttonLabel = "EDIT";
+      this.isDeleteDisabled = false;
+
       // Show last shown record
       const payload = { "data": { "gst_id": this.gstId } };
       this.gstService.getGSTDetailsById(payload).subscribe(response => {
@@ -98,8 +99,7 @@ export class AddGstComponent implements OnInit {
         if (this.gstDesc == undefined){
             this.gstDesc = "";
         }
-        this.isDeleteDisabled = false;
-
+        
         if (this.isEditClicked) {
           const updatePayload = { "data": { "gst_id": this.gstId, "gst_hsn": this.gstHSN, "gst_percentage": this.gstPercentage, "gst_desc": this.gstDesc } };
           this.gstService.updateGSTDetails(updatePayload).subscribe(response => {
@@ -130,6 +130,7 @@ export class AddGstComponent implements OnInit {
       this.isEditClicked = true;
       this.isFieldDisabled = false;
       this.isCancelDisabled = false;
+      this.isDeleteDisabled = true;
     }
   }
 

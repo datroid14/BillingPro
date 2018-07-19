@@ -47,7 +47,7 @@ export class ViewCustomerComponent implements OnInit {
 
     if (customer != undefined) {
       let navigationExtras: NavigationExtras = {
-        queryParams: customer
+        queryParams: { cust_id: customer.cust_id}
       };
       // Redirect it to View Product screen
       this.router.navigate(['/add-customer'], navigationExtras);

@@ -56,6 +56,9 @@ import { AppService } from './app.service';
 import { VehicleService } from './add-vehicle/vehicle.service';
 import { InvoiceService } from './create-invoice/invoice.service';
 import { GSTService } from './add-gst/gst.service';
+import { ViewChequeDetailsComponent } from './view-cheque-details/view-cheque-details.component';
+import { AddChequeDetailsComponent } from './add-cheque-details/add-cheque-details.component';
+import { ChequeEntryService } from './add-cheque-details/cheque-entry.service';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -80,6 +83,8 @@ const appRoutes: Routes = [
   { path: 'view-vendor', component: ViewVendorComponent },
   { path: 'view-vehicle', component: ViewVehicleComponent },
   { path: 'view-invoice-copy', component: ViewInvoiceCopyComponent },
+  { path: 'add-cheque-details', component: AddChequeDetailsComponent },
+  { path: 'view-cheque-details', component: ViewChequeDetailsComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/view-customer', pathMatch: 'full' },
 ];
@@ -108,7 +113,9 @@ const appRoutes: Routes = [
     ViewInvoiceCopyComponent,
     ViewVehicleComponent,
     ViewGstComponent,
-    AddGstComponent
+    AddGstComponent,
+    ViewChequeDetailsComponent,
+    AddChequeDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -133,7 +140,7 @@ const appRoutes: Routes = [
     HttpModule,
     HttpClientModule
   ],
-  providers: [AppService, CustomerService, VendorService, ProductService, QuatationService, ChallanService, PurchaseService, VehicleService, InvoiceService, GSTService],
+  providers: [AppService, CustomerService, VendorService, ProductService, QuatationService, ChallanService, PurchaseService, VehicleService, InvoiceService, GSTService, ChequeEntryService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

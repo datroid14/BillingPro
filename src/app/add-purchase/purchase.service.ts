@@ -1,10 +1,8 @@
-import { Component } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { catchError, map, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { PurchaseResponse } from '../add-purchase/purchase.response';
 import { ProductResponse } from '../add-product/product.response';
 import { AddResponse } from '../common/add.response';
-import { Purchase } from '../add-purchase/purchase';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -24,6 +22,12 @@ export class PurchaseService {
       getPurchases(): Observable<PurchaseResponse> {
             return this.http
                   .post<PurchaseResponse>("http://localhost:3000/getPurchases", null)
+                  .pipe(tap(res => null));
+      }
+
+      getPurchaseById(payload:Object): Observable<PurchaseResponse> {
+            return this.http
+                  .post<PurchaseResponse>("http://localhost:3000/getPurchaseById", payload, httpOptions)
                   .pipe(tap(res => null));
       }
 

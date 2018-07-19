@@ -83,7 +83,6 @@ export class AddPurchaseComponent {
 
     this.challanService.getChallansByCustomerId(challanPayload).subscribe(response => {
       this.challans = response.challans;
-      console.log("Add Purchase " + JSON.stringify(this.challans));
     },
       error => {
         console.log(error)
@@ -91,7 +90,6 @@ export class AddPurchaseComponent {
 
     this.vendorService.getVendors().subscribe(response => {
       this.vendors = response.vendors;
-      console.log(this.vendors);
     },
       error => {
         console.log(error)
@@ -99,22 +97,12 @@ export class AddPurchaseComponent {
 
     this.productService.getProducts().subscribe(response => {
       this.products = response.products;
-      console.log(this.products);
     },
       error => {
         console.log(error)
       });
 
-    const productPayload = { "data": { "pur_id": this.purchaseId } };
-
-    this.purchaseService.getPurchaseProductsById(productPayload).subscribe(response => {
-      this.localProductList = response.products;
-      console.log("Puchase Products " + JSON.stringify(this.localProductList));
-      this.calculateTotal(null);
-    },
-      error => {
-        console.log(error)
-      });
+    this.getPurchaseProductsById();
   }
 
   changeButtonLabel(isDisabled) {
@@ -126,8 +114,8 @@ export class AddPurchaseComponent {
   }
 
   addNewPurchase() {
-    this.isFieldDisabled = false;
-    this.isCancelDisabled = true;
+    this.isFieldDisabled = !this.isFieldDisabled;
+    this.isCancelDisabled = !this.isCancelDisabled;
     this.changeButtonLabel(this.isFieldDisabled);
     this.clearPurchaseFields();
     this.clearProductFields();
@@ -138,7 +126,19 @@ export class AddPurchaseComponent {
     this.isCancelDisabled = !this.isCancelDisabled;
     if (this.buttonLabel == "SAVE") {
       this.buttonLabel = "EDIT";
-      // Show first record
+      debugger;
+      // Show last shown record
+      const payload = { "data": { "pur_id": this.purchaseId } };
+      this.purchaseService.getPurchaseById(payload).subscribe(response => {
+        if (response.status == 200) {
+          if (response.purchases != undefined && response.purchases.length > 0) {
+            this.setPurchaseDetail(response.purchases[0]);
+          }
+        }
+      },
+        error => {
+          console.log(error)
+        });
     } else {
       this.buttonLabel = "SAVE";
     }
@@ -240,6 +240,29 @@ export class AddPurchaseComponent {
     this.vehicleNo = challan.veh_number;
     this.productQuantity = challan.chal_quantity;
   }
+
+  setPurchaseDetail(purchase) {
+    this.purchaseId = purchase.pur_id;
+    this.purchaseDate = purchase.pur_date;
+    this.vendorName = purchase.pur_vendor;
+    this.contactPerson = purchase.pur_contact_person;
+    this.vendorAddress = purchase.vend_address;
+    this.contactNo = purchase.pur_contact;
+
+    this.getPurchaseProductsById();
+  }
+
+  getPurchaseProductsById() {
+    const productPayload = { "data": { "pur_id": this.purchaseId } };
+
+    this.purchaseService.getPurchaseProductsById(productPayload).subscribe(response => {
+      this.localProductList = response.products;
+      this.calculateTotal(null);
+    },
+      error => {
+        console.log(error)
+      });
+  }
 }
 
 class PurchaseProduct {
@@ -265,24 +288,5 @@ class PurchaseProduct {
     this.prod_qty = qty;
     this.prod_rate = rate;
     this.prod_total = total;
-  }
-}
-
-class Purchase {
-
-  purchaseDate: Date;
-  vendorName: string;
-  vendorAddress: string;
-  contactNo: number;
-  purchaseTotal: number;
-  product: Object[];
-
-  constructor(date, name, address, phone, total, product) {
-    this.purchaseDate = date;
-    this.vendorName = name;
-    this.vendorAddress = address;
-    this.contactNo = phone;
-    this.purchaseTotal = total;
-    this.product = product;
   }
 }

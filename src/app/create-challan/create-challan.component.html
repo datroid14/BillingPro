@@ -1,14 +1,14 @@
 <mat-card class="card-css">
   <mat-card-header>
     <mat-card-title>
-      <h2>Delivery Chalan</h2>
+      <h2>Delivery Challan</h2>
     </mat-card-title>
   </mat-card-header>
 
   <mat-card-content class="container-css">
 
-    <div align="right">
-      <img (click)="addNewChallan();" [src]="this.addImagePath">
+    <div align="right" style="height: 32px;">
+      <img (click)="addNewChallan();" [src]="this.addImagePath" *ngIf="isFieldDisabled">
     </div>
 
     <mat-form-field>

@@ -1,0 +1,45 @@
+<mat-card class="card-css">
+  <mat-card-header>
+    <mat-card-title>
+      <h2>Cheque Entry</h2>
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content class="container-css">
+
+    <div align="right" style="height: 32px;">
+      <img (click)="addNewChequeEntry();" [src]="this.addImagePath" *ngIf="isFieldDisabled">
+    </div>
+
+    <mat-form-field>
+      <input matInput [(ngModel)]="chequeDate" placeholder="Cheque Date" [disabled]= "isFieldDisabled" required>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select [(ngModel)]="customerName" name="customerName" placeholder="Customer Name" [disabled]="isFieldDisabled" required>
+        <mat-option *ngFor="let customer of customers" [value]="customer.cust_name" (click)="setCustomerDetail(customer)">
+          {{customer.cust_name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput [(ngModel)]="chequeNumber" placeholder="Cheque Number" [disabled]= "isFieldDisabled" required>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput type="number" [(ngModel)]="chequeAmount" placeholder="Cheque Amount" [disabled]= "isFieldDisabled" required>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput type="number" [(ngModel)]="accountNo" placeholder="Account Number" [disabled]= "isFieldDisabled" required>
+    </mat-form-field>
+
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="primary" (click)="addChequeEntry();">{{buttonLabel}}</button>
+    <button mat-raised-button color="primary" (click)="cancelClicked()" [disabled]="isCancelDisabled">CANCEL</button>
+    <button mat-raised-button color="primary" (click)="deleteChequeEntry();" [disabled]="isDeleteDisabled">DELETE</button>
+  </mat-card-actions>
+
+</mat-card>
