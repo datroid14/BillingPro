@@ -1,55 +1,66 @@
 <mat-card class="card-css">
-  <mat-card-header>
-    <mat-card-title>
-      <h2>Delivery Challan</h2>
-    </mat-card-title>
-  </mat-card-header>
+    <mat-card-header>
+        <mat-card-title>
+            <h2>Delivery Challan</h2>
+        </mat-card-title>
+    </mat-card-header>
 
-  <mat-card-content class="container-css">
+    <mat-card-content class="container-css">
 
-    <div align="right" style="height: 32px;">
-      <img (click)="addNewChallan();" [src]="this.addImagePath" *ngIf="isFieldDisabled">
-    </div>
+        <div align="right" style="height: 32px;">
+            <img (click)="addNewChallan();" [src]="this.addImagePath" *ngIf="isFieldDisabled">
+        </div>
 
-    <mat-form-field>
-      <mat-select [(ngModel)]="customerName" name="customerName" placeholder="Customer Name" [disabled]="isFieldDisabled" required>
-        <mat-option *ngFor="let customer of customers" [value]="customer.cust_name" (click)="setCustomerDetail(customer)">
-          {{customer.cust_name}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+        <mat-form-field>
+            <input matInput type="date" date-picker [(ngModel)]="challanDate" [disabled]="isFieldDisabled" placeholder="Challan Date" required/>
+        </mat-form-field>
 
-    <mat-form-field>
-      <input matInput [(ngModel)]="customerAddress" placeholder="Address" [disabled]="isFieldDisabled" required>
-    </mat-form-field>
+        <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
 
-    <mat-form-field>
-      <mat-select [(ngModel)]="productName" name="productName" placeholder="Material Name" [disabled]="isFieldDisabled" required>
-        <mat-option *ngFor="let product of products" [value]="product.prod_name" (click)="setProductDetail(product)">
-          {{product.prod_name}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+        <mat-form-field>
+            <mat-select [(ngModel)]="customerName" name="customerName" placeholder="Customer Name" [disabled]="isFieldDisabled" required>
+                <mat-option *ngFor="let customer of customers" [value]="customer.cust_name" (click)="setCustomerDetail(customer)">
+                    {{customer.cust_name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
 
-    <mat-form-field>
-      <input matInput [(ngModel)]="productUnit" placeholder="Unit" [disabled]="isFieldDisabled" required>
-    </mat-form-field>
+        <mat-form-field>
+            <input matInput [(ngModel)]="customerAddress" placeholder="Address" [disabled]="isFieldDisabled" required>
+        </mat-form-field>
 
-    <mat-form-field>
-      <input matInput type="number" [(ngModel)]="productQuantity" placeholder="Quantity" [disabled]="isFieldDisabled" required>
-    </mat-form-field>
+        <mat-form-field>
+            <mat-select [(ngModel)]="productName" name="productName" placeholder="Material Name" [disabled]="isFieldDisabled" required>
+                <mat-option *ngFor="let product of products" [value]="product.prod_name" (click)="setProductDetail(product)">
+                    {{product.prod_name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
 
-    <mat-form-field>
-      <mat-select [(ngModel)]="vehicleNumber" name="vehicleNumber" placeholder="Vehicle Number" [disabled]="isFieldDisabled" required>
-        <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle.veh_number" (click)="setVehicleDetail(vehicle);">
-          {{vehicle.veh_number}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+        <mat-form-field>
+            <input matInput [(ngModel)]="productUnit" placeholder="Unit" [disabled]="isFieldDisabled" required>
+        </mat-form-field>
 
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-raised-button color="primary" (click)="addChallan();">{{buttonLabel}}</button>
-    <button mat-raised-button color="primary" (click)="cancelClicked()" [disabled]="isCancelDisabled">CANCEL</button>
-  </mat-card-actions>
+        <mat-form-field>
+            <input matInput type="number" [(ngModel)]="productQuantity" placeholder="Quantity" [disabled]="isFieldDisabled" required>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-select [(ngModel)]="vehicleNumber" name="vehicleNumber" placeholder="Vehicle Number" [disabled]="isFieldDisabled" required>
+                <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle.veh_number" (click)="setVehicleDetail(vehicle);">
+                    {{vehicle.veh_number}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="addChallan();">{{buttonLabel}}</button>
+        <button mat-raised-button color="primary" (click)="cancelClicked()" [disabled]="isCancelDisabled">CANCEL</button>
+        <button mat-raised-button color="primary" (click)="printChallanDetail()" [disabled]="!isCancelDisabled">PRINT</button>
+    </mat-card-actions>
 </mat-card>

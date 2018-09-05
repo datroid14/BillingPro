@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { ChequeEntryService } from "../add-cheque-details/cheque-entry.service";
 import { CustomerService } from "../add-customer/customer.service";
@@ -25,7 +25,7 @@ export class AddChequeDetailsComponent implements OnInit {
   customerName: string;
   chequeNumber: string;
   chequeAmount: number;
-  accountNo: number;
+  accountNo: string;
   chequeCustomerId: number;
 
   // Variables for image paths
@@ -36,15 +36,15 @@ export class AddChequeDetailsComponent implements OnInit {
     private customerService: CustomerService, private location: Location) {
     this.route.queryParams.subscribe(params => {
       this.chequeEntryId = params["cheque_entry_id"];
-      this.chequeDate = params["cheque_date"];
-      this.chequeCustomerId = params["cheque_cust_id"];
-      this.customerName = params["cust_name"];
-      this.chequeNumber = params["cheque_number"];
-      this.chequeAmount = params["cheque_amount"];
-      this.accountNo = params["account_no"];
     });
     this.addImagePath = "assets/images/ic_add_circle.svg";
     this.removeImagePath = "assets/images/ic_remove_circle.svg";
+
+    if (this.chequeEntryId != undefined) {
+      this.getChequeEntryById();
+    } else {
+      this.addNewChequeEntry();
+    }
 
     this.customerService.getCustomers().subscribe(response => {
       this.customers = response.customers;
@@ -92,17 +92,7 @@ export class AddChequeDetailsComponent implements OnInit {
     if (this.buttonLabel == "SAVE") {
       this.buttonLabel = "EDIT";
       // Show last shown record
-      const payload = { "data": { "cheque_entry_id": this.chequeEntryId } };
-      this.chequeEntryService.getChequeEntryById(payload).subscribe(response => {
-        if (response.status == 200) {
-          if (response.chequeEntries != undefined && response.chequeEntries.length > 0) {
-            this.setChequeEntryDetail(response.chequeEntries[0]);
-          }
-        }
-      },
-        error => {
-          console.log(error)
-        });
+      this.getChequeEntryById();
     } else {
       this.buttonLabel = "SAVE";
     }
@@ -124,7 +114,7 @@ export class AddChequeDetailsComponent implements OnInit {
               console.log(error)
             });
         } else {
-          const addPayload = { "data": { "cheque_date": this.chequeDate, "cheque_number": this.chequeNumber, "cheque_amount": this.chequeAmount, "account_no": this.accountNo, "cheque_cust_id": this.chequeCustomerId } };
+          const addPayload = { "data": { "cheque_date": "2018-05-27", "cheque_number": this.chequeNumber, "cheque_amount": this.chequeAmount, "account_no": this.accountNo, "cheque_cust_id": this.chequeCustomerId } };
           this.chequeEntryService.addChequeEntry(addPayload).subscribe(response => {
             if (response.status == 200) {
               this.location.back();
@@ -159,6 +149,8 @@ export class AddChequeDetailsComponent implements OnInit {
     this.chequeEntryService.deleteChequeEntry(deletePayload).subscribe(response => {
       if (response.status == 200) {
         this.location.back();
+      } else if (response.status == 501){
+        console.log(response.message);
       }
     },
       error => {
@@ -175,7 +167,21 @@ export class AddChequeDetailsComponent implements OnInit {
     this.accountNo = cheque_entry.account_no;
   }
 
-  setCustomerDetail(customer){
+  setCustomerDetail(customer) {
     this.chequeCustomerId = customer.cust_id;
+  }
+
+  getChequeEntryById() {
+    const payload = { "data": { "cheque_entry_id": this.chequeEntryId } };
+    this.chequeEntryService.getChequeEntryById(payload).subscribe(response => {
+      if (response.status == 200) {
+        if (response.chequeEntries != undefined && response.chequeEntries.length > 0) {
+          this.setChequeEntryDetail(response.chequeEntries[0]);
+        }
+      }
+    },
+      error => {
+        console.log(error)
+      });
   }
 }

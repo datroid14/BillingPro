@@ -1,14 +1,16 @@
-import { Component, ViewChild } from '@angular/core';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { Component } from '@angular/core';
 import { CustomerService } from "../add-customer/customer.service";
 import { ProductService } from "../add-product/product.service";
 import { ChallanService } from "../create-challan/challan.service";
 import { VehicleService } from "../add-vehicle/vehicle.service";
+import { Challan } from "../create-challan/challan";
 import { AppService } from '../app.service';
 import { Router, NavigationExtras } from '@angular/router';
 import { ActivatedRoute } from "@angular/router";
 import { Location } from '@angular/common';
-
+import { DatepickerOptions } from 'ng2-datepicker';
+import * as frLocale from 'date-fns/locale/fr';
+ 
 @Component({
   selector: 'create-challan',
   templateUrl: './create-challan.component.html',
@@ -41,6 +43,24 @@ export class CreateChallanComponent {
   // Variables for image paths
   addImagePath: string;
   removeImagePath: string;
+
+  options: DatepickerOptions = {
+    minYear: 1970,
+    maxYear: 2030,
+    displayFormat: 'MMM D[,] YYYY',
+    barTitleFormat: 'MMMM YYYY',
+    dayNamesFormat: 'dd',
+    firstCalendarDay: 0, // 0 - Sunday, 1 - Monday
+    locale: frLocale,
+    minDate: new Date(Date.now()), // Minimal selectable date
+    maxDate: new Date(Date.now()),  // Maximal selectable date
+    barTitleIfEmpty: 'Click to select a date',
+    placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
+    addClass: 'form-control', // Optional, value to pass on to [ngClass] on the input field
+    addStyle: {}, // Optional, value to pass to [ngStyle] on the input field
+    fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
+    useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
+  };
 
   constructor(private route: ActivatedRoute, private customerService: CustomerService, private productService: ProductService,
     private challanService: ChallanService, private router: Router, private appService: AppService, private location: Location,
@@ -113,7 +133,6 @@ export class CreateChallanComponent {
   }
 
   cancelClicked() {
-    debugger;
     this.isFieldDisabled = !this.isFieldDisabled;
     this.isCancelDisabled = !this.isCancelDisabled;
     if (this.buttonLabel == "SAVE") {
@@ -193,6 +212,17 @@ export class CreateChallanComponent {
     this.productUnit = undefined;
     this.productQuantity = undefined;
     this.vehicleNumber = undefined;
+  }
+
+  printChallanDetail() {
+    const challanObj = new Challan(this.challanId, "2018-08-05", this.customerName, this.customerAddress, this.productName, this.productUnit, this.productQuantity, this.vehicleNumber);
+    if (challanObj != undefined) {
+      let navigationExtras: NavigationExtras = {
+        queryParams: challanObj
+      };
+      // Redirect it to View Product screen
+      this.router.navigate(['/view-challan-copy'], navigationExtras);
+    }
   }
 }
 

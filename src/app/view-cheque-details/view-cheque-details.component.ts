@@ -28,8 +28,12 @@ export class ViewChequeDetailsComponent implements OnInit {
 
     this.chequeEntryService.getChequeEntries().subscribe(response => {
       this.chequeEntries = response.chequeEntries;
+      if(this.chequeEntries.length > 0){
       this.dataSource = new MatTableDataSource<CHEQUEENTRY>(this.chequeEntries);
       this.dataSource.paginator = this.paginator;
+      }else{
+        this.showChequeEntryDetails(undefined);
+      }
     },
       error => {
         console.log(error)
@@ -43,6 +47,9 @@ export class ViewChequeDetailsComponent implements OnInit {
       };
       // Redirect it to Add Cheque Entry screen
       this.router.navigate(['/add-cheque-details'], navigationExtras);
+    }else{
+      // Redirect it to Add Cheque Entry screen without data
+      this.router.navigate(['/add-cheque-details']);
     }
   }
 }

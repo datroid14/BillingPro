@@ -48,7 +48,7 @@ export class ViewQuatationComponent implements OnInit {
 
     if (quatation != undefined) {
       let navigationExtras: NavigationExtras = {
-        queryParams: quatation
+        queryParams: { quat_id: quatation.quat_id}
       };
       // Redirect it to View Product screen
       this.router.navigate(['/create-quatation'], navigationExtras);

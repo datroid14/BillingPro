@@ -1,0 +1,32 @@
+<mat-card class="card-css">
+    <mat-card-header>
+        <mat-card-title>
+            <h2>Delivery Challan</h2>
+        </mat-card-title>
+    </mat-card-header>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+        <div id="print-section">
+            <p>Challan Date: {{challanDate}} </p>
+
+            <p>Challan Number: {{challanNo}} </p>
+
+            <p>M/S. {{customerName}}</p>
+
+            <p>Challan Address - {{customerAddress}}</p>
+
+            <p>Material - {{ productName}}</p>
+
+            <p>Unit - {{ productUnit}}</p>
+
+            <p>Quantity - {{ productQty}}</p>
+
+            <p>Vehicle No. - {{ vehicleNo}}</p>
+
+        </div>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="primary">BACK</button>
+        <button mat-raised-button color="primary" (click)="printQuatation()">PRINT</button>
+    </mat-card-actions>
+</mat-card>

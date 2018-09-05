@@ -59,6 +59,9 @@ import { GSTService } from './add-gst/gst.service';
 import { ViewChequeDetailsComponent } from './view-cheque-details/view-cheque-details.component';
 import { AddChequeDetailsComponent } from './add-cheque-details/add-cheque-details.component';
 import { ChequeEntryService } from './add-cheque-details/cheque-entry.service';
+import { ViewQuatationCopyComponent } from './view-quatation-copy/view-quatation-copy.component';
+import { ViewChallanCopyComponent } from './view-challan-copy/view-challan-copy.component';
+import { ViewPurchaseCopyComponent } from './view-purchase-copy/view-purchase-copy.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -83,6 +86,9 @@ const appRoutes: Routes = [
   { path: 'view-vendor', component: ViewVendorComponent },
   { path: 'view-vehicle', component: ViewVehicleComponent },
   { path: 'view-invoice-copy', component: ViewInvoiceCopyComponent },
+  { path: 'view-quatation-copy', component: ViewQuatationCopyComponent },
+  { path: 'view-challan-copy', component: ViewChallanCopyComponent },
+  { path: 'view-purchase-copy', component: ViewPurchaseCopyComponent },
   { path: 'add-cheque-details', component: AddChequeDetailsComponent },
   { path: 'view-cheque-details', component: ViewChequeDetailsComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -115,7 +121,10 @@ const appRoutes: Routes = [
     ViewGstComponent,
     AddGstComponent,
     ViewChequeDetailsComponent,
-    AddChequeDetailsComponent
+    AddChequeDetailsComponent,
+    ViewQuatationCopyComponent,
+    ViewChallanCopyComponent,
+    ViewPurchaseCopyComponent
   ],
   imports: [
     BrowserModule,

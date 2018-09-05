@@ -36,11 +36,6 @@ export class AddVendorComponent implements OnInit {
     private location: Location) {
     this.route.queryParams.subscribe(params => {
       this.vendorId = params["vend_id"];
-      this.vendorName = params["vend_name"];
-      this.contactPerson = params["vend_contact_person"];
-      this.contactNo = params["vend_contact"];
-      this.emailAddress = params["vend_email"];
-      this.vendorAddress = params["vend_address"];
     });
     // Image paths
     this.addImagePath = "assets/images/ic_add_circle.svg";
@@ -59,6 +54,8 @@ export class AddVendorComponent implements OnInit {
 
     // Change button label to save
     this.changeButtonLabel(this.isFieldDisabled);
+
+    this.getVendorById();
   }
 
   changeButtonLabel(isDisabled) {
@@ -70,7 +67,7 @@ export class AddVendorComponent implements OnInit {
   }
 
   addNewVendor() {
-    
+
     this.isFieldDisabled = !this.isFieldDisabled;
     this.isCancelDisabled = !this.isCancelDisabled;
     this.isDeleteDisabled = true;
@@ -87,30 +84,20 @@ export class AddVendorComponent implements OnInit {
       this.isDeleteDisabled = false;
 
       // Show first record
-      const payload = { "data": { "vend_id": this.vendorId} };
-      this.vendorService.getVendorById(payload).subscribe(response => {
-        if (response.status == 200) {
-          if (response.vendors != undefined && response.vendors.length > 0) {
-            this.setVendorDetail(response.vendors[0]);
-          }
-        }
-      },
-        error => {
-          console.log(error)
-        });
+      this.getVendorById();
     } else {
       this.buttonLabel = "SAVE";
     }
   }
 
   addVendor() {
+    debugger;
     if (this.buttonLabel == "SAVE") {
       if (this.vendorName != undefined && this.vendorAddress != undefined && this.contactNo != undefined) {
         if (this.isEditClicked) {
           const updatePayload = { "data": { "vend_id": this.vendorId, "vend_name": this.vendorName, "vend_contact_person": this.contactPerson, "vend_contact": this.contactNo, "vend_email": this.emailAddress, "vend_address": this.vendorAddress } };
           this.vendorService.updateVendor(updatePayload).subscribe(response => {
             if (response.status == 200) {
-              console.log("Update Vendor " + response);
               this.location.back();
             }
           },
@@ -121,7 +108,6 @@ export class AddVendorComponent implements OnInit {
           const addPayload = { "data": { "vend_name": this.vendorName, "vend_contact_person": this.contactPerson, "vend_contact": this.contactNo, "vend_email": this.emailAddress, "vend_address": this.vendorAddress } };
           this.vendorService.addVendor(addPayload).subscribe(response => {
             if (response.status == 200) {
-              console.log("Add Vendor " + response);
               this.location.back();
             }
           },
@@ -141,10 +127,6 @@ export class AddVendorComponent implements OnInit {
     }
   }
 
-  removeVendor(vendor) {
-
-  }
-
   clearVendorFields() {
     this.vendorName = undefined;
     this.contactNo = undefined;
@@ -159,6 +141,8 @@ export class AddVendorComponent implements OnInit {
       if (response.status == 200) {
         console.log("Delete vendor " + response);
         this.location.back();
+      } else if (response.status == 501) {
+        console.log(response.message);
       }
     },
       error => {
@@ -172,5 +156,20 @@ export class AddVendorComponent implements OnInit {
     this.contactNo = vendor.vend_contact;
     this.contactPerson = vendor.vend_contact_person;
     this.emailAddress = vendor.vend_email;
+  }
+
+  getVendorById() {
+
+    const payload = { "data": { "vend_id": this.vendorId } };
+    this.vendorService.getVendorById(payload).subscribe(response => {
+      if (response.status == 200) {
+        if (response.vendors != undefined && response.vendors.length > 0) {
+          this.setVendorDetail(response.vendors[0]);
+        }
+      }
+    },
+      error => {
+        console.log(error)
+      });
   }
 }

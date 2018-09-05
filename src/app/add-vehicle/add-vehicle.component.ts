@@ -149,6 +149,8 @@ export class AddVehicleComponent implements OnInit {
     this.vehicleService.deleteVehicle(deletePayload).subscribe(response => {
       if (response.status == 200) {
         this.location.back();
+      } else if (response.status == 501){
+        console.log(response.message);
       }
     },
       error => {

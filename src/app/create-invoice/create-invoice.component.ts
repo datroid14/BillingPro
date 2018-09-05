@@ -62,13 +62,6 @@ export class CreateInvoiceComponent {
     private appService: AppService, private location: Location, private gstService: GSTService) {
     this.route.queryParams.subscribe(params => {
       this.invoiceId = params["inv_id"];
-      // this.invoiceDate = params["inv_date"];
-      // this.customerId = params["inv_cust_id"];
-      // this.customerName = params["inv_customer"];
-      // this.contactPerson = params["inv_contact_person"];
-      // this.contactNo = params["inv_contact"];
-      // this.customerAddress = params["inv_address"];
-      // this.totalInvoiceAmount = params["inv_total_amount"];
     });
     this.addImagePath = "assets/images/ic_add_circle.svg";
     this.removeImagePath = "assets/images/ic_remove_circle.svg";
@@ -232,7 +225,7 @@ export class CreateInvoiceComponent {
     this.customerAddress = customer.cust_address;
     this.contactPerson = customer.cust_contact_person;
     this.contactNo = customer.cust_contact;
-
+    this.clearProductFields();
     this.getChallansByCustomerId();
   }
 
@@ -248,6 +241,10 @@ export class CreateInvoiceComponent {
     this.challanDate = challan.chal_date;
     this.vehicleNo = challan.veh_number;
     this.productQuantity = challan.chal_quantity;
+    this.productName = challan.prod_name;
+    this.productHSN = challan.prod_hsn;
+    this.productUnit = challan.prod_unit;
+    this.productRate = challan.prod_rate;
   }
 
   printInvoiceDetail() {

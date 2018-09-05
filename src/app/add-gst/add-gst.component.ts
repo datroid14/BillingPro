@@ -151,6 +151,8 @@ export class AddGstComponent implements OnInit {
       if (response.status == 200) {
         console.log("Delete vendor " + response);
         this.location.back();
+      } else if (response.status == 501){
+        console.log(response.message);
       }
     },
       error => {

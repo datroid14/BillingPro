@@ -40,7 +40,7 @@ export class ViewProductComponent implements OnInit {
 
     if (product != undefined) {
       let navigationExtras: NavigationExtras = {
-        queryParams: product
+        queryParams: { prod_id: product.prod_id}
       };
       // Redirect it to View Product screen
       this.router.navigate(['/add-product'], navigationExtras);

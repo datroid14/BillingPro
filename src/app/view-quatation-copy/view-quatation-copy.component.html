@@ -1,0 +1,55 @@
+<mat-card class="card-css">
+    <mat-card-header>
+        <mat-card-title>
+            <h2>Quatation</h2>
+        </mat-card-title>
+    </mat-card-header>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+        <div id="print-section">
+            <p>Quatation Date: {{quatationDate}} </p>
+            <p>Quatation Number: {{quatationNo}} </p>
+            <p>M/S</p>
+            <p>{{customerName}}</p>
+            <p>Quatation Address</p>
+            <p>{{customerAddress}}</p>
+            <p>Contact Person</p>
+            <p>{{contactPerson}}</p>
+            <p>Subject: Quotation for supply of all types of Stone Metal</p>
+            <p>Respected Sir, </p>
+            <p>Thank you for your inquiry. We are delighted to introduce ourself as pioneer of the Stone Suppliers in Pune District. We are supplier of all types of Stone Metals.</p>
+            <p>We like to quote our Quatation for supplying required material for you as follows - </p>
+            <table style="width:100%;border:1">
+                <thead>
+                    <tr>
+                        <th class="input-css">Sr. No.</th>
+                        <th class="input-css">Material</th>
+                        <th class="input-css">Unit</th>
+                        <th class="input-css">Rate</th>
+                        <th class="input-css">Description</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr *ngFor="let product of products;let i=index">
+                        <td class="input-css">{{i+1}}</td>
+                        <td class="input-css">{{product.prod_name}}</td>
+                        <td class="input-css">{{product.prod_unit}}</td>
+                        <td class="input-css">{{product.prod_rate}}</td>
+                        <td class="input-css">{{product.prod_desc}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>Terms and Conditions:</p>
+            <p>1. GST @5% extra.<br> 2. Credit will be allowed only for 15 days from the date of Invoice.<br>3. We accept payments in two Installments (50% at the time of Purchase Order and next at the time of delivery).<br> 4. Delivery Time 15-30 Days from
+                the date of Purchase Order.</p>
+            <p>Please contact us if you have any queries.</p>
+            <p>We assure you quantity, quality and genuine service.</p>
+            <p> For Order Placement, mail to info@shubhamenterprises.com</p>
+        </div>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="primary">BACK</button>
+        <button mat-raised-button color="primary" (click)="printQuatation()">PRINT</button>
+    </mat-card-actions>
+</mat-card>

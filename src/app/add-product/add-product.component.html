@@ -1,37 +1,45 @@
 <mat-card class="card-css">
-  <mat-card-header>
-    <mat-card-title>
-      <h2>Products</h2>
-    </mat-card-title>
-  </mat-card-header>
+    <mat-card-header>
+        <mat-card-title>
+            <h2>Products</h2>
+        </mat-card-title>
+    </mat-card-header>
 
-  <mat-card-content class="container-css">
+    <mat-card-content class="container-css">
 
-    <div align="right" style="height: 32px;">
-      <img (click)="addNewProduct();" [src]="this.addImagePath" *ngIf="isFieldDisabled">
-    </div>
+        <div align="right" style="height: 32px;">
+            <img (click)="addNewProduct();" [src]="this.addImagePath" *ngIf="isFieldDisabled">
+        </div>
 
-    <mat-form-field>
-      <input matInput [(ngModel)]="productName" placeholder="Product Name" [disabled]= "isFieldDisabled" required>
-    </mat-form-field>
+        <mat-form-field>
+            <input matInput [(ngModel)]="productName" placeholder="Material" [disabled]="isFieldDisabled" required>
+        </mat-form-field>
 
-    <mat-form-field>
-      <input matInput [(ngModel)]="productUnit" placeholder="Unit" [disabled]= "isFieldDisabled" required>
-    </mat-form-field>
+        <mat-form-field>
+            <input matInput [(ngModel)]="productUnit" placeholder="Unit" [disabled]="isFieldDisabled" required>
+        </mat-form-field>
 
-    <mat-form-field>
-      <input matInput type="number" [(ngModel)]="productPrice" placeholder="Price" [disabled]= "isFieldDisabled" required>
-    </mat-form-field>
+        <mat-form-field>
+            <mat-select [(ngModel)]="productHSN" name="productHSN" placeholder="HSN" [disabled]="isFieldDisabled" required>
+                <mat-option *ngFor="let gst of gstDetails" [value]="gst.gst_hsn" (click)="setGSTDetail(gst)">
+                    {{gst.gst_hsn}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
 
-    <mat-form-field>
-      <input matInput [(ngModel)]="productDesc" placeholder="Description" [disabled]= "isFieldDisabled">
-    </mat-form-field>
+        <mat-form-field>
+            <input matInput type="number" [(ngModel)]="productPrice" placeholder="Price" [disabled]="isFieldDisabled" required>
+        </mat-form-field>
 
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-raised-button color="primary" (click)="addProduct();">{{buttonLabel}}</button>
-    <button mat-raised-button color="primary" (click)="cancelClicked()" [disabled]="isCancelDisabled">CANCEL</button>
-    <button mat-raised-button color="primary" (click)="deleteProduct();" [disabled]="isDeleteDisabled">DELETE</button>
-  </mat-card-actions>
+        <mat-form-field>
+            <input matInput [(ngModel)]="productDesc" placeholder="Description" [disabled]="isFieldDisabled">
+        </mat-form-field>
+
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="addProduct();">{{buttonLabel}}</button>
+        <button mat-raised-button color="primary" (click)="cancelClicked()" [disabled]="isCancelDisabled">CANCEL</button>
+        <button mat-raised-button color="primary" (click)="deleteProduct();" [disabled]="isDeleteDisabled">DELETE</button>
+    </mat-card-actions>
 
 </mat-card>

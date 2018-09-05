@@ -1,103 +1,103 @@
 <mat-card class="card-css">
-  <mat-card-header align="center">
-    <mat-card-title>
-      <h2>Quatation</h2>
-    </mat-card-title>
-  </mat-card-header>
+    <mat-card-header align="center">
+        <mat-card-title>
+            <h2>Quatation</h2>
+        </mat-card-title>
+    </mat-card-header>
 
-  <mat-card-content class="container-css">
+    <mat-card-content class="container-css">
 
-    <div align="right" style="height: 32px;">
-      <img (click)="addNewQuatation();" [src]="this.addImagePath" *ngIf="isFieldDisabled">
-    </div>
+        <div align="right" style="height: 32px;">
+            <img (click)="addNewQuatation();" [src]="this.addImagePath" *ngIf="isFieldDisabled">
+        </div>
 
-    <mat-form-field>
-      <input matInput [matDatepicker]="picker" [ngModel]="quatationDate" placeholder="Choose a date" [disabled]="isFieldDisabled"
-        required>
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
+        <mat-form-field>
+            <input matInput [matDatepicker]="picker" [ngModel]="quatationDate" placeholder="Choose a date" [disabled]="isFieldDisabled" required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
 
-    <mat-form-field>
-      <mat-select [(ngModel)]="customerName" name="customerName" placeholder="Customer Name" [disabled]="isFieldDisabled" required>
-        <mat-option *ngFor="let customer of customers" [value]="customer.cust_name" (click)="setCustomerDetail(customer)">
-          {{customer.cust_name}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+        <mat-form-field>
+            <mat-select [(ngModel)]="customerName" name="customerName" placeholder="Customer Name" [disabled]="isFieldDisabled" required>
+                <mat-option *ngFor="let customer of customers" [value]="customer.cust_name" (click)="setCustomerDetail(customer)">
+                    {{customer.cust_name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
 
-    <mat-form-field>
-      <input matInput [(ngModel)]="customerAddress" placeholder="Address" [disabled]="isFieldDisabled" required>
-    </mat-form-field>
+        <mat-form-field>
+            <input matInput [(ngModel)]="customerAddress" placeholder="Address" [disabled]="isFieldDisabled" required>
+        </mat-form-field>
 
-    <mat-form-field>
-      <input matInput [(ngModel)]="contactPerson" placeholder="Contact Person" [disabled]="isFieldDisabled" required>
-    </mat-form-field>
+        <mat-form-field>
+            <input matInput [(ngModel)]="contactPerson" placeholder="Contact Person" [disabled]="isFieldDisabled" required>
+        </mat-form-field>
 
-    <mat-form-field>
-      <input matInput type="number" [(ngModel)]="contactNo" placeholder="Contact Number" [disabled]="isFieldDisabled" required>
-    </mat-form-field>
+        <mat-form-field>
+            <input matInput type="number" [(ngModel)]="contactNo" placeholder="Contact Number" [disabled]="isFieldDisabled" required>
+        </mat-form-field>
 
-    <mat-card class="inner-card-css">
+        <mat-card class="inner-card-css">
 
-      <table style="width:100%">
-        <thead>
-          <tr>
-            <th>No.</th>
-            <th>Material</th>
-            <th>Description</th>
-            <th>Unit</th>
-            <th>Rate</th>
-          </tr>
-          <tr *ngIf="!isFieldDisabled">
-            <th>
-            </th>
-            <th class="input-css">
-              <mat-form-field>
-                <mat-select [(ngModel)]="productName" name="productName" required>
-                  <mat-option *ngFor="let product of products" [value]="product.prod_name" (click)="setProductDetail(product)">
-                    {{product.prod_name}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </th>
-            <th class="input-css">
-              <mat-form-field>
-                <input matInput [(ngModel)]="productDesc" required>
-              </mat-form-field>
-            </th>
-            <th class="input-css">
-              <mat-form-field>
-                <input matInput [(ngModel)]="productUnit" required>
-              </mat-form-field>
-            </th>
-            <th class="input-css">
-              <mat-form-field>
-                <input matInput type="number" [(ngModel)]="productRate" (ngModelChange)="calculateTotal($event)" required>
-              </mat-form-field>
-            </th>
-            <th>
-              <img (click)="addProduct()" [src]="this.addImagePath">
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let product of localProductList;let i=index">
-            <td class="input-css">{{i+1}}</td>
-            <td class="input-css">{{product.prod_name}}</td>
-            <td class="input-css">{{product.prod_desc}}</td>
-            <td class="input-css">{{product.prod_unit}}</td>
-            <td class="input-css amount-css">{{product.prod_rate}}</td>
-            <td *ngIf="!isFieldDisabled">
-              <img (click)="removeProduct(product)" [src]="this.removeImagePath">
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </mat-card>
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-raised-button color="primary" (click)="createQuatation()">{{buttonLabel}}</button>
-    <button mat-raised-button color="primary" (click)="cancelClicked()" [disabled]="isCancelDisabled">CANCEL</button>
-  </mat-card-actions>
+            <table style="width:100%">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Material</th>
+                        <th>Description</th>
+                        <th>Unit</th>
+                        <th>Rate</th>
+                    </tr>
+                    <tr *ngIf="!isFieldDisabled">
+                        <th>
+                        </th>
+                        <th class="input-css">
+                            <mat-form-field>
+                                <mat-select [(ngModel)]="productName" name="productName" required>
+                                    <mat-option *ngFor="let product of products" [value]="product.prod_name" (click)="setProductDetail(product)">
+                                        {{product.prod_name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </th>
+                        <th class="input-css">
+                            <mat-form-field>
+                                <input matInput [(ngModel)]="productDesc" required>
+                            </mat-form-field>
+                        </th>
+                        <th class="input-css">
+                            <mat-form-field>
+                                <input matInput [(ngModel)]="productUnit" required>
+                            </mat-form-field>
+                        </th>
+                        <th class="input-css">
+                            <mat-form-field>
+                                <input matInput type="number" [(ngModel)]="productRate" (ngModelChange)="calculateTotal($event)" required>
+                            </mat-form-field>
+                        </th>
+                        <th>
+                            <img (click)="addProduct()" [src]="this.addImagePath">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let product of localProductList;let i=index">
+                        <td class="input-css">{{i+1}}</td>
+                        <td class="input-css">{{product.prod_name}}</td>
+                        <td class="input-css">{{product.prod_desc}}</td>
+                        <td class="input-css">{{product.prod_unit}}</td>
+                        <td class="input-css amount-css">{{product.prod_rate}}</td>
+                        <td *ngIf="!isFieldDisabled">
+                            <img (click)="removeProduct(product)" [src]="this.removeImagePath">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </mat-card>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="createQuatation()">{{buttonLabel}}</button>
+        <button mat-raised-button color="primary" (click)="cancelClicked()" [disabled]="isCancelDisabled">CANCEL</button>
+        <button mat-raised-button color="primary" (click)="printQuatationDetail()" [disabled]="!isCancelDisabled">PRINT</button>
+    </mat-card-actions>
 </mat-card>

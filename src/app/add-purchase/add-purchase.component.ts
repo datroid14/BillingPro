@@ -4,6 +4,7 @@ import { VendorService } from "../add-vendor/vendor.service";
 import { ProductService } from "../add-product/product.service";
 import { PurchaseService } from "../add-purchase/purchase.service";
 import { ChallanService } from "../create-challan/challan.service";
+import { Purchase } from "../add-purchase/purchase";
 import { Location } from '@angular/common';
 import { AppService } from "../app.service"
 
@@ -262,6 +263,17 @@ export class AddPurchaseComponent {
       error => {
         console.log(error)
       });
+  }
+
+  printPurchaseDetail() {
+    const purchaseObj = new Purchase(this.purchaseId, this.purchaseDate, this.vendorName, this.vendorAddress, this.contactPerson, this.contactNo, JSON.stringify(this.localProductList));
+    if (purchaseObj != undefined) {
+      let navigationExtras: NavigationExtras = {
+        queryParams: purchaseObj
+      };
+      // Redirect it to View Purchase screen
+      this.router.navigate(['/view-purchase-copy'], navigationExtras);
+    }
   }
 }
 

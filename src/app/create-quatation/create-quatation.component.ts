@@ -3,9 +3,10 @@ import { Product } from "../add-product/product";
 import { CustomerService } from "../add-customer/customer.service";
 import { ProductService } from "../add-product/product.service";
 import { QuatationService } from "../create-quatation/quatation.service";
-import { ActivatedRoute } from "@angular/router";
+import { Router, ActivatedRoute, NavigationExtras } from "@angular/router";
 import { Location } from '@angular/common';
 import { AppService } from "../app.service"
+import { Quatation } from './quatation';
 
 @Component({
   selector: 'create-quatation',
@@ -30,7 +31,6 @@ export class CreateQuatationComponent implements OnInit {
   productUnit: string;
   productQuantity: number;
   productRate: number;
-  totalAmount: number;
 
   // Variables used for invoice
   quatations = [];
@@ -47,15 +47,9 @@ export class CreateQuatationComponent implements OnInit {
   removeImagePath: string;
 
   constructor(private customerService: CustomerService, private productService: ProductService, private appService: AppService,
-    private quatationService: QuatationService, private route: ActivatedRoute, private location: Location) {
+    private quatationService: QuatationService, private route: ActivatedRoute, private location: Location, private router: Router) {
     this.route.queryParams.subscribe(params => {
-      debugger;
       this.quatationId = params["quat_id"];
-      this.quatationDate = params["quat_date"];
-      this.customerName = params["quat_customer"];
-      this.contactPerson = params["quat_contact_person"];
-      this.contactNo = params["quat_contact"];
-      this.customerAddress = params["quat_address"];
     });
     this.addImagePath = "assets/images/ic_add_circle.svg";
     this.removeImagePath = "assets/images/ic_remove_circle.svg";
@@ -83,7 +77,7 @@ export class CreateQuatationComponent implements OnInit {
         console.log(error)
       });
 
-      this.getQuatationProducts();
+    this.getQuatationById();
   }
 
   changeButtonLabel(isDisabled) {
@@ -113,17 +107,7 @@ export class CreateQuatationComponent implements OnInit {
     if (this.buttonLabel == "SAVE") {
       this.buttonLabel = "EDIT";
       // Show last shown record
-      const payload = { "data": { "quat_id": this.quatationId } };
-      this.quatationService.getQuatationById(payload).subscribe(response => {
-        if (response.status == 200) {
-          if (response.quatations != undefined && response.quatations.length > 0) {
-            this.setQuatationDetail(response.quatations[0]);
-          }
-        }
-      },
-        error => {
-          console.log(error)
-        });
+      this.getQuatationById();
     } else {
       this.buttonLabel = "SAVE";
     }
@@ -144,7 +128,7 @@ export class CreateQuatationComponent implements OnInit {
     if (this.buttonLabel == "SAVE") {
       if (this.customerName != undefined && this.customerAddress != undefined && this.contactPerson != undefined
         && this.contactNo != undefined && (this.localProductList != undefined && this.localProductList.length > 0)) {
-        const payload = { "data": { "quat_date": this.quatationDate, "quat_cust_id": this.customerId, "quat_products": this.localProductList } };
+        const payload = { "data": { "quat_date": "2018-07-01", "quat_cust_id": this.customerId, "quat_products": this.localProductList } };
         this.quatationService.addQuatation(payload).subscribe(response => {
           if (response.status == 200) {
             this.buttonLabel = "EDIT";
@@ -196,7 +180,7 @@ export class CreateQuatationComponent implements OnInit {
     this.getQuatationProducts();
   }
 
-  getQuatationProducts(){
+  getQuatationProducts() {
     const payload = { "data": { "quat_id": this.quatationId } };
 
     this.quatationService.getQuatationProductsById(payload).subscribe(response => {
@@ -206,5 +190,29 @@ export class CreateQuatationComponent implements OnInit {
         console.log(error)
       });
   }
-}
 
+  getQuatationById() {
+    const payload = { "data": { "quat_id": this.quatationId } };
+    this.quatationService.getQuatationById(payload).subscribe(response => {
+      if (response.status == 200) {
+        if (response.quatations != undefined && response.quatations.length > 0) {
+          this.setQuatationDetail(response.quatations[0]);
+        }
+      }
+    },
+      error => {
+        console.log(error)
+      });
+  }
+
+  printQuatationDetail() {
+    const quatationObj = new Quatation(this.quatationId, this.quatationDate, this.customerName, this.customerAddress, this.contactPerson, this.contactNo, JSON.stringify(this.localProductList));
+    if (quatationObj != undefined) {
+      let navigationExtras: NavigationExtras = {
+        queryParams: quatationObj
+      };
+      // Redirect it to View Product screen
+      this.router.navigate(['/view-quatation-copy'], navigationExtras);
+    }
+  }
+}

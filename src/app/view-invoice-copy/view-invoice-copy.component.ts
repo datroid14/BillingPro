@@ -58,5 +58,4 @@ export class ViewInvoiceCopyComponent implements OnInit {
     );
     popupWin.document.close();
   }
-
 }
