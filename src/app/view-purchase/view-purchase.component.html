@@ -1,41 +1,42 @@
-<div class="example-container mat-elevation-z8" >
-
-  <mat-card style="padding:5px">
-    <mat-table #table [dataSource]="dataSource" >
-
-      <!-- Date Column -->
-      <ng-container matColumnDef="date">
-        <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
-        <mat-cell *matCellDef="let purchase"> {{purchase.pur_date}} </mat-cell>
-      </ng-container>
-
-      <!-- Customer Column -->
-      <ng-container matColumnDef="vendor">
-        <mat-header-cell *matHeaderCellDef> Vendor </mat-header-cell>
-        <mat-cell *matCellDef="let purchase"> {{purchase.pur_vendor}} </mat-cell>
-      </ng-container>
-
-      <!-- Contact Person Column -->
-      <ng-container matColumnDef="contact_person">
-        <mat-header-cell *matHeaderCellDef> Contact Person </mat-header-cell>
-        <mat-cell *matCellDef="let purchase"> {{purchase.pur_contact_person}} </mat-cell>
-      </ng-container>
-
-      <!-- Contact Column -->
-      <ng-container matColumnDef="contact">
-        <mat-header-cell *matHeaderCellDef> Contact No. </mat-header-cell>
-        <mat-cell *matCellDef="let purchase"> {{purchase.pur_contact}} </mat-cell>
-      </ng-container>
-
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showPurchaseDetails(row)"></mat-row>
-    </mat-table>
-
-    <mat-paginator #paginator [pageSize]="15" [pageSizeOptions]="[10,15]" [showFirstLastButtons]="true">
-    </mat-paginator>
-  </mat-card>
+<div>
+    <label>Purchase Details</label>
+    <button (click)="showPurchaseDetails();">ADD NEW</button>
 </div>
 
+<div class="example-container mat-elevation-z8">
 
+    <mat-card style="padding:5px">
+        <mat-table #table [dataSource]="dataSource">
 
+            <!-- Date Column -->
+            <ng-container matColumnDef="date">
+                <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                <mat-cell *matCellDef="let purchase"> {{purchase.pur_date}} </mat-cell>
+            </ng-container>
 
+            <!-- Customer Column -->
+            <ng-container matColumnDef="vendor">
+                <mat-header-cell *matHeaderCellDef> Vendor </mat-header-cell>
+                <mat-cell *matCellDef="let purchase"> {{purchase.pur_vendor}} </mat-cell>
+            </ng-container>
+
+            <!-- Contact Person Column -->
+            <ng-container matColumnDef="contact_person">
+                <mat-header-cell *matHeaderCellDef> Contact Person </mat-header-cell>
+                <mat-cell *matCellDef="let purchase"> {{purchase.pur_contact_person}} </mat-cell>
+            </ng-container>
+
+            <!-- Contact Column -->
+            <ng-container matColumnDef="contact">
+                <mat-header-cell *matHeaderCellDef> Contact No. </mat-header-cell>
+                <mat-cell *matCellDef="let purchase"> {{purchase.pur_contact}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showPurchaseDetails(row)"></mat-row>
+        </mat-table>
+
+        <mat-paginator #paginator [pageSize]="15" [pageSizeOptions]="[10,15]" [showFirstLastButtons]="true">
+        </mat-paginator>
+    </mat-card>
+</div>

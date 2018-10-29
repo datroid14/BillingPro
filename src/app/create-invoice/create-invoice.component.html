@@ -6,13 +6,16 @@
     </mat-card-header>
 
     <mat-card-content class="container-css">
-
+        <div><input type="checkbox" [checked]="isWithoutTax" (change)="isWithoutTax = !isWithoutTax" style="padding-left: 12px;">Without Tax
+        </div>
         <div align="right" style="height: 32px;">
             <img (click)="addNewInvoice();" [src]="this.addImagePath" *ngIf="isFieldDisabled">
         </div>
 
         <mat-form-field>
-            <input matInput type="date" date-picker [(ngModel)]="invoiceDate" [disabled]="isFieldDisabled" placeholder="Invoice Date" required/>
+            <input matInput [matDatepicker]="picker" placeholder="Invoice Date" [(ngModel)]="invoiceDate" [disabled]="isFieldDisabled">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field>
@@ -32,7 +35,7 @@
         </mat-form-field>
 
         <mat-form-field>
-            <input matInput type="number" [(ngModel)]="contactNo" placeholder="Contact Number" [disabled]="isFieldDisabled" required>
+            <input matInput type="number" [(ngModel)]="contactNo" placeholder="Contact Number" [disabled]="isFieldDisabled" maxlength="10" required>
         </mat-form-field>
 
         <mat-card class="inner-card-css">
@@ -47,15 +50,18 @@
                         <th>Material</th>
                         <th>HSN Code</th>
                         <th>Unit</th>
+                        <th>Quantity</th>
                         <th>Rate</th>
-                        <th>Msr. Total</th>
+                        <th>Sub Total</th>
+                        <th *ngIf="!isWithoutTax">Tax</th>
                         <th>Total</th>
+                        <th></th>
                     </tr>
                     <tr *ngIf="!isFieldDisabled">
                         <th class="input-css">
                         </th>
                         <th>
-                            <mat-form-field class="table-form-wide-field">
+                            <mat-form-field class="table-form-field">
                                 <mat-select [(ngModel)]="challanNo" name="challanNo">
                                     <mat-option *ngFor="let challan of challans" [value]="challan.chal_id" (click)="setChallanDetail(challan)">
                                         {{challan.chal_id}}
@@ -64,17 +70,19 @@
                             </mat-form-field>
                         </th>
                         <th>
-                            <mat-form-field class="table-form-wide-field">
-                                <input matInput [(ngModel)]="challanDate" required/>
+                            <mat-form-field class="table-form-med-field">
+                                <input matInput [matDatepicker]="picker" [(ngModel)]="challanDate" [disabled]="true">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                        </th>
+                        <th>
+                            <mat-form-field class="table-form-med-field">
+                                <input matInput [(ngModel)]="vehicleNo" [disabled]="true" maxlength="10" required />
                             </mat-form-field>
                         </th>
                         <th>
                             <mat-form-field class="table-form-wide-field">
-                                <input matInput [(ngModel)]="vehicleNo" required />
-                            </mat-form-field>
-                        </th>
-                        <th>
-                            <mat-form-field style="width: 200px !important; padding: 8px;">
                                 <mat-select [(ngModel)]="productName" name="productName">
                                     <mat-option *ngFor="let product of products" [value]="product.prod_name" (click)="setProductDetail(product)">
                                         {{product.prod_name}}
@@ -83,7 +91,7 @@
                             </mat-form-field>
                         </th>
                         <th>
-                            <mat-form-field class="table-form-wide-field">
+                            <mat-form-field class="table-form-field">
                                 <mat-select [(ngModel)]="productHSN" name="productHSN">
                                     <mat-option *ngFor="let gst of gstDetails" [value]="gst.gst_hsn" (click)="setGSTDetail(gst)">
                                         {{gst.gst_hsn}}
@@ -93,22 +101,32 @@
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput [(ngModel)]="productUnit" required>
+                                <input matInput [(ngModel)]="productUnit" [disabled]="true" required>
                             </mat-form-field>
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="productRate" (ngModelChange)="productId == 7 ? calculateForJCB($event) : calculateTotal($event)" required>
+                                <input matInput type="number" [(ngModel)]="productQuantity" (ngModelChange)="productName == 'JCB' ? calculateForJCB() : calculateTotal()" maxlength="6" required>
                             </mat-form-field>
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="productQuantity" (ngModelChange)="productId == 7 ? calculateForJCB($event) : calculateTotal($event)" required>
+                                <input matInput type="number" [(ngModel)]="productRate" (ngModelChange)="productName == 'JCB' ? calculateForJCB() : calculateTotal()" maxlength="8" required>
                             </mat-form-field>
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="totalAmount" required>
+                                <input matInput type="number" [(ngModel)]="subTotalAmount" maxlength="8" (ngModelChange)="calculateTaxAmount()" required>
+                            </mat-form-field>
+                        </th>
+                        <th *ngIf="!isWithoutTax">
+                            <mat-form-field class="table-form-field">
+                                <input matInput type="number" [(ngModel)]="taxAmount" maxlength="8" required>
+                            </mat-form-field>
+                        </th>
+                        <th>
+                            <mat-form-field class="table-form-field">
+                                <input matInput type="number" [(ngModel)]="totalAmount" maxlength="8" required>
                             </mat-form-field>
                         </th>
                         <th>
@@ -125,18 +143,22 @@
                         <td class="input-css">{{product.prod_name}}</td>
                         <td class="input-css">{{product.prod_hsn}}</td>
                         <td class="input-css">{{product.prod_unit}}</td>
-                        <td class="input-css">{{product.prod_rate}}</td>
                         <td class="input-css">{{product.prod_qty}}</td>
-                        <td class="input-css">{{product.prod_total_amount}}</td>
+                        <td class="input-css">{{product.prod_rate}}</td>
+                        <td class="input-css">{{product.prod_sub_total}}</td>
+                        <td class="input-css" *ngIf="!isWithoutTax">{{product.prod_tax}}</td>
+                        <td class="input-css">{{product.prod_total_amount }}</td>
                         <td *ngIf="!isFieldDisabled">
                             <img (click)="removeProduct(product)" [src]="this.removeImagePath">
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <mat-form-field>
-                <input matInput type="number" [disabled]="true" [(ngModel)]="totalInvoiceAmount" required>
-            </mat-form-field>
+            <div align="right">
+                <mat-form-field>
+                    <b><input style="text-align: right" matInput type="number" [disabled]="true" [(ngModel)]="totalInvoiceAmount" maxlength="8" required></b>
+                </mat-form-field>
+            </div>
         </mat-card>
     </mat-card-content>
     <mat-card-actions>

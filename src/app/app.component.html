@@ -1,28 +1,28 @@
-<!--The content below is only a placeholder and can be replaced.-->
 <!-- <h1>Shubham Enterprises</h1> -->
 
 <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.xs="0">
+    <div style="height:1000px;" fxFlex="20%" *ngIf="isLoginPage | async">
+        <mat-card>
 
+            <nav [ngClass]="'menu'" fxLayout="column">
+                <a routerLink="/view-customer" routerLinkActive="active-link" style="margin:12px;">Customers</a>
+                <a routerLink="/view-product" routerLinkActive="active-link" style="margin:12px;">Products</a>
+                <a routerLink="/view-vendor" routerLinkActive="active-link" style="margin:12px;">Vendors</a>
+                <a routerLink="/view-invoice" routerLinkActive="active-link" style="margin:12px;">Invoices</a>
+                <a routerLink="/view-challan" routerLinkActive="active-link" style="margin:12px;">Delivery Challans</a>
+                <a routerLink="/view-purchase" routerLinkActive="active-link" style="margin:12px;">Purchases</a>
+                <a routerLink="/view-quatation" routerLinkActive="active-link" style="margin:12px;">Quatations</a>
+                <a routerLink="/view-cheque-details" routerLinkActive="active-link" style="margin:12px;">Cheque Entries</a>
+                <a routerLink="/view-employee" routerLinkActive="active-link" style="margin:12px;">Employees</a>
+                <a routerLink="/view-payment-detail" routerLinkActive="active-link" style="margin:12px;">Payment Details</a>
+                <a routerLink="/view-diesel-entry" routerLinkActive="active-link" style="margin:12px;">Diesel Entries</a>
+                <a routerLink="/view-vehicle" routerLinkActive="active-link" style="margin:12px;">Vehicles</a>
+                <a routerLink="/view-gst" routerLinkActive="active-link" style="margin:12px;">GST Details</a>
+            </nav>
 
-  <div style="height:1000px;" fxFlex="20%" *ngIf="isLoginPage | async">
-    <mat-card>
-
-      <nav [ngClass]="'menu'" fxLayout="column">
-        <a routerLink="/view-customer" routerLinkActive="active-link" style="margin:12px;">Customers</a>
-        <a routerLink="/view-product" routerLinkActive="active-link" style="margin:12px;">Products</a>
-        <a routerLink="/view-vendor" routerLinkActive="active-link" style="margin:12px;">Vendors</a>
-        <a routerLink="/view-invoice" routerLinkActive="active-link" style="margin:12px;">Invoices</a>
-        <a routerLink="/view-challan" routerLinkActive="active-link" style="margin:12px;">Delivery Challans</a>
-        <a routerLink="/view-purchase" routerLinkActive="active-link" style="margin:12px;">Purchases</a>
-        <a routerLink="/view-quatation" routerLinkActive="active-link" style="margin:12px;">Quatations</a>
-        <a routerLink="/view-cheque-details" routerLinkActive="active-link" style="margin:12px;">Cheque Entries</a>
-        <a routerLink="/view-vehicle" routerLinkActive="active-link" style="margin:12px;">Vehicles</a>
-        <a routerLink="/view-gst" routerLinkActive="active-link" style="margin:12px;">GST</a>
-      </nav>
-
-    </mat-card>
-  </div>
-  <div fxFlex="80%">
-    <router-outlet></router-outlet>
-  </div> 
+        </mat-card>
+    </div>
+    <div fxFlex="80%">
+        <router-outlet></router-outlet>
+    </div>
 </div>

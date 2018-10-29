@@ -1,40 +1,42 @@
-<div class="example-container mat-elevation-z8" >
-
-  <mat-card style="padding:5px">
-    <mat-table #table [dataSource]="dataSource" >
-
-      <!-- Position Column -->
-      <ng-container matColumnDef="date">
-        <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
-        <mat-cell *matCellDef="let cheque_entry"> {{cheque_entry.cheque_date}} </mat-cell>
-      </ng-container>
-
-      <!-- Weight Column -->
-      <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-        <mat-cell *matCellDef="let cheque_entry"> {{cheque_entry.cust_name}} </mat-cell>
-      </ng-container>
-
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="cheque">
-        <mat-header-cell *matHeaderCellDef> Cheque </mat-header-cell>
-        <mat-cell *matCellDef="let cheque_entry"> {{cheque_entry.cheque_number}} </mat-cell>
-      </ng-container>
-
-      <!-- Name Column -->
-      <ng-container matColumnDef="amount">
-        <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
-        <mat-cell *matCellDef="let cheque_entry"> {{cheque_entry.cheque_amount}} </mat-cell>
-      </ng-container>
-
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showChequeEntryDetails(row)"></mat-row>
-    </mat-table>
-
-    <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[10,20]" [showFirstLastButtons]="true">
-    </mat-paginator>
-  </mat-card>
+<div>
+    <label>Cheque Details</label>
+    <button (click)="showChequeEntryDetails();">ADD NEW</button>
 </div>
 
+<div class="example-container mat-elevation-z8">
 
+    <mat-card style="padding:5px">
+        <mat-table #table [dataSource]="dataSource">
 
+            <!-- Position Column -->
+            <ng-container matColumnDef="date">
+                <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                <mat-cell *matCellDef="let cheque_entry"> {{cheque_entry.cheque_date}} </mat-cell>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                <mat-cell *matCellDef="let cheque_entry"> {{cheque_entry.cust_name}} </mat-cell>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="cheque">
+                <mat-header-cell *matHeaderCellDef> Cheque </mat-header-cell>
+                <mat-cell *matCellDef="let cheque_entry"> {{cheque_entry.cheque_number}} </mat-cell>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="amount">
+                <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
+                <mat-cell *matCellDef="let cheque_entry"> {{cheque_entry.cheque_amount}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showChequeEntryDetails(row)"></mat-row>
+        </mat-table>
+
+        <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[10,20]" [showFirstLastButtons]="true">
+        </mat-paginator>
+    </mat-card>
+</div>

@@ -7,6 +7,7 @@ import { Router, ActivatedRoute, NavigationExtras } from "@angular/router";
 import { Location } from '@angular/common';
 import { AppService } from "../app.service"
 import { Quatation } from './quatation';
+import * as moment from 'moment';
 
 @Component({
   selector: 'create-quatation',
@@ -59,9 +60,7 @@ export class CreateQuatationComponent implements OnInit {
 
     this.appService.showDrawer(true);
 
-    this.isFieldDisabled = true;
-    this.isCancelDisabled = true;
-    this.changeButtonLabel(this.isFieldDisabled);
+    this.showUIChanges();
 
     this.customerService.getCustomers().subscribe(response => {
       this.customers = response.customers;
@@ -76,8 +75,29 @@ export class CreateQuatationComponent implements OnInit {
       error => {
         console.log(error)
       });
+  }
 
-    this.getQuatationById();
+  showUIChanges() {
+    if (this.quatationId != undefined) {
+
+      // Disable all fields for view mode
+      this.isFieldDisabled = true;
+
+      // Disable cancel button initially
+      this.isCancelDisabled = true;
+
+      // Get payment details by id
+      this.getQuatationById();
+    } else {
+      // Enable all fields for view mode
+      this.isFieldDisabled = false;
+
+      // Enable cancel button initially
+      this.isCancelDisabled = false;
+    }
+
+    // Change button label to save
+    this.changeButtonLabel(this.isFieldDisabled);
   }
 
   changeButtonLabel(isDisabled) {
@@ -128,7 +148,8 @@ export class CreateQuatationComponent implements OnInit {
     if (this.buttonLabel == "SAVE") {
       if (this.customerName != undefined && this.customerAddress != undefined && this.contactPerson != undefined
         && this.contactNo != undefined && (this.localProductList != undefined && this.localProductList.length > 0)) {
-        const payload = { "data": { "quat_date": "2018-07-01", "quat_cust_id": this.customerId, "quat_products": this.localProductList } };
+        var formattedQuatationDate = moment(this.quatationDate).format('YYYY-MM-DD');
+        const payload = { "data": { "quat_date": formattedQuatationDate, "quat_cust_id": this.customerId, "quat_products": this.localProductList } };
         this.quatationService.addQuatation(payload).subscribe(response => {
           if (response.status == 200) {
             this.buttonLabel = "EDIT";
@@ -192,6 +213,7 @@ export class CreateQuatationComponent implements OnInit {
   }
 
   getQuatationById() {
+    if(this.quatationId != undefined){
     const payload = { "data": { "quat_id": this.quatationId } };
     this.quatationService.getQuatationById(payload).subscribe(response => {
       if (response.status == 200) {
@@ -203,6 +225,9 @@ export class CreateQuatationComponent implements OnInit {
       error => {
         console.log(error)
       });
+    } else {
+      this.location.back();
+    }
   }
 
   printQuatationDetail() {

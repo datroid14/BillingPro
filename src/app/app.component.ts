@@ -12,6 +12,7 @@ export class AppComponent {
   isLoginPage : Observable<boolean>;
 
   constructor( public appService : AppService ) {
+    // enableProdMode();
     this.isLoginPage = appService.isDrawerShown();
   }
 

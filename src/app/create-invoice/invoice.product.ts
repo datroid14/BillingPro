@@ -3,15 +3,18 @@ export class InvoiceProduct {
     prod_qty: number;
     inv_id: number;
     chal_id: number;
-    chal_date: Date;
+    chal_date: string;
     veh_number: string;
     prod_name: string;
     prod_hsn: number;
+    prod_percentage: number;
     prod_unit: string;
     prod_rate: number;
+    prod_sub_total_amount: number;
+    prod_tax_amount: number;
     prod_total_amount: number;
   
-    constructor(prod_id, chal_id, date, vehicle, name, hsn, unit, rate, qty, total) {
+    constructor(prod_id, chal_id, date, vehicle, name, hsn, unit, rate, qty, subTotal, tax, total) {
       this.prod_id = prod_id;
       this.prod_qty = qty;
       this.chal_id = chal_id;
@@ -21,6 +24,8 @@ export class InvoiceProduct {
       this.prod_hsn = hsn;
       this.prod_unit = unit;
       this.prod_rate = rate;
+      this.prod_sub_total_amount = subTotal;
+      this.prod_tax_amount = tax;
       this.prod_total_amount = total;
     }
 }

@@ -20,14 +20,15 @@ export class ViewInvoiceCopyComponent implements OnInit {
   products = [];
 
   public constructor(private route: ActivatedRoute, private appService: AppService) {
+    debugger;
     this.taxAmount = 0;
     this.invoiceTotalAmount = 0;
     this.route.queryParams.subscribe(params => {
       this.invoiceNo = params["inv_id"];
       this.invoiceDate = params["inv_date"];
-      this.customerName = params["inv_cust_name"];
-      this.customerAddress = params["inv_cust_address"];
-      this.contactNo = params["inv_contact_no"];
+      this.customerName = params["inv_customer"];
+      this.customerAddress = params["inv_address"];
+      this.contactNo = params["inv_contact"];
       this.invoiceTotal = parseInt(params["inv_total_amount"]);
       this.taxAmount = this.invoiceTotal * 0.025;
       this.invoiceTotalAmount = this.invoiceTotal + (this.taxAmount * 2);
@@ -50,8 +51,14 @@ export class ViewInvoiceCopyComponent implements OnInit {
         <head>
           <title>Shubham Print Menu</title>
           <style>
-          //Customized style
-          </style>
+            table,
+            th,
+            td {
+                border: 1px solid grey;
+                border-collapse: collapse;
+                padding: 2px;
+              }
+        </style>
         </head>
         <body onload="window.print();window.close()">${printContents}</body>
       </html>`

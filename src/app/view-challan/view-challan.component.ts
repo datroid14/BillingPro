@@ -3,6 +3,7 @@ import { ChallanService } from "../create-challan/challan.service";
 import { Router, NavigationExtras } from '@angular/router';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { AppService } from '../app.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'view-chalan',
@@ -14,7 +15,7 @@ export class ViewChallanComponent implements OnInit {
 
   challans;
 
-  displayedColumns = ['name', 'address', 'material', 'unit', 'quantity','vehicle'];
+  displayedColumns = ['name', 'address', 'material', 'unit', 'quantity', 'vehicle'];
   dataSource;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -28,9 +29,12 @@ export class ViewChallanComponent implements OnInit {
 
     this.challanService.getChallans().subscribe(response => {
       this.challans = response.challans;
+      for (let i = 0; i < this.challans.length; i++) {
+        this.challans[i].cheque_date = moment(this.challans[i].cheque_date).format('DD MMM YYYY');
+      }
       this.dataSource = new MatTableDataSource<CHALLAN>(this.challans);
       this.dataSource.paginator = this.paginator;
-      
+
     },
       error => {
         console.log(error)
@@ -48,10 +52,12 @@ export class ViewChallanComponent implements OnInit {
   showChallanDetails(challan) {
     if (challan != undefined) {
       let navigationExtras: NavigationExtras = {
-        queryParams: challan
+        queryParams: { chal_id: challan.chal_id }
       };
       // Redirect it to View Product screen
       this.router.navigate(['/create-challan'], navigationExtras);
+    } else {
+      this.router.navigate(['/create-challan']);
     }
   }
 }

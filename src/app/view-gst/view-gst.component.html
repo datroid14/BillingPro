@@ -1,31 +1,36 @@
-<div class="example-container mat-elevation-z8" >
+<div>
+    <label>GST Details</label>
+    <button (click)="showGSTDetails();">ADD NEW</button>
+</div>
 
-  <mat-card style="padding:5px">
-    <mat-table #table [dataSource]="dataSource" >
+<div class="example-container mat-elevation-z8">
 
-      <!-- Name Column -->
-      <ng-container matColumnDef="hsn">
-        <mat-header-cell *matHeaderCellDef> HSN Code </mat-header-cell>
-        <mat-cell *matCellDef="let gst"> {{gst.gst_hsn}} </mat-cell>
-      </ng-container>
+    <mat-card style="padding:5px">
+        <mat-table #table [dataSource]="dataSource">
 
-      <!-- Number Column -->
-      <ng-container matColumnDef="percentage">
-        <mat-header-cell *matHeaderCellDef> Percentage </mat-header-cell>
-        <mat-cell *matCellDef="let gst"> {{gst.gst_percentage}} </mat-cell>
-      </ng-container>
+            <!-- Name Column -->
+            <ng-container matColumnDef="hsn">
+                <mat-header-cell *matHeaderCellDef> HSN Code </mat-header-cell>
+                <mat-cell *matCellDef="let gst"> {{gst.gst_hsn}} </mat-cell>
+            </ng-container>
 
-      <!-- Desc Column -->
-      <ng-container matColumnDef="desc">
-        <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
-        <mat-cell *matCellDef="let gst"> {{gst.gst_desc}} </mat-cell>
-      </ng-container>
+            <!-- Number Column -->
+            <ng-container matColumnDef="percentage">
+                <mat-header-cell *matHeaderCellDef> Percentage </mat-header-cell>
+                <mat-cell *matCellDef="let gst"> {{gst.gst_percentage}} </mat-cell>
+            </ng-container>
 
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showGSTDetails(row)"></mat-row>
-    </mat-table>
+            <!-- Desc Column -->
+            <ng-container matColumnDef="desc">
+                <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+                <mat-cell *matCellDef="let gst"> {{gst.gst_desc}} </mat-cell>
+            </ng-container>
 
-    <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[10,20]" [showFirstLastButtons]="true">
-    </mat-paginator>
-  </mat-card>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showGSTDetails(row)"></mat-row>
+        </mat-table>
+
+        <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[10,20]" [showFirstLastButtons]="true">
+        </mat-paginator>
+    </mat-card>
 </div>

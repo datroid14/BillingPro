@@ -45,6 +45,17 @@ import { ViewInvoiceCopyComponent } from './view-invoice-copy/view-invoice-copy.
 import { ViewVehicleComponent } from './view-vehicle/view-vehicle.component';
 import { ViewGstComponent } from './view-gst/view-gst.component';
 import { AddGstComponent } from './add-gst/add-gst.component';
+import { ViewChequeDetailsComponent } from './view-cheque-details/view-cheque-details.component';
+import { AddChequeDetailsComponent } from './add-cheque-details/add-cheque-details.component';
+import { ViewQuatationCopyComponent } from './view-quatation-copy/view-quatation-copy.component';
+import { ViewChallanCopyComponent } from './view-challan-copy/view-challan-copy.component';
+import { ViewPurchaseCopyComponent } from './view-purchase-copy/view-purchase-copy.component';
+import { AddDieselEntryComponent } from './add-diesel-entry/add-diesel-entry.component';
+import { AddEmployeeComponent } from './add-employee/add-employee.component';
+import { AddPaymentComponent } from './add-payment/add-payment.component';
+import { ViewDieselEntryComponent } from './view-diesel-entry/view-diesel-entry.component';
+import { ViewPaymentDetailComponent } from './view-payment-detail/view-payment-detail.component';
+import { ViewEmployeeComponent } from './view-employee/view-employee.component';
 
 import { CustomerService } from './add-customer/customer.service';
 import { VendorService } from './add-vendor/vendor.service';
@@ -56,12 +67,10 @@ import { AppService } from './app.service';
 import { VehicleService } from './add-vehicle/vehicle.service';
 import { InvoiceService } from './create-invoice/invoice.service';
 import { GSTService } from './add-gst/gst.service';
-import { ViewChequeDetailsComponent } from './view-cheque-details/view-cheque-details.component';
-import { AddChequeDetailsComponent } from './add-cheque-details/add-cheque-details.component';
 import { ChequeEntryService } from './add-cheque-details/cheque-entry.service';
-import { ViewQuatationCopyComponent } from './view-quatation-copy/view-quatation-copy.component';
-import { ViewChallanCopyComponent } from './view-challan-copy/view-challan-copy.component';
-import { ViewPurchaseCopyComponent } from './view-purchase-copy/view-purchase-copy.component';
+import { EmployeeService } from './add-employee/employee.service';
+import { DieselEntryService } from './add-diesel-entry/diesel-entry.service';
+import { PaymentService } from './add-payment/payment.service';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -91,8 +100,13 @@ const appRoutes: Routes = [
   { path: 'view-purchase-copy', component: ViewPurchaseCopyComponent },
   { path: 'add-cheque-details', component: AddChequeDetailsComponent },
   { path: 'view-cheque-details', component: ViewChequeDetailsComponent },
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: '**', redirectTo: '/view-customer', pathMatch: 'full' },
+  { path: 'view-employee', component: ViewEmployeeComponent },
+  { path: 'view-diesel-entry', component: ViewDieselEntryComponent },
+  { path: 'view-payment-detail', component: ViewPaymentDetailComponent },
+  { path: 'add-diesel-entry', component: AddDieselEntryComponent },
+  { path: 'add-employee', component: AddEmployeeComponent },
+  { path: 'add-payment', component: AddPaymentComponent },
+  { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 
 @NgModule({
@@ -124,7 +138,13 @@ const appRoutes: Routes = [
     AddChequeDetailsComponent,
     ViewQuatationCopyComponent,
     ViewChallanCopyComponent,
-    ViewPurchaseCopyComponent
+    ViewPurchaseCopyComponent,
+    AddDieselEntryComponent,
+    AddEmployeeComponent,
+    AddPaymentComponent,
+    ViewDieselEntryComponent,
+    ViewPaymentDetailComponent,
+    ViewEmployeeComponent
   ],
   imports: [
     BrowserModule,
@@ -149,7 +169,9 @@ const appRoutes: Routes = [
     HttpModule,
     HttpClientModule
   ],
-  providers: [AppService, CustomerService, VendorService, ProductService, QuatationService, ChallanService, PurchaseService, VehicleService, InvoiceService, GSTService, ChequeEntryService],
+  providers: [AppService, CustomerService, VendorService, ProductService, QuatationService, ChallanService, 
+    PurchaseService, VehicleService, InvoiceService, GSTService, ChequeEntryService, EmployeeService, 
+    DieselEntryService, PaymentService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

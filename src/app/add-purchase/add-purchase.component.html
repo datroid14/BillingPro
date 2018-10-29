@@ -12,7 +12,9 @@
         </div>
 
         <mat-form-field>
-            <input matInput type="date" date-picker [(ngModel)]="purchaseDate" [disabled]="isFieldDisabled" required/>
+            <input matInput [matDatepicker]="picker" placeholder="Purchase Date" [(ngModel)]="purchaseDate" [disabled]="isFieldDisabled">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field>
@@ -32,7 +34,7 @@
         </mat-form-field>
 
         <mat-form-field>
-            <input matInput type="number" [(ngModel)]="contactNo" placeholder="Contact Number" [disabled]="isFieldDisabled" required>
+            <input matInput type="number" [(ngModel)]="contactNo" placeholder="Contact Number" [disabled]="isFieldDisabled" maxlength="10" required>
         </mat-form-field>
 
         <mat-card class="inner-card-css">
@@ -60,13 +62,15 @@
                             </mat-form-field>
                         </th>
                         <th>
-                            <mat-form-field class="table-form-wide-field">
-                                <input matInput [(ngModel)]="challanDate" required/>
+                            <mat-form-field>
+                                <input matInput [matDatepicker]="picker" [(ngModel)]="challanDate" [disabled]="isFieldDisabled">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
                             </mat-form-field>
                         </th>
                         <th>
                             <mat-form-field class="table-form-wide-field">
-                                <input matInput [(ngModel)]="vehicleNo" required />
+                                <input matInput [(ngModel)]="vehicleNo" maxlength="10" required />
                             </mat-form-field>
                         </th>
                         <th>
@@ -80,7 +84,7 @@
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput [(ngModel)]="productHSN" required>
+                                <input matInput [(ngModel)]="productHSN" maxlength="8" required>
                             </mat-form-field>
                         </th>
                         <th>
@@ -90,17 +94,17 @@
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="productRate" (ngModelChange)="calculateTotal($event)" required>
+                                <input matInput type="number" [(ngModel)]="productRate" (ngModelChange)="calculateTotal($event)" maxlength="8" required>
                             </mat-form-field>
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="productQuantity" (ngModelChange)="calculateTotal($event)" required>
+                                <input matInput type="number" [(ngModel)]="productQuantity" (ngModelChange)="calculateTotal($event)" maxlength="8" required>
                             </mat-form-field>
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="totalAmount" required>
+                                <input matInput type="number" [(ngModel)]="totalAmount" maxlength="8" required>
                             </mat-form-field>
                         </th>
                         <th>
@@ -127,7 +131,7 @@
                 </tbody>
             </table>
             <mat-form-field>
-                <input matInput type="number" [disabled]="true" [(ngModel)]="totalPurchaseAmount" required>
+                <input matInput type="number" [disabled]="true" [(ngModel)]="totalPurchaseAmount" maxlength="8" required>
             </mat-form-field>
         </mat-card>
     </mat-card-content>

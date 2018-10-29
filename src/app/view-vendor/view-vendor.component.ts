@@ -50,10 +50,12 @@ export class ViewVendorComponent implements OnInit {
 
     if (vendor != undefined) {
       let navigationExtras: NavigationExtras = {
-        queryParams: vendor
+        queryParams: { vend_id : vendor.vend_id }
       };
       // Redirect it to View Product screen
       this.router.navigate(['/add-vendor'], navigationExtras);
+    } else {
+      this.router.navigate(['/add-vendor']);
     }
   }
 }

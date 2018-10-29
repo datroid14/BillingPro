@@ -3,6 +3,7 @@ import { QuatationService } from "../create-quatation/quatation.service";
 import { Router, NavigationExtras } from '@angular/router';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { AppService } from '../app.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'view-quatation',
@@ -27,6 +28,9 @@ export class ViewQuatationComponent implements OnInit {
 
     this.quatationService.getQuatations().subscribe(response => {
       this.quatations = response.quatations;
+      for (let i = 0; i < this.quatations.length; i++) {
+        this.quatations[i].quat_date = moment(this.quatations[i].quat_date).format('DD MMM YYYY');
+      }
       this.dataSource = new MatTableDataSource<QUATATION>(this.quatations);
       this.dataSource.paginator = this.paginator;
       console.log(this.quatations);
@@ -52,12 +56,15 @@ export class ViewQuatationComponent implements OnInit {
       };
       // Redirect it to View Product screen
       this.router.navigate(['/create-quatation'], navigationExtras);
+    } else {
+      this.router.navigate(['/create-quatation']);
     }
   }
 }
 
 export interface QUATATION {
   quat_id: number;
+  quat_date: Date;
   quat_cust_name: string;
   quat_cust_address: string;
   quat_contact_person: string;

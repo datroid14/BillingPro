@@ -43,11 +43,35 @@ export class AddVehicleComponent implements OnInit {
     // Show drawer
     this.appService.showDrawer(true);
 
-    // Disable all fields for view mode
-    this.isFieldDisabled = true;
+    // Make necessary changes based on selection from view payment details
+    this.showUIChanges();
 
-    // Disable cancel button initially
-    this.isCancelDisabled = true;
+  }
+
+  showUIChanges() {
+    if (this.vehicleId != undefined) {
+
+      // Disable all fields for view mode
+      this.isFieldDisabled = true;
+
+      // Disable cancel button initially
+      this.isCancelDisabled = true;
+
+      // Enable delete button initially
+      this.isDeleteDisabled = false;
+
+      // Get payment details by id
+      this.getVehicleDetailsById();
+    } else {
+      // Enable all fields for view mode
+      this.isFieldDisabled = false;
+
+      // Enable cancel button initially
+      this.isCancelDisabled = false;
+
+      // Disable delete button initially
+      this.isDeleteDisabled = true;
+    }
 
     // Change button label to save
     this.changeButtonLabel(this.isFieldDisabled);
@@ -77,17 +101,7 @@ export class AddVehicleComponent implements OnInit {
     if (this.buttonLabel == "SAVE") {
       this.buttonLabel = "EDIT";
       // Show last shown record
-      const payload = { "data": { "veh_id": this.vehicleId} };
-      this.vehicleService.getVehicleById(payload).subscribe(response => {
-        if (response.status == 200) {
-          if (response.vehicles != undefined && response.vehicles.length > 0) {
-            this.setVehicleDetail(response.vehicles[0]);
-          }
-        }
-      },
-        error => {
-          console.log(error)
-        });
+      this.getVehicleDetailsById();
     } else {
       this.buttonLabel = "SAVE";
     }
@@ -96,7 +110,7 @@ export class AddVehicleComponent implements OnInit {
   addVehicle() {
     if (this.buttonLabel == "SAVE") {
       if (this.vehicleName != undefined && this.vehicleNumber != undefined) {
-        if(this.vehicleDesc == undefined){
+        if (this.vehicleDesc == undefined) {
           this.vehicleDesc = "";
         }
 
@@ -133,11 +147,6 @@ export class AddVehicleComponent implements OnInit {
     }
   }
 
-  removeVehicle(vehicle) {
-    const index = this.vehicles.indexOf(vehicle);
-    this.vehicles.splice(index, 1);
-  }
-
   clearVehicleFields() {
     this.vehicleName = undefined;
     this.vehicleNumber = undefined;
@@ -149,7 +158,7 @@ export class AddVehicleComponent implements OnInit {
     this.vehicleService.deleteVehicle(deletePayload).subscribe(response => {
       if (response.status == 200) {
         this.location.back();
-      } else if (response.status == 501){
+      } else if (response.status == 501) {
         console.log(response.message);
       }
     },
@@ -162,6 +171,24 @@ export class AddVehicleComponent implements OnInit {
     this.vehicleName = vehicle.veh_name;
     this.vehicleNumber = vehicle.veh_number;
     this.vehicleDesc = vehicle.veh_desc;
+  }
+
+  getVehicleDetailsById() {
+    if (this.vehicleId != undefined) {
+      const payload = { "data": { "veh_id": this.vehicleId } };
+      this.vehicleService.getVehicleDetailsById(payload).subscribe(response => {
+        if (response.status == 200) {
+          if (response.vehicles != undefined && response.vehicles.length > 0) {
+            this.setVehicleDetail(response.vehicles[0]);
+          }
+        }
+      },
+        error => {
+          console.log(error)
+        });
+    } else {
+      this.location.back();
+    }
   }
 }
 

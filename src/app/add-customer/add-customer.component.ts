@@ -47,20 +47,40 @@ export class AddCustomerComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    // Show drawer
     this.appService.showDrawer(true);
 
-    // Disable all fields for view mode
-    this.isFieldDisabled = true;
+    // Make necessary changes based on selection from view payment details
+    this.showUIChanges();
 
-    // Disable cancel button initially
-    this.isCancelDisabled = true;
+  }
 
+  showUIChanges() {
+    if (this.customerId != undefined) {
+
+      // Disable all fields for view mode
+      this.isFieldDisabled = true;
+
+      // Disable cancel button initially
+      this.isCancelDisabled = true;
+
+      // Enable delete button initially
+      this.isDeleteDisabled = false;
+
+      // Get payment details by id
+      this.getCustomerDetailById();
+    } else {
+      // Enable all fields for view mode
+      this.isFieldDisabled = false;
+
+      // Enable cancel button initially
+      this.isCancelDisabled = false;
+
+      // Disable delete button initially
+      this.isDeleteDisabled = true;
+    }
     // Change button label to save
     this.changeButtonLabel(this.isFieldDisabled);
-
-    // Get details of customer by id fetched from view customer
-    this.getCustomerDetailById();
   }
 
   addCustomer() {
@@ -81,7 +101,6 @@ export class AddCustomerComponent implements OnInit {
           const addPayload = { "data": { "cust_name": this.customerName, "cust_contact_person": this.contactPerson, "cust_contact": this.contactNo, "cust_email": this.emailAddress, "cust_address": this.customerAddress } };
           this.customerService.addCustomer(addPayload).subscribe(response => {
             if (response.status == 200) {
-              console.log("Add customer " + response);
               this.location.back();
             }
           },
@@ -96,7 +115,7 @@ export class AddCustomerComponent implements OnInit {
       this.isEditClicked = true;
       this.buttonLabel = "SAVE";
       this.isFieldDisabled = false;
-      this.isCancelDisabled = false;    
+      this.isCancelDisabled = false;
       this.isDeleteDisabled = true;
     }
   }
@@ -146,7 +165,7 @@ export class AddCustomerComponent implements OnInit {
       if (response.status == 200) {
         console.log("Delete customer " + response.message);
         this.location.back();
-      }else if (response.status == 501){
+      } else if (response.status == 501) {
         console.log(response.message);
       }
     },
@@ -155,9 +174,9 @@ export class AddCustomerComponent implements OnInit {
       });
   }
 
-  getCustomerDetailById(){
-
-    const payload = { "data": { "cust_id": this.customerId } };
+  getCustomerDetailById() {
+    if (this.customerId != undefined) {
+      const payload = { "data": { "cust_id": this.customerId } };
       this.customerService.getCustomerById(payload).subscribe(response => {
         if (response.status == 200) {
           if (response.customers != undefined && response.customers.length > 0) {
@@ -168,9 +187,12 @@ export class AddCustomerComponent implements OnInit {
         error => {
           console.log(error)
         });
+    } else {
+      this.location.back();
+    }
   }
 
-  setCustomerDetail(customer){
+  setCustomerDetail(customer) {
 
     this.customerName = customer.cust_name;
     this.customerAddress = customer.cust_address;

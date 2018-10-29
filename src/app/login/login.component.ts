@@ -23,7 +23,7 @@ export class LoginComponent {
 
     if (this.userName == "admin" && this.password == "admin") {
       // Redirect it to customer screen
-      this.router.navigate(['/view-customers']);
+      this.router.navigate(['/view-customer']);
     } else {
       alert("Invalid credentials...");
     }

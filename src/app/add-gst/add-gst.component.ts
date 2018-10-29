@@ -43,11 +43,34 @@ export class AddGstComponent implements OnInit {
     // Show drawer
     this.appService.showDrawer(true);
 
-    // Disable all fields for view mode
-    this.isFieldDisabled = true;
+    // Make necessary changes based on selection from view payment details
+    this.showUIChanges();
+  }
 
-    // Disable cancel button initially
-    this.isCancelDisabled = true;
+  showUIChanges() {
+    if (this.gstId != undefined) {
+
+      // Disable all fields for view mode
+      this.isFieldDisabled = true;
+
+      // Disable cancel button initially
+      this.isCancelDisabled = true;
+
+      // Enable delete button initially
+      this.isDeleteDisabled = false;
+
+      // Get payment details by id
+      this.getGSTDetailById();
+    } else {
+      // Enable all fields for view mode
+      this.isFieldDisabled = false;
+
+      // Enable cancel button initially
+      this.isCancelDisabled = false;
+
+      // Disable delete button initially
+      this.isDeleteDisabled = true;
+    }
 
     // Change button label to save
     this.changeButtonLabel(this.isFieldDisabled);
@@ -76,18 +99,7 @@ export class AddGstComponent implements OnInit {
       this.buttonLabel = "EDIT";
       this.isDeleteDisabled = false;
 
-      // Show last shown record
-      const payload = { "data": { "gst_id": this.gstId } };
-      this.gstService.getGSTDetailsById(payload).subscribe(response => {
-        if (response.status == 200) {
-          if (response.gst_details != undefined && response.gst_details.length > 0) {
-            this.setGSTDetail(response.gst_details[0]);
-          }
-        }
-      },
-        error => {
-          console.log(error)
-        });
+      this.getGSTDetailById();
     } else {
       this.buttonLabel = "SAVE";
     }
@@ -96,10 +108,10 @@ export class AddGstComponent implements OnInit {
   addGSTDetail() {
     if (this.buttonLabel == "SAVE") {
       if (this.gstHSN != undefined && this.gstPercentage != undefined) {
-        if (this.gstDesc == undefined){
-            this.gstDesc = "";
+        if (this.gstDesc == undefined) {
+          this.gstDesc = "";
         }
-        
+
         if (this.isEditClicked) {
           const updatePayload = { "data": { "gst_id": this.gstId, "gst_hsn": this.gstHSN, "gst_percentage": this.gstPercentage, "gst_desc": this.gstDesc } };
           this.gstService.updateGSTDetails(updatePayload).subscribe(response => {
@@ -134,11 +146,6 @@ export class AddGstComponent implements OnInit {
     }
   }
 
-  removeProduct(product) {
-    const index = this.gstDetails.indexOf(product);
-    this.gstDetails.splice(index, 1);
-  }
-
   clearGSTFields() {
     this.gstHSN = undefined;
     this.gstPercentage = undefined;
@@ -151,7 +158,7 @@ export class AddGstComponent implements OnInit {
       if (response.status == 200) {
         console.log("Delete vendor " + response);
         this.location.back();
-      } else if (response.status == 501){
+      } else if (response.status == 501) {
         console.log(response.message);
       }
     },
@@ -164,5 +171,23 @@ export class AddGstComponent implements OnInit {
     this.gstHSN = gst.gst_hsn;
     this.gstPercentage = gst.gst_percentage;
     this.gstDesc = gst.gst_desc;
+  }
+
+  getGSTDetailById() {
+    if (this.gstId != undefined) {
+      const payload = { "data": { "gst_id": this.gstId } };
+      this.gstService.getGSTDetailsById(payload).subscribe(response => {
+        if (response.status == 200) {
+          if (response.gst_details != undefined && response.gst_details.length > 0) {
+            this.setGSTDetail(response.gst_details[0]);
+          }
+        }
+      },
+        error => {
+          console.log(error)
+        });
+    } else {
+      this.location.back();
+    }
   }
 }

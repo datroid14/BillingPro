@@ -1,0 +1,41 @@
+<div>
+    <label>Payment Details</label>
+    <button (click)="showPaymentDetails();">ADD NEW</button>
+</div>
+<div class="example-container mat-elevation-z8">
+
+    <mat-card style="padding:5px">
+        <mat-table #table [dataSource]="dataSource">
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="date">
+                <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                <mat-cell *matCellDef="let payment"> {{payment.payment_date}} </mat-cell>
+            </ng-container>
+
+            <!-- Contact Person Column -->
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                <mat-cell *matCellDef="let payment"> {{payment.emp_name}} </mat-cell>
+            </ng-container>
+
+            <!-- Contact Column -->
+            <ng-container matColumnDef="amount">
+                <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
+                <mat-cell *matCellDef="let payment"> {{payment.payment_amount}} </mat-cell>
+            </ng-container>
+
+            <!-- Email Column -->
+            <ng-container matColumnDef="type">
+                <mat-header-cell *matHeaderCellDef> Payment Type </mat-header-cell>
+                <mat-cell *matCellDef="let payment"> {{payment.payment_type}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showPaymentDetails(row)"></mat-row>
+        </mat-table>
+
+        <mat-paginator #paginator [pageSize]="15" [pageSizeOptions]="[15,20]" [showFirstLastButtons]="true">
+        </mat-paginator>
+    </mat-card>
+</div>

@@ -26,7 +26,7 @@ export class VehicleService {
                   .pipe(tap(res => null));
       }
 
-      getVehicleById(payload: Object): Observable<VehicleResponse> {
+      getVehicleDetailsById(payload: Object): Observable<VehicleResponse> {
             return this.http.post<VehicleResponse>("http://localhost:3000/getVehicleById", payload, httpOptions)
                   .pipe(tap(res => null));
       }

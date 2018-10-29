@@ -40,8 +40,14 @@ export class ViewQuatationCopyComponent {
         <head>
           <title>Quatation</title>
           <style>
-          //Customized style
-          </style>
+    table,
+    th,
+    td {
+        border: 1px solid grey;
+        border-collapse: collapse;
+        padding: 2px;
+    }
+</style>
         </head>
         <body onload="window.print();window.close()">${printContents}</body>
       </html>`

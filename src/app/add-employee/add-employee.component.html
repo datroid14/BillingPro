@@ -1,0 +1,55 @@
+<mat-card class="card-css">
+    <mat-card-header>
+        <mat-card-title>
+            <h2>Employee</h2>
+        </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="container-css">
+
+        <div align="right" style="height: 32px;">
+            <img (click)="addNewEmployee();" [src]="this.addImagePath" *ngIf="isFieldDisabled">
+        </div>
+
+        <mat-form-field>
+            <input matInput [(ngModel)]="employeeName" placeholder="Name" [disabled]="isFieldDisabled" required>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput [(ngModel)]="employeeAddress" placeholder="Address" [disabled]="isFieldDisabled" required>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput [(ngModel)]="employeeContact" placeholder="Contact Number" [disabled]="isFieldDisabled" maxlength="10" required>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput [(ngModel)]="employeeAadhar" placeholder="Aadhar Number" [disabled]="isFieldDisabled" maxlength="12" required />
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput type="number" [(ngModel)]="employeeAge" placeholder="Age" [disabled]="isFieldDisabled" maxlength="2" required>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="Date Of Joining" [(ngModel)]="joiningDate" [disabled]="isFieldDisabled" required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput [(ngModel)]="employeeRole" placeholder="Role" [disabled]="isFieldDisabled" required>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput [(ngModel)]="employmentType" placeholder="Employment Type" [disabled]="isFieldDisabled" required>
+        </mat-form-field>
+
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="addEmployee();">{{buttonLabel}}</button>
+        <button mat-raised-button color="primary" (click)="cancelClicked()" [disabled]="isCancelDisabled">CANCEL</button>
+        <button mat-raised-button color="primary" (click)="deleteEmployee();" [disabled]="isDeleteDisabled">DELETE</button>
+    </mat-card-actions>
+
+</mat-card>

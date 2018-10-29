@@ -1,9 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
 import { InvoiceService } from "../create-invoice/invoice.service";
 import { Router, NavigationExtras } from '@angular/router';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { AppService } from '../app.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'view-invoice',
@@ -14,7 +14,7 @@ export class ViewInvoiceComponent {
 
   invoices;
 
-  displayedColumns = ['date', 'vendor', 'contact_person', 'contact'];
+  displayedColumns = ['date', 'customer', 'contact_person', 'contact'];
   dataSource;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -23,11 +23,13 @@ export class ViewInvoiceComponent {
   }
 
   ngOnInit() {
-
     this.appService.showDrawer(true);
 
     this.invoiceService.getInvoices().subscribe(response => {
       this.invoices = response.invoices;
+      for (let i = 0; i < this.invoices.length; i++) {
+        this.invoices[i].inv_date = moment(this.invoices[i].inv_date).format('DD MMM YYYY');
+      }
       this.dataSource = new MatTableDataSource<INVOICE>(this.invoices);
       this.dataSource.paginator = this.paginator;
     },
@@ -51,6 +53,8 @@ export class ViewInvoiceComponent {
       };
       // Redirect it to View Product screen
       this.router.navigate(['/create-invoice'], navigationExtras);
+    } else {
+      this.router.navigate(['/create-invoice']);
     }
   }
 }

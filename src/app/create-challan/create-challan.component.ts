@@ -8,9 +8,8 @@ import { AppService } from '../app.service';
 import { Router, NavigationExtras } from '@angular/router';
 import { ActivatedRoute } from "@angular/router";
 import { Location } from '@angular/common';
-import { DatepickerOptions } from 'ng2-datepicker';
-import * as frLocale from 'date-fns/locale/fr';
- 
+import * as moment from 'moment';
+
 @Component({
   selector: 'create-challan',
   templateUrl: './create-challan.component.html',
@@ -26,6 +25,8 @@ export class CreateChallanComponent {
   buttonLabel: string;
   isFieldDisabled: boolean;
   isCancelDisabled: boolean;
+  isEditClicked: boolean;
+  isDeleteDisabled: boolean;
 
   challanId: number;
   challanDate: Date;
@@ -44,24 +45,6 @@ export class CreateChallanComponent {
   addImagePath: string;
   removeImagePath: string;
 
-  options: DatepickerOptions = {
-    minYear: 1970,
-    maxYear: 2030,
-    displayFormat: 'MMM D[,] YYYY',
-    barTitleFormat: 'MMMM YYYY',
-    dayNamesFormat: 'dd',
-    firstCalendarDay: 0, // 0 - Sunday, 1 - Monday
-    locale: frLocale,
-    minDate: new Date(Date.now()), // Minimal selectable date
-    maxDate: new Date(Date.now()),  // Maximal selectable date
-    barTitleIfEmpty: 'Click to select a date',
-    placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
-    addClass: 'form-control', // Optional, value to pass on to [ngClass] on the input field
-    addStyle: {}, // Optional, value to pass to [ngStyle] on the input field
-    fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
-    useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
-  };
-
   constructor(private route: ActivatedRoute, private customerService: CustomerService, private productService: ProductService,
     private challanService: ChallanService, private router: Router, private appService: AppService, private location: Location,
     private vehicleService: VehicleService) {
@@ -77,16 +60,7 @@ export class CreateChallanComponent {
     // Show drawer
     this.appService.showDrawer(true);
 
-    // Disable all fields for view mode
-    this.isFieldDisabled = true;
-
-    // Disable cancel button initially
-    this.isCancelDisabled = true;
-
-    // Change button label to save
-    this.changeButtonLabel(this.isFieldDisabled);
-
-    this.getChallanDetailById();
+    this.showUIChanges();
 
     this.customerService.getCustomers().subscribe(response => {
       this.customers = response.customers;
@@ -117,6 +91,35 @@ export class CreateChallanComponent {
       });
   }
 
+  showUIChanges() {
+    if (this.challanId != undefined) {
+
+      // Disable all fields for view mode
+      this.isFieldDisabled = true;
+
+      // Disable cancel button initially
+      this.isCancelDisabled = true;
+
+      // Enable delete button initially
+      this.isDeleteDisabled = false;
+
+      // Get payment details by id
+      this.getChallanDetailById();
+    } else {
+      // Enable all fields for view mode
+      this.isFieldDisabled = false;
+
+      // Enable cancel button initially
+      this.isCancelDisabled = false;
+
+      // Disable delete button initially
+      this.isDeleteDisabled = true;
+    }
+
+    // Change button label to save
+    this.changeButtonLabel(this.isFieldDisabled);
+  }
+
   changeButtonLabel(isDisabled) {
     if (isDisabled) {
       this.buttonLabel = "EDIT";
@@ -128,6 +131,7 @@ export class CreateChallanComponent {
   addNewChallan() {
     this.isFieldDisabled = !this.isFieldDisabled;
     this.isCancelDisabled = !this.isCancelDisabled;
+    this.isDeleteDisabled = true;
     this.changeButtonLabel(this.isFieldDisabled);
     this.clearChallanFields();
   }
@@ -135,6 +139,7 @@ export class CreateChallanComponent {
   cancelClicked() {
     this.isFieldDisabled = !this.isFieldDisabled;
     this.isCancelDisabled = !this.isCancelDisabled;
+    this.isDeleteDisabled = !this.isDeleteDisabled;
     if (this.buttonLabel == "SAVE") {
       this.buttonLabel = "EDIT";
       // Show last shown record
@@ -148,22 +153,37 @@ export class CreateChallanComponent {
     if (this.buttonLabel == "SAVE") {
       if (this.customerId != undefined && this.productId != undefined && this.vehicleId != undefined &&
         this.productQuantity != undefined) {
-        const payload = { "data": { "chal_date": "2018-07-12", "chal_cust_id": this.customerId, "chal_prod_id": this.productId, "chal_veh_id": this.vehicleId, "chal_quantity": this.productQuantity } };
-        this.challanService.addChallan(payload).subscribe(response => {
-          if (response.status == 200) {
-            this.location.back();
-          }
-        },
-          error => {
-            console.log(error)
-          });
+        if (this.isEditClicked) {
+          // const updatePayload = { "data": { "chal_id": this.challanId, "chal_date": this.challanDate, "chal_cust_id": this.customerId, "chal_prod_id": this.productId, "chal_veh_id": this.vehicleId, "chal_quantity": this.productQuantity } };
+          // this.vehicleService.updateChallan(updatePayload).subscribe(response => {
+          //   if (response.status == 200) {
+          //     this.location.back();
+          //   }
+          // },
+          //   error => {
+          //     console.log(error)
+          //   });
+        } else {
+          var formattedChallanDate = moment(this.challanDate).format('YYYY-MM-DD')
+          const payload = { "data": { "chal_date": formattedChallanDate, "chal_quantity": this.productQuantity, "chal_cust_id": this.customerId, "chal_prod_id": this.productId, "chal_veh_id": this.vehicleId, "chal_is_invoice_created": 0 } };
+          this.challanService.addChallan(payload).subscribe(response => {
+            if (response.status == 200) {
+              this.location.back();
+            }
+          },
+            error => {
+              console.log(error)
+            });
+        }
       } else {
         alert('Please fill all mandatory fields');
       }
     } else {
       this.buttonLabel = "SAVE";
+      this.isEditClicked = true;
       this.isFieldDisabled = false;
       this.isCancelDisabled = false;
+      this.isDeleteDisabled = true;
     }
   }
 
@@ -182,6 +202,7 @@ export class CreateChallanComponent {
   }
 
   getChallanDetailById() {
+    if(this.challanId != undefined){
     const payload = { "data": { "chal_id": this.challanId } };
     this.challanService.getChallanById(payload).subscribe(response => {
       if (response.status == 200) {
@@ -193,9 +214,13 @@ export class CreateChallanComponent {
       error => {
         console.log(error)
       });
+    } else {
+      this.location.back();
+    }
   }
 
   setChallanDetail(challan) {
+    this.challanDate = challan.chal_date;
     this.customerName = challan.chal_cust_name;
     this.customerAddress = challan.chal_cust_address;
     this.productName = challan.chal_prod_name;
@@ -205,7 +230,7 @@ export class CreateChallanComponent {
   }
 
   clearChallanFields() {
-
+    this.challanDate = undefined;
     this.customerName = undefined;
     this.customerAddress = undefined;
     this.productName = undefined;

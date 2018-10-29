@@ -46,16 +46,39 @@ export class AddVendorComponent implements OnInit {
     // Show drawer
     this.appService.showDrawer(true);
 
-    // Disable all fields for view mode
-    this.isFieldDisabled = true;
-
-    // Disable cancel button initially
-    this.isCancelDisabled = true;
+    this.showUIChanges();
 
     // Change button label to save
     this.changeButtonLabel(this.isFieldDisabled);
+  }
 
-    this.getVendorById();
+  showUIChanges() {
+    if (this.vendorId != undefined) {
+
+      // Disable all fields for view mode
+      this.isFieldDisabled = true;
+
+      // Disable cancel button initially
+      this.isCancelDisabled = true;
+
+      // Enable delete button initially
+      this.isDeleteDisabled = false;
+
+      // Get payment details by id
+      this.getVendorById();
+    } else {
+      // Enable all fields for view mode
+      this.isFieldDisabled = false;
+
+      // Enable cancel button initially
+      this.isCancelDisabled = false;
+
+      // Disable delete button initially
+      this.isDeleteDisabled = true;
+    }
+
+    // Change button label to save
+    this.changeButtonLabel(this.isFieldDisabled);
   }
 
   changeButtonLabel(isDisabled) {
@@ -159,17 +182,20 @@ export class AddVendorComponent implements OnInit {
   }
 
   getVendorById() {
-
-    const payload = { "data": { "vend_id": this.vendorId } };
-    this.vendorService.getVendorById(payload).subscribe(response => {
-      if (response.status == 200) {
-        if (response.vendors != undefined && response.vendors.length > 0) {
-          this.setVendorDetail(response.vendors[0]);
+    if (this.vendorId != undefined) {
+      const payload = { "data": { "vend_id": this.vendorId } };
+      this.vendorService.getVendorById(payload).subscribe(response => {
+        if (response.status == 200) {
+          if (response.vendors != undefined && response.vendors.length > 0) {
+            this.setVendorDetail(response.vendors[0]);
+          }
         }
-      }
-    },
-      error => {
-        console.log(error)
-      });
+      },
+        error => {
+          console.log(error)
+        });
+    } else {
+      this.location.back();
+    }
   }
 }

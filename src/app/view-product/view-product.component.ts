@@ -44,6 +44,8 @@ export class ViewProductComponent implements OnInit {
       };
       // Redirect it to View Product screen
       this.router.navigate(['/add-product'], navigationExtras);
+    } else {
+      this.router.navigate(['/add-product']);
     }
   }
 }

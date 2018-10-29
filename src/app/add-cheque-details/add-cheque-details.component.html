@@ -12,7 +12,9 @@
         </div>
 
         <mat-form-field>
-            <input matInput [(ngModel)]="chequeDate" placeholder="Cheque Date" [disabled]="isFieldDisabled" required>
+            <input matInput [matDatepicker]="picker" placeholder="Cheque Date" [(ngModel)]="chequeDate" [disabled]="isFieldDisabled">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field>
@@ -24,11 +26,11 @@
         </mat-form-field>
 
         <mat-form-field>
-            <input matInput [(ngModel)]="chequeNumber" placeholder="Cheque Number" [disabled]="isFieldDisabled" required>
+            <input matInput type="number" [(ngModel)]="chequeNumber" placeholder="Cheque Number" [disabled]="isFieldDisabled" maxlength="6" required>
         </mat-form-field>
 
         <mat-form-field>
-            <input matInput type="number" [(ngModel)]="chequeAmount" placeholder="Cheque Amount" [disabled]="isFieldDisabled" required>
+            <input matInput type="number" [(ngModel)]="chequeAmount" placeholder="Cheque Amount" [disabled]="isFieldDisabled" maxlength="8" required>
         </mat-form-field>
 
         <mat-form-field>

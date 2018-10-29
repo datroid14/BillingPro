@@ -51,6 +51,8 @@ export class ViewCustomerComponent implements OnInit {
       };
       // Redirect it to View Product screen
       this.router.navigate(['/add-customer'], navigationExtras);
+    } else {
+      this.router.navigate(['/add-customer']);
     }
   }
 }

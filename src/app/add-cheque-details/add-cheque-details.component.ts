@@ -4,6 +4,7 @@ import { ChequeEntryService } from "../add-cheque-details/cheque-entry.service";
 import { CustomerService } from "../add-customer/customer.service";
 import { Location } from '@angular/common';
 import { AppService } from "../app.service"
+import * as moment from 'moment';
 
 @Component({
   selector: 'add-cheque-details',
@@ -58,11 +59,35 @@ export class AddChequeDetailsComponent implements OnInit {
     // Show drawer
     this.appService.showDrawer(true);
 
-    // Disable all fields for view mode
-    this.isFieldDisabled = true;
+    // Make necessary changes based on selection from view payment details
+    this.showUIChanges();
 
-    // Disable cancel button initially
-    this.isCancelDisabled = true;
+  }
+
+  showUIChanges() {
+    if (this.chequeEntryId != undefined) {
+
+      // Disable all fields for view mode
+      this.isFieldDisabled = true;
+
+      // Disable cancel button initially
+      this.isCancelDisabled = true;
+
+      // Enable delete button initially
+      this.isDeleteDisabled = false;
+
+      // Get payment details by id
+      this.getChequeEntryById();
+    } else {
+      // Enable all fields for view mode
+      this.isFieldDisabled = false;
+
+      // Enable cancel button initially
+      this.isCancelDisabled = false;
+
+      // Disable delete button initially
+      this.isDeleteDisabled = true;
+    }
 
     // Change button label to save
     this.changeButtonLabel(this.isFieldDisabled);
@@ -102,9 +127,9 @@ export class AddChequeDetailsComponent implements OnInit {
     if (this.buttonLabel == "SAVE") {
       if (this.chequeDate != undefined && this.customerName != undefined && this.chequeNumber != undefined && this.chequeAmount != undefined && this.accountNo != undefined) {
         this.isDeleteDisabled = false;
-
+        var formattedChequeDate = moment(this.chequeDate).format('YYYY-MM-DD');
         if (this.isEditClicked) {
-          const updatePayload = { "data": { "cheque_entry_id": this.chequeEntryId, "cheque_date": "2018-05-27", "cheque_number": this.chequeNumber, "cheque_amount": this.chequeAmount, "account_no": this.accountNo, "cheque_cust_id": this.chequeCustomerId } };
+          const updatePayload = { "data": { "cheque_entry_id": this.chequeEntryId, "cheque_date": formattedChequeDate, "cheque_number": this.chequeNumber, "cheque_amount": this.chequeAmount, "account_no": this.accountNo, "cheque_cust_id": this.chequeCustomerId } };
           this.chequeEntryService.updateChequeEntry(updatePayload).subscribe(response => {
             if (response.status == 200) {
               this.location.back();
@@ -114,7 +139,7 @@ export class AddChequeDetailsComponent implements OnInit {
               console.log(error)
             });
         } else {
-          const addPayload = { "data": { "cheque_date": "2018-05-27", "cheque_number": this.chequeNumber, "cheque_amount": this.chequeAmount, "account_no": this.accountNo, "cheque_cust_id": this.chequeCustomerId } };
+          const addPayload = { "data": { "cheque_date": formattedChequeDate, "cheque_number": this.chequeNumber, "cheque_amount": this.chequeAmount, "account_no": this.accountNo, "cheque_cust_id": this.chequeCustomerId } };
           this.chequeEntryService.addChequeEntry(addPayload).subscribe(response => {
             if (response.status == 200) {
               this.location.back();
@@ -149,7 +174,7 @@ export class AddChequeDetailsComponent implements OnInit {
     this.chequeEntryService.deleteChequeEntry(deletePayload).subscribe(response => {
       if (response.status == 200) {
         this.location.back();
-      } else if (response.status == 501){
+      } else if (response.status == 501) {
         console.log(response.message);
       }
     },
@@ -172,16 +197,20 @@ export class AddChequeDetailsComponent implements OnInit {
   }
 
   getChequeEntryById() {
-    const payload = { "data": { "cheque_entry_id": this.chequeEntryId } };
-    this.chequeEntryService.getChequeEntryById(payload).subscribe(response => {
-      if (response.status == 200) {
-        if (response.chequeEntries != undefined && response.chequeEntries.length > 0) {
-          this.setChequeEntryDetail(response.chequeEntries[0]);
+    if (this.chequeEntryId != undefined) {
+      const payload = { "data": { "cheque_entry_id": this.chequeEntryId } };
+      this.chequeEntryService.getChequeEntryById(payload).subscribe(response => {
+        if (response.status == 200) {
+          if (response.chequeEntries != undefined && response.chequeEntries.length > 0) {
+            this.setChequeEntryDetail(response.chequeEntries[0]);
+          }
         }
-      }
-    },
-      error => {
-        console.log(error)
-      });
+      },
+        error => {
+          console.log(error)
+        });
+    } else {
+      this.location.back();
+    }
   }
 }

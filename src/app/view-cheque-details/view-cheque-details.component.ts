@@ -3,6 +3,7 @@ import { ChequeEntryService } from "../add-cheque-details/cheque-entry.service";
 import { Router, NavigationExtras } from '@angular/router';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { AppService } from '../app.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'view-cheque-details',
@@ -28,10 +29,13 @@ export class ViewChequeDetailsComponent implements OnInit {
 
     this.chequeEntryService.getChequeEntries().subscribe(response => {
       this.chequeEntries = response.chequeEntries;
-      if(this.chequeEntries.length > 0){
-      this.dataSource = new MatTableDataSource<CHEQUEENTRY>(this.chequeEntries);
-      this.dataSource.paginator = this.paginator;
-      }else{
+      for (let i = 0; i < this.chequeEntries.length; i++) {
+        this.chequeEntries[i].cheque_date = moment(this.chequeEntries[i].cheque_date).format('DD MMM YYYY');
+      }
+      if (this.chequeEntries.length > 0) {
+        this.dataSource = new MatTableDataSource<CHEQUEENTRY>(this.chequeEntries);
+        this.dataSource.paginator = this.paginator;
+      } else {
         this.showChequeEntryDetails(undefined);
       }
     },
@@ -43,11 +47,11 @@ export class ViewChequeDetailsComponent implements OnInit {
   showChequeEntryDetails(chequeEntry) {
     if (chequeEntry != undefined) {
       let navigationExtras: NavigationExtras = {
-        queryParams: chequeEntry
+        queryParams: { cheque_entry_id: chequeEntry.cheque_entry_id }
       };
       // Redirect it to Add Cheque Entry screen
       this.router.navigate(['/add-cheque-details'], navigationExtras);
-    }else{
+    } else {
       // Redirect it to Add Cheque Entry screen without data
       this.router.navigate(['/add-cheque-details']);
     }

@@ -6,7 +6,8 @@ import { PurchaseService } from "../add-purchase/purchase.service";
 import { ChallanService } from "../create-challan/challan.service";
 import { Purchase } from "../add-purchase/purchase";
 import { Location } from '@angular/common';
-import { AppService } from "../app.service"
+import { AppService } from "../app.service";
+import * as moment from 'moment';
 
 @Component({
   selector: 'add-purchase',
@@ -68,14 +69,23 @@ export class AddPurchaseComponent {
   }
 
   ngOnInit() {
-    // Show drawer
-    this.appService.showDrawer(true);
+    if (this.productId != undefined) {
 
-    // Disable all fields for view mode
-    this.isFieldDisabled = true;
+      // Disable all fields for view mode
+      this.isFieldDisabled = true;
 
-    // Disable cancel button initially
-    this.isCancelDisabled = true;
+      // Disable cancel button initially
+      this.isCancelDisabled = true;
+
+      // Get payment details by id
+      this.getPurchaseProductsById();
+    } else {
+      // Enable all fields for view mode
+      this.isFieldDisabled = false;
+
+      // Enable cancel button initially
+      this.isCancelDisabled = false;
+    }
 
     // Change button label to save
     this.changeButtonLabel(this.isFieldDisabled);
@@ -102,8 +112,6 @@ export class AddPurchaseComponent {
       error => {
         console.log(error)
       });
-
-    this.getPurchaseProductsById();
   }
 
   changeButtonLabel(isDisabled) {
@@ -127,19 +135,8 @@ export class AddPurchaseComponent {
     this.isCancelDisabled = !this.isCancelDisabled;
     if (this.buttonLabel == "SAVE") {
       this.buttonLabel = "EDIT";
-      debugger;
       // Show last shown record
-      const payload = { "data": { "pur_id": this.purchaseId } };
-      this.purchaseService.getPurchaseById(payload).subscribe(response => {
-        if (response.status == 200) {
-          if (response.purchases != undefined && response.purchases.length > 0) {
-            this.setPurchaseDetail(response.purchases[0]);
-          }
-        }
-      },
-        error => {
-          console.log(error)
-        });
+      this.getPurchaseDetailsById();
     } else {
       this.buttonLabel = "SAVE";
     }
@@ -167,7 +164,8 @@ export class AddPurchaseComponent {
     if (this.buttonLabel == "SAVE") {
       if (this.purchaseDate != undefined && this.vendorName != undefined && this.vendorAddress != undefined
         && this.contactNo != undefined && (this.localProductList != undefined && this.localProductList.length > 0)) {
-        const payload = { "data": { "pur_date": "2018-05-24", "pur_total_amount": 14000, "pur_vendor_id": this.vendorId, "pur_products": this.localProductList } };
+        var formattedPurchaseDate = moment(this.purchaseDate).format('YYYY-MM-DD');
+        const payload = { "data": { "pur_date": formattedPurchaseDate, "pur_total_amount": 14000, "pur_vendor_id": this.vendorId, "pur_products": this.localProductList } };
         this.purchaseService.addPurchase(payload).subscribe(response => {
           if (response.status == 200) {
             console.log("Add purchase " + response.message);
@@ -274,6 +272,24 @@ export class AddPurchaseComponent {
       // Redirect it to View Purchase screen
       this.router.navigate(['/view-purchase-copy'], navigationExtras);
     }
+  }
+
+  getPurchaseDetailsById(){
+    if(this.purchaseId != undefined){
+    const payload = { "data": { "pur_id": this.purchaseId } };
+      this.purchaseService.getPurchaseById(payload).subscribe(response => {
+        if (response.status == 200) {
+          if (response.purchases != undefined && response.purchases.length > 0) {
+            this.setPurchaseDetail(response.purchases[0]);
+          }
+        }
+      },
+        error => {
+          console.log(error)
+        });
+      } else {
+        this.location.back();
+      }
   }
 }
 

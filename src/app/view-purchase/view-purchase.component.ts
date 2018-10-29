@@ -3,6 +3,7 @@ import { PurchaseService } from "../add-purchase/purchase.service";
 import { Router, NavigationExtras } from '@angular/router';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { AppService } from '../app.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'view-purchase',
@@ -28,6 +29,9 @@ export class ViewPurchaseComponent implements OnInit {
 
     this.purchaseService.getPurchases().subscribe(response => {
       this.purchases = response.purchases;
+      for (let i = 0; i < this.purchases.length; i++) {
+        this.purchases[i].pur_date = moment(this.purchases[i].pur_date).format('DD MMM YYYY');
+      }
       this.dataSource = new MatTableDataSource<PURCHASE>(this.purchases);
       this.dataSource.paginator = this.paginator;
       console.log("Purchase "+JSON.stringify(this.purchases));
@@ -48,16 +52,19 @@ export class ViewPurchaseComponent implements OnInit {
   showPurchaseDetails(purchase) {
     if (purchase != undefined) {
       let navigationExtras: NavigationExtras = {
-        queryParams: purchase
+        queryParams: { pur_id : purchase.pur_id }
       };
       // Redirect it to View Product screen
       this.router.navigate(['/add-purchase'], navigationExtras);
+    } else {
+      this.router.navigate(['/add-purchase']);
     }
   }
 }
 
 export interface PURCHASE {
   pur_id: number;
+  pur_date: Date;
   pur_cust_name: string;
   pur_cust_address: string;
   pur_contact_person: string;

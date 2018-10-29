@@ -12,7 +12,7 @@
         </div>
 
         <mat-form-field>
-            <input matInput [matDatepicker]="picker" [ngModel]="quatationDate" placeholder="Choose a date" [disabled]="isFieldDisabled" required>
+            <input matInput [matDatepicker]="picker" [ngModel]="quatationDate" placeholder="Quatation Date" [disabled]="isFieldDisabled" required>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
@@ -34,7 +34,7 @@
         </mat-form-field>
 
         <mat-form-field>
-            <input matInput type="number" [(ngModel)]="contactNo" placeholder="Contact Number" [disabled]="isFieldDisabled" required>
+            <input matInput type="number" [(ngModel)]="contactNo" placeholder="Contact Number" [disabled]="isFieldDisabled" maxlength="10" required>
         </mat-form-field>
 
         <mat-card class="inner-card-css">
@@ -72,7 +72,7 @@
                         </th>
                         <th class="input-css">
                             <mat-form-field>
-                                <input matInput type="number" [(ngModel)]="productRate" (ngModelChange)="calculateTotal($event)" required>
+                                <input matInput type="number" [(ngModel)]="productRate" (ngModelChange)="calculateTotal($event)" maxlength="8" required>
                             </mat-form-field>
                         </th>
                         <th>

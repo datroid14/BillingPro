@@ -39,10 +39,12 @@ export class ViewGstComponent implements OnInit {
 
     if (gst != undefined) {
       let navigationExtras: NavigationExtras = {
-        queryParams: gst
+        queryParams: { gst_id : gst.gst_id }
       };
       // Redirect it to View Product screen
       this.router.navigate(['/add-gst'], navigationExtras);
+    } else {
+      this.router.navigate(['/add-gst']);
     }
   }
 }

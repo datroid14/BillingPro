@@ -39,10 +39,12 @@ export class ViewVehicleComponent implements OnInit {
 
     if (vehicle != undefined) {
       let navigationExtras: NavigationExtras = {
-        queryParams: vehicle
+        queryParams: { veh_id : vehicle.veh_id }
       };
       // Redirect it to View Product screen
       this.router.navigate(['/add-vehicle'], navigationExtras);
+    } else {
+      this.router.navigate(['/add-vehicle']);
     }
   }
 }

@@ -29,8 +29,8 @@ export class AddProductComponent implements OnInit {
 
   // Variables for GST
   gstDetails: GST[];
-  productHSNId : number;
-  productHSN : number;
+  productHSNId: number;
+  productHSN: number;
 
   // Variables for image paths
   addImagePath: string;
@@ -49,11 +49,34 @@ export class AddProductComponent implements OnInit {
     // Show drawer
     this.appService.showDrawer(true);
 
-    // Disable all fields for view mode
-    this.isFieldDisabled = true;
+    // Make necessary changes based on selection from view product details
+    this.showUIChanges();
+  }
 
-    // Disable cancel button initially
-    this.isCancelDisabled = true;
+  showUIChanges() {
+    if (this.productId != undefined) {
+
+      // Disable all fields for view mode
+      this.isFieldDisabled = true;
+
+      // Disable cancel button initially
+      this.isCancelDisabled = true;
+
+      // Enable delete button initially
+      this.isDeleteDisabled = false;
+
+      // Get payment details by id
+      this.getProductById();
+    } else {
+      // Enable all fields for view mode
+      this.isFieldDisabled = false;
+
+      // Enable cancel button initially
+      this.isCancelDisabled = false;
+
+      // Disable delete button initially
+      this.isDeleteDisabled = true;
+    }
 
     // Change button label to save
     this.changeButtonLabel(this.isFieldDisabled);
@@ -65,8 +88,6 @@ export class AddProductComponent implements OnInit {
       error => {
         console.log(error)
       });
-
-      this.getProductById();
   }
 
   changeButtonLabel(isDisabled) {
@@ -105,18 +126,18 @@ export class AddProductComponent implements OnInit {
         this.isDeleteDisabled = false;
 
         if (this.isEditClicked) {
-          const updatePayload = { "data": { "prod_id": this.productId, "prod_name": this.productName, "prod_desc": this.productDesc, "prod_unit": this.productUnit, "prod_rate": this.productPrice, "prod_gst_id":this.productHSNId } };
+          const updatePayload = { "data": { "prod_id": this.productId, "prod_name": this.productName, "prod_desc": this.productDesc, "prod_unit": this.productUnit, "prod_rate": this.productPrice, "prod_gst_id": this.productHSNId } };
 
           this.productService.updateProduct(updatePayload).subscribe(response => {
             if (response.status == 200) {
               this.location.back();
-            } 
+            }
           },
             error => {
               console.log(error)
             });
         } else {
-          const addPayload = { "data": { "prod_name": this.productName, "prod_desc": this.productDesc, "prod_unit": this.productUnit, "prod_rate": this.productPrice, "prod_gst_id":this.productHSNId } };
+          const addPayload = { "data": { "prod_name": this.productName, "prod_desc": this.productDesc, "prod_unit": this.productUnit, "prod_rate": this.productPrice, "prod_gst_id": this.productHSNId } };
 
           this.productService.addProduct(addPayload).subscribe(response => {
             if (response.status == 200) {
@@ -158,7 +179,7 @@ export class AddProductComponent implements OnInit {
       if (response.status == 200) {
         console.log(response.message);
         this.location.back();
-      } else if (response.status == 501){
+      } else if (response.status == 501) {
         console.log(response.message);
       }
     },
@@ -180,7 +201,8 @@ export class AddProductComponent implements OnInit {
     this.productHSN = gst.gst_hsn;
   }
 
-  getProductById(){
+  getProductById() {
+    if(this.productId != undefined){
     // Get product details by id
     const payload = { "data": { "prod_id": this.productId } };
     this.productService.getProductById(payload).subscribe(response => {
@@ -193,5 +215,8 @@ export class AddProductComponent implements OnInit {
       error => {
         console.log(error)
       });
+    } else {
+      this.location.back();
+    }
   }
 }
