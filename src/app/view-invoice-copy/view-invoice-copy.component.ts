@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { AppService } from "../app.service";
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'view-invoice-copy',
@@ -14,12 +15,12 @@ export class ViewInvoiceCopyComponent implements OnInit {
   customerName: string;
   customerAddress: string;
   contactNo: number;
-  invoiceTotal: number;
+  invoiceSubTotal: number;
   taxAmount: number;
   invoiceTotalAmount: number;
   products = [];
 
-  public constructor(private route: ActivatedRoute, private appService: AppService) {
+  public constructor(private route: ActivatedRoute, private appService: AppService, private location: Location) {
     debugger;
     this.taxAmount = 0;
     this.invoiceTotalAmount = 0;
@@ -29,9 +30,7 @@ export class ViewInvoiceCopyComponent implements OnInit {
       this.customerName = params["inv_customer"];
       this.customerAddress = params["inv_address"];
       this.contactNo = params["inv_contact"];
-      this.invoiceTotal = parseInt(params["inv_total_amount"]);
-      this.taxAmount = this.invoiceTotal * 0.025;
-      this.invoiceTotalAmount = this.invoiceTotal + (this.taxAmount * 2);
+      this.invoiceTotalAmount = parseInt(params["inv_total_amount"]);
       this.products = JSON.parse(params["inv_products"]);
       console.log("Products "+ JSON.stringify(this.products));
     });
@@ -64,5 +63,9 @@ export class ViewInvoiceCopyComponent implements OnInit {
       </html>`
     );
     popupWin.document.close();
+  }
+
+  back(){
+    this.location.back();
   }
 }

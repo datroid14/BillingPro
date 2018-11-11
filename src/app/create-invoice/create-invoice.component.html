@@ -58,7 +58,7 @@
                         <th></th>
                     </tr>
                     <tr *ngIf="!isFieldDisabled">
-                        <th class="input-css">
+                        <th class="input-text">
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
@@ -83,7 +83,7 @@
                         </th>
                         <th>
                             <mat-form-field class="table-form-wide-field">
-                                <mat-select [(ngModel)]="productName" name="productName">
+                                <mat-select [(ngModel)]="productName" name="productName" [disabled]="true">
                                     <mat-option *ngFor="let product of products" [value]="product.prod_name" (click)="setProductDetail(product)">
                                         {{product.prod_name}}
                                     </mat-option>
@@ -92,7 +92,7 @@
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <mat-select [(ngModel)]="productHSN" name="productHSN">
+                                <mat-select [(ngModel)]="productHSN" name="productHSN" [disabled]="true">
                                     <mat-option *ngFor="let gst of gstDetails" [value]="gst.gst_hsn" (click)="setGSTDetail(gst)">
                                         {{gst.gst_hsn}}
                                     </mat-option>
@@ -106,27 +106,27 @@
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="productQuantity" (ngModelChange)="productName == 'JCB' ? calculateForJCB() : calculateTotal()" maxlength="6" required>
+                                <input matInput type="number" [(ngModel)]="productQuantity" (ngModelChange)="productName == 'JCB' ? calculateForJCB() : calculateSubTotal()" maxlength="6" required>
                             </mat-form-field>
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="productRate" (ngModelChange)="productName == 'JCB' ? calculateForJCB() : calculateTotal()" maxlength="8" required>
+                                <input matInput type="number" [(ngModel)]="productRate" (ngModelChange)="productName == 'JCB' ? calculateForJCB() : calculateSubTotal()" maxlength="8" required>
                             </mat-form-field>
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="subTotalAmount" maxlength="8" (ngModelChange)="calculateTaxAmount()" required>
+                                <input matInput type="number" [(ngModel)]="productSubTotalAmount" maxlength="8" (ngModelChange)="calculateTaxAmount()" [disabled]="true" required>
                             </mat-form-field>
                         </th>
                         <th *ngIf="!isWithoutTax">
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="taxAmount" maxlength="8" required>
+                                <input matInput type="number" [(ngModel)]="productTaxAmount" maxlength="8" [disabled]="true" required>
                             </mat-form-field>
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="totalAmount" maxlength="8" required>
+                                <input matInput type="number" [(ngModel)]="totalAmount" maxlength="8" [disabled]="true" required>
                             </mat-form-field>
                         </th>
                         <th>
@@ -136,18 +136,18 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let product of localProductList;let i=index">
-                        <td class="input-css">{{i+1}}</td>
-                        <td class="input-css">{{product.chal_id}}</td>
-                        <td class="input-css">{{product.chal_date}}</td>
-                        <td class="input-css">{{product.veh_number}}</td>
-                        <td class="input-css">{{product.prod_name}}</td>
-                        <td class="input-css">{{product.prod_hsn}}</td>
-                        <td class="input-css">{{product.prod_unit}}</td>
-                        <td class="input-css">{{product.prod_qty}}</td>
-                        <td class="input-css">{{product.prod_rate}}</td>
-                        <td class="input-css">{{product.prod_sub_total}}</td>
-                        <td class="input-css" *ngIf="!isWithoutTax">{{product.prod_tax}}</td>
-                        <td class="input-css">{{product.prod_total_amount }}</td>
+                        <td class="input-text">{{i+1}}</td>
+                        <td class="input-text">{{product.chal_id}}</td>
+                        <td class="input-text">{{product.chal_date}}</td>
+                        <td class="input-text">{{product.veh_number}}</td>
+                        <td class="input-text">{{product.prod_name}}</td>
+                        <td class="input-text">{{product.prod_hsn}}</td>
+                        <td class="input-text">{{product.prod_unit}}</td>
+                        <td class="input-text">{{product.prod_qty}}</td>
+                        <td class="input-text">{{product.prod_rate}}</td>
+                        <td class="input-text">{{product.prod_sub_total}}</td>
+                        <td class="input-text" *ngIf="!isWithoutTax">{{product.prod_tax}}</td>
+                        <td class="input-text">{{product.prod_total_amount }}</td>
                         <td *ngIf="!isFieldDisabled">
                             <img (click)="removeProduct(product)" [src]="this.removeImagePath">
                         </td>

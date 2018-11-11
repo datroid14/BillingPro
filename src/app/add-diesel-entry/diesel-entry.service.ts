@@ -4,6 +4,7 @@ import { DieselEntryResponse } from '../add-diesel-entry/diesel-entry.response';
 import { AddResponse } from '../common/add.response';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { constants } from '../common/constants';
 
 const httpOptions = {
       headers: new HttpHeaders({
@@ -20,31 +21,31 @@ export class DieselEntryService {
 
       getDieselEntries(): Observable<DieselEntryResponse> {
             return this.http
-                  .post<DieselEntryResponse>("http://localhost:3000/getDieselEntries", null)
+                  .post<DieselEntryResponse>(constants.serverUrl + 'getDieselEntries', null)
                   .pipe(tap(res => null));
       }
 
       getDieselEntryById(payload: Object): Observable<DieselEntryResponse> {
             return this.http
-                  .post<DieselEntryResponse>("http://localhost:3000/getDieselEntryById", payload, httpOptions)
+                  .post<DieselEntryResponse>(constants.serverUrl + 'getDieselEntryById', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 
       addDieselEntry(payload: Object): Observable<AddResponse> {
             return this.http
-                  .post<AddResponse>('http://localhost:3000/addDieselEntry', payload, httpOptions)
+                  .post<AddResponse>(constants.serverUrl + 'addDieselEntry', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 
       updateDieselEntry(payload: Object): Observable<AddResponse> {
             return this.http
-                  .post<AddResponse>('http://localhost:3000/updateDieselEntry', payload, httpOptions)
+                  .post<AddResponse>(constants.serverUrl + 'updateDieselEntry', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 
       deleteDieselEntry(payload: Object): Observable<AddResponse> {
             return this.http
-                  .post<AddResponse>('http://localhost:3000/deleteDieselEntry', payload, httpOptions)
+                  .post<AddResponse>(constants.serverUrl + 'deleteDieselEntry', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 }

@@ -4,6 +4,7 @@ import { CustomerResponse } from '../add-customer/customer.response';
 import { AddResponse } from '../common/add.response';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { constants } from '../common/constants';
 
 const httpOptions = {
       headers: new HttpHeaders({
@@ -16,35 +17,36 @@ const httpOptions = {
 export class CustomerService {
 
       constructor(private http: HttpClient) {
+            console.log("Customer " + constants.serverUrl);
       }
 
       getCustomers(): Observable<CustomerResponse> {
             return this.http
-                  .post<CustomerResponse>("http://localhost:3000/getCustomers", null)
+                  .post<CustomerResponse>(constants.serverUrl + 'getCustomers', null)
                   .pipe(tap(res => null));
       }
 
       getCustomerById(payload: Object): Observable<CustomerResponse> {
             return this.http
-                  .post<CustomerResponse>("http://localhost:3000/getCustomerById", payload, httpOptions)
+                  .post<CustomerResponse>(constants.serverUrl + 'getCustomerById', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 
       addCustomer(payload: Object): Observable<AddResponse> {
             return this.http
-                  .post<AddResponse>('http://localhost:3000/addCustomer', payload, httpOptions)
+                  .post<AddResponse>(constants.serverUrl + 'addCustomer', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 
       updateCustomer(payload: Object): Observable<AddResponse> {
             return this.http
-                  .post<AddResponse>('http://localhost:3000/updateCustomer', payload, httpOptions)
+                  .post<AddResponse>(constants.serverUrl + 'updateCustomer', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 
       deleteCustomer(payload: Object): Observable<AddResponse> {
             return this.http
-                  .post<AddResponse>('http://localhost:3000/deleteCustomer', payload, httpOptions)
+                  .post<AddResponse>(constants.serverUrl + 'deleteCustomer', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 }

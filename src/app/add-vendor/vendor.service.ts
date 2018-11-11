@@ -4,6 +4,7 @@ import { VendorResponse } from '../add-vendor/vendor.response';
 import { Injectable } from '@angular/core';
 import { AddResponse } from '../common/add.response';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { constants } from '../common/constants';
 
 const httpOptions = {
     headers: new HttpHeaders({
@@ -19,30 +20,30 @@ export class VendorService {
     }
 
     getVendors(): Observable<VendorResponse> {
-        return this.http.post<VendorResponse>("http://localhost:3000/getVendors", null)
+        return this.http.post<VendorResponse>(constants.serverUrl + 'getVendors', null)
             .pipe(tap(res => null));
     }
 
     getVendorById(payload: Object): Observable<VendorResponse> {
-        return this.http.post<VendorResponse>("http://localhost:3000/getVendorById", payload, httpOptions)
+        return this.http.post<VendorResponse>(constants.serverUrl + 'getVendorById', payload, httpOptions)
             .pipe(tap(res => null));
     }
 
     addVendor(payload: Object): Observable<AddResponse> {
         return this.http
-            .post<AddResponse>('http://localhost:3000/addVendor', payload, httpOptions)
+            .post<AddResponse>(constants.serverUrl + 'addVendor', payload, httpOptions)
             .pipe(tap(res => null));
     }
 
     updateVendor(payload: Object): Observable<AddResponse> {
         return this.http
-            .post<AddResponse>('http://localhost:3000/updateVendor', payload, httpOptions)
+            .post<AddResponse>(constants.serverUrl + 'updateVendor', payload, httpOptions)
             .pipe(tap(res => null));
     }
 
     deleteVendor(payload: Object): Observable<AddResponse> {
         return this.http
-            .post<AddResponse>('http://localhost:3000/deleteVendor', payload, httpOptions)
+            .post<AddResponse>(constants.serverUrl + 'deleteVendor', payload, httpOptions)
             .pipe(tap(res => null));
     }
 }

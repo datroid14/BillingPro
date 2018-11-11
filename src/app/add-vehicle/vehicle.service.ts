@@ -6,6 +6,7 @@ import { AddResponse } from '../common/add.response';
 import { Vehicle } from '../add-vehicle/vehicle';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { constants } from '../common/constants';
 
 const httpOptions = {
       headers: new HttpHeaders({
@@ -22,31 +23,31 @@ export class VehicleService {
 
       getVehicles(): Observable<VehicleResponse> {
             return this.http
-                  .post<VehicleResponse>("http://localhost:3000/getVehicles", null)
+                  .post<VehicleResponse>(constants.serverUrl + 'getVehicles', null)
                   .pipe(tap(res => null));
       }
 
       getVehicleDetailsById(payload: Object): Observable<VehicleResponse> {
-            return this.http.post<VehicleResponse>("http://localhost:3000/getVehicleById", payload, httpOptions)
+            return this.http.post<VehicleResponse>(constants.serverUrl + 'getVehicleById', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 
       addVehicle(payload: Object): Observable<AddResponse> {
             return this.http
-                  .post<AddResponse>('http://localhost:3000/addVehicle', payload, httpOptions)
+                  .post<AddResponse>(constants.serverUrl + 'addVehicle', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 
 
       updateVehicle(payload: Object): Observable<AddResponse> {
             return this.http
-                .post<AddResponse>('http://localhost:3000/updateVehicle', payload, httpOptions)
+                .post<AddResponse>(constants.serverUrl + 'updateVehicle', payload, httpOptions)
                 .pipe(tap(res => null));
         }
     
         deleteVehicle(payload: Object): Observable<AddResponse> {
             return this.http
-                .post<AddResponse>('http://localhost:3000/deleteVehicle', payload, httpOptions)
+                .post<AddResponse>(constants.serverUrl + 'deleteVehicle', payload, httpOptions)
                 .pipe(tap(res => null));
         }
 }

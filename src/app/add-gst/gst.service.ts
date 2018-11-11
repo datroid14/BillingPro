@@ -4,6 +4,7 @@ import { GSTResponse } from '../add-gst/gst.response';
 import { AddResponse } from '../common/add.response';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { constants } from '../common/constants';
 
 const httpOptions = {
     headers: new HttpHeaders({
@@ -20,30 +21,30 @@ export class GSTService {
 
     getGSTDetails(): Observable<GSTResponse> {
         return this.http
-            .post<GSTResponse>("http://localhost:3000/getGSTDetails", null)
+            .post<GSTResponse>(constants.serverUrl + 'getGSTDetails', null)
             .pipe(tap(res => null));
     }
 
     getGSTDetailsById(payload: Object): Observable<GSTResponse> {
-        return this.http.post<GSTResponse>("http://localhost:3000/getGSTDetailById", payload, httpOptions)
+        return this.http.post<GSTResponse>(constants.serverUrl + 'getGSTDetailById', payload, httpOptions)
             .pipe(tap(res => null));
     }
 
     addGSTDetails(payload: Object): Observable<AddResponse> {
         return this.http
-            .post<AddResponse>('http://localhost:3000/addGSTDetail', payload, httpOptions)
+            .post<AddResponse>(constants.serverUrl + 'addGSTDetail', payload, httpOptions)
             .pipe(tap(res => null));
     }
 
     updateGSTDetails(payload: Object): Observable<AddResponse> {
         return this.http
-            .post<AddResponse>('http://localhost:3000/updateGSTDetail', payload, httpOptions)
+            .post<AddResponse>(constants.serverUrl + 'updateGSTDetail', payload, httpOptions)
             .pipe(tap(res => null));
     }
 
     deleteGSTDetails(payload: Object): Observable<AddResponse> {
         return this.http
-            .post<AddResponse>('http://localhost:3000/deleteGSTDetail', payload, httpOptions)
+            .post<AddResponse>(constants.serverUrl + 'deleteGSTDetail', payload, httpOptions)
             .pipe(tap(res => null));
     }
 }

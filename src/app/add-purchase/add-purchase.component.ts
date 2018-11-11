@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { VendorService } from "../add-vendor/vendor.service";
 import { ProductService } from "../add-product/product.service";
 import { PurchaseService } from "../add-purchase/purchase.service";
 import { ChallanService } from "../create-challan/challan.service";
 import { Purchase } from "../add-purchase/purchase";
+import { PurchaseProduct } from "../add-purchase/purchase.product";
 import { Location } from '@angular/common';
 import { AppService } from "../app.service";
 import * as moment from 'moment';
@@ -20,7 +21,7 @@ export class AddPurchaseComponent {
   challans;
   vendors;
   products;
-  localProductList;
+  localProductList : PurchaseProduct[];
 
   buttonLabel: string;
   isFieldDisabled: boolean;
@@ -143,9 +144,10 @@ export class AddPurchaseComponent {
   }
 
   addProduct() {
-    if (this.challanNo == undefined && this.challanDate != undefined && this.vehicleNo != undefined && this.productName != undefined && this.productHSN != undefined && this.productUnit != undefined
+    this.localProductList = [];
+    if (this.challanNo != undefined && this.challanDate != undefined && this.vehicleNo != undefined && this.productName != undefined && this.productHSN != undefined && this.productUnit != undefined
       && this.productQuantity != undefined && this.productRate != undefined && this.totalAmount != undefined) {
-      const product = new PurchaseProduct(1, this.challanDate, this.vehicleNo, this.productId, this.productName, this.productHSN, this.productUnit, this.productQuantity,
+      const product = new PurchaseProduct(this.challanNo, this.challanDate, this.vehicleNo, this.productId, this.productName, this.productHSN, this.productUnit, this.productQuantity,
         this.productRate, this.totalAmount);
       this.localProductList.push(product);
       this.calculatePurchaseTotal();
@@ -161,6 +163,7 @@ export class AddPurchaseComponent {
   }
 
   addPurchase() {
+    debugger;
     if (this.buttonLabel == "SAVE") {
       if (this.purchaseDate != undefined && this.vendorName != undefined && this.vendorAddress != undefined
         && this.contactNo != undefined && (this.localProductList != undefined && this.localProductList.length > 0)) {
@@ -290,31 +293,5 @@ export class AddPurchaseComponent {
       } else {
         this.location.back();
       }
-  }
-}
-
-class PurchaseProduct {
-  chal_id: number;
-  chal_date: string;
-  veh_number: string;
-  prod_id: number;
-  prod_name: string;
-  prod_hsn: string;
-  prod_unit: string;
-  prod_qty: number;
-  prod_rate: number;
-  prod_total: number;
-
-  constructor(chalanNo, date, vehicle, prod_id, name, hsn, unit, qty, rate, total) {
-    this.chal_id = chalanNo;
-    this.chal_date = date;
-    this.veh_number = vehicle;
-    this.prod_id = prod_id;
-    this.prod_name = name;
-    this.prod_hsn = hsn;
-    this.prod_unit = unit;
-    this.prod_qty = qty;
-    this.prod_rate = rate;
-    this.prod_total = total;
   }
 }

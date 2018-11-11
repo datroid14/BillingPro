@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { DieselEntryService } from "../add-diesel-entry/diesel-entry.service";
 import { EmployeeService } from "../add-employee/employee.service";
+import { VehicleService } from "../add-vehicle/vehicle.service";
+
 import { Location } from '@angular/common';
 import { AppService } from "../app.service"
 import * as moment from 'moment';
@@ -20,6 +22,7 @@ export class AddDieselEntryComponent implements OnInit {
   isDeleteDisabled: boolean;
 
   employees;
+  vehicles;
   employeeId: number;
   employeeName: string;
 
@@ -34,7 +37,7 @@ export class AddDieselEntryComponent implements OnInit {
   removeImagePath: string;
 
   public constructor(private route: ActivatedRoute, private appService: AppService, private dieselEntryService: DieselEntryService,
-    private employeeService: EmployeeService, private location: Location) {
+    private employeeService: EmployeeService, private vehicleService: VehicleService, private location: Location) {
     this.route.queryParams.subscribe(params => {
       this.dieselEntryId = params["diesel_entry_id"];
     });
@@ -55,6 +58,13 @@ export class AddDieselEntryComponent implements OnInit {
       error => {
         console.log(error)
       });
+
+      this.vehicleService.getVehicles().subscribe(response => {
+        this.vehicles = response.vehicles;
+      },
+        error => {
+          console.log(error)
+        });
   }
 
   showUIChanges() {

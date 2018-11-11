@@ -74,6 +74,8 @@ export class CreateInvoiceComponent {
 
   ngOnInit() {
 
+    this.isWithoutTax = false;
+
     this.appService.showDrawer(true);
 
     this.showUIChanges();
@@ -157,6 +159,9 @@ export class CreateInvoiceComponent {
     this.localProductList = [];
     if (this.challanDate != undefined && this.productName != undefined && this.productHSN != undefined && this.productUnit != undefined
       && this.productQuantity != undefined && this.productRate != undefined && this.productSubTotalAmount != undefined && this.totalAmount != undefined) {
+      if (this.isWithoutTax || this.productTaxAmount == undefined) {
+        this.productTaxAmount = 0;
+      }
       const product = new InvoiceProduct(this.productId, this.challanNo, this.challanDate, this.vehicleNo, this.productName, this.productHSN, this.productUnit, this.productRate, this.productQuantity, this.productSubTotalAmount, this.productTaxAmount, this.totalAmount);
       this.localProductList.push(product);
       this.calculateInvoiceTotal();
@@ -171,7 +176,7 @@ export class CreateInvoiceComponent {
       if (this.invoiceDate != undefined && this.customerName != undefined && this.customerAddress != undefined
         && this.contactNo != undefined && (this.localProductList != undefined && this.localProductList.length > 0)) {
         var formattedInvoiceDate = moment(this.invoiceDate).format('YYYY-MM-DD');
-        const invoicePayload = { "data": { "inv_date": formattedInvoiceDate, "inv_cust_id": this.customerId, "inv_total_amount": this.totalInvoiceAmount, "inv_products": this.localProductList } };
+        const invoicePayload = { "data": { "inv_date": formattedInvoiceDate, "inv_cust_id": this.customerId, "inv_total_amount": this.totalInvoiceAmount, "inv_without_tax": this.isWithoutTax, "inv_products": this.localProductList } };
         this.invoiceService.addInvoice(invoicePayload).subscribe(response => {
           if (response.status == 200) {
             this.buttonLabel = "EDIT";
@@ -218,6 +223,10 @@ export class CreateInvoiceComponent {
   calculateSubTotal() {
     if (this.productQuantity != undefined && this.productRate != undefined) {
       this.productSubTotalAmount = this.productQuantity * this.productRate;
+
+      this.calculateTaxAmount();
+
+      this.calculateTotal();
     }
   }
 
@@ -244,10 +253,18 @@ export class CreateInvoiceComponent {
     }
     let totalHours = parseInt(timeArr[0]) + hours;
     this.productSubTotalAmount = totalHours * this.productRate;
+
+    this.calculateTaxAmount();
+
+    this.calculateTotal();
   }
 
   calculateTotal() {
-    this.totalAmount = this.productSubTotalAmount + this.productTaxAmount;
+    if (!this.isWithoutTax) {
+      this.totalAmount = this.productSubTotalAmount + this.productTaxAmount;
+    } else {
+      this.totalAmount = this.productSubTotalAmount;
+    }
   }
 
   setCustomerDetail(customer) {
@@ -266,16 +283,14 @@ export class CreateInvoiceComponent {
     this.productRate = product.prod_rate;
     this.productHSN = product.prod_hsn;
     this.gstPercentage = product.prod_percentage;
+    this.productSubTotalAmount = product.prod_sub_total_amount;
+    this.productTaxAmount = product.prod_tax_amount;
 
     if (this.productName == 'JCB') {
       this.calculateForJCB();
     } else {
       this.calculateSubTotal();
     }
-
-    this.calculateTaxAmount();
-
-    this.calculateTotal();
   }
 
   setChallanDetail(challan) {
@@ -284,12 +299,16 @@ export class CreateInvoiceComponent {
     this.challanDate = formattedChallanDate;
     this.vehicleNo = challan.veh_number;
     this.productQuantity = challan.chal_quantity;
+    this.productId = challan.chal_prod_id;
     this.productName = challan.prod_name;
-    this.productHSN = challan.prod_hsn;
+    this.productHSN = challan.gst_hsn;
+    this.gstPercentage = challan.gst_percentage;
     this.productUnit = challan.prod_unit;
-    this.productSubTotalAmount = challan.prod_sub_total_amount;
-    this.productTaxAmount = challan.prod_tax_amount;
     this.productRate = challan.prod_rate;
+    this.productSubTotalAmount = this.productQuantity * this.productRate;
+    this.productTaxAmount = this.productSubTotalAmount * (this.gstPercentage / 100);
+
+    this.calculateTotal();
   }
 
   printInvoiceDetail() {
@@ -317,6 +336,7 @@ export class CreateInvoiceComponent {
   }
 
   getInvoiceProducts() {
+    debugger;
     const productPayload = { "data": { "inv_id": this.invoiceId } };
 
     this.invoiceService.getInvoiceProductsById(productPayload).subscribe(response => {

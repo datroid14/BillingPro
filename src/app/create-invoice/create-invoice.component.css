@@ -15,9 +15,14 @@
     max-width: 96%;
 }
 
-.input-css {
+.input-text {
     padding: 12px;
     text-align: center;
+}
+
+.input-amount {
+    padding: 12px;
+    text-align: right;
 }
 
 .table-form-field {
@@ -33,5 +38,5 @@
 .table-form-wide-field {
     width: 140px !important;
     padding: 8px;
-    text-align: center;
+    text-align: left;
 }

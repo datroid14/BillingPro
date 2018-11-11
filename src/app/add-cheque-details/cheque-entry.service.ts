@@ -4,6 +4,7 @@ import { ChequeEntryResponse } from '../add-cheque-details/cheque-entry.response
 import { AddResponse } from '../common/add.response';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { constants } from '../common/constants';
 
 const httpOptions = {
       headers: new HttpHeaders({
@@ -20,31 +21,31 @@ export class ChequeEntryService {
 
       getChequeEntries(): Observable<ChequeEntryResponse> {
             return this.http
-                  .post<ChequeEntryResponse>("http://localhost:3000/getChequeEntries", null)
+                  .post<ChequeEntryResponse>(constants.serverUrl + 'getChequeEntries', null)
                   .pipe(tap(res => null));
       }
 
       getChequeEntryById(payload: Object): Observable<ChequeEntryResponse> {
             return this.http
-                  .post<ChequeEntryResponse>("http://localhost:3000/getChequeEntryById", payload, httpOptions)
+                  .post<ChequeEntryResponse>(constants.serverUrl + 'getChequeEntryById', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 
       addChequeEntry(payload: Object): Observable<AddResponse> {
             return this.http
-                  .post<AddResponse>('http://localhost:3000/addChequeEntry', payload, httpOptions)
+                  .post<AddResponse>(constants.serverUrl + 'addChequeEntry', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 
       updateChequeEntry(payload: Object): Observable<AddResponse> {
             return this.http
-                  .post<AddResponse>('http://localhost:3000/updateChequeEntry', payload, httpOptions)
+                  .post<AddResponse>(constants.serverUrl + 'updateChequeEntry', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 
       deleteChequeEntry(payload: Object): Observable<AddResponse> {
             return this.http
-                  .post<AddResponse>('http://localhost:3000/deleteChequeEntry', payload, httpOptions)
+                  .post<AddResponse>(constants.serverUrl + 'deleteChequeEntry', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 }

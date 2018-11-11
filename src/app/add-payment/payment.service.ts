@@ -4,6 +4,7 @@ import { PaymentResponse } from '../add-payment/payment.response';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AddResponse } from '../common/add.response';
+import { constants } from '../common/constants';
 
 const httpOptions = {
       headers: new HttpHeaders({
@@ -19,30 +20,30 @@ export class PaymentService {
       }
 
       getPaymentDetails(): Observable<PaymentResponse> {
-            return this.http.post<PaymentResponse>("http://localhost:3000/getPaymentDetails", null)
+            return this.http.post<PaymentResponse>(constants.serverUrl + 'getPaymentDetails', null)
                   .pipe(tap(res => null));
       }
 
       getPaymentDetailById(payload: Object): Observable<PaymentResponse> {
-            return this.http.post<PaymentResponse>("http://localhost:3000/getPaymentDetailById", payload, httpOptions)
+            return this.http.post<PaymentResponse>(constants.serverUrl + 'getPaymentDetailById', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 
       addPaymentDetail(payload: Object): Observable<AddResponse> {
             return this.http
-                  .post<AddResponse>('http://localhost:3000/addPaymentDetail', payload, httpOptions)
+                  .post<AddResponse>(constants.serverUrl + 'addPaymentDetail', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 
       updatePaymentDetail(payload: Object): Observable<AddResponse> {
             return this.http
-                .post<AddResponse>('http://localhost:3000/updatePaymentDetail', payload, httpOptions)
+                .post<AddResponse>(constants.serverUrl + 'updatePaymentDetail', payload, httpOptions)
                 .pipe(tap(res => null));
         }
     
         deletePaymentDetail(payload: Object): Observable<AddResponse> {
             return this.http
-                .post<AddResponse>('http://localhost:3000/deletePaymentDetail', payload, httpOptions)
+                .post<AddResponse>(constants.serverUrl + 'deletePaymentDetail', payload, httpOptions)
                 .pipe(tap(res => null));
         }
 }

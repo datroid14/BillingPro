@@ -5,6 +5,7 @@ import { ProductResponse } from '../add-product/product.response';
 import { AddResponse } from '../common/add.response';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { constants } from '../common/constants';
 
 const httpOptions = {
       headers: new HttpHeaders({
@@ -21,25 +22,25 @@ export class PurchaseService {
 
       getPurchases(): Observable<PurchaseResponse> {
             return this.http
-                  .post<PurchaseResponse>("http://localhost:3000/getPurchases", null)
+                  .post<PurchaseResponse>(constants.serverUrl + 'getPurchases', null)
                   .pipe(tap(res => null));
       }
 
       getPurchaseById(payload:Object): Observable<PurchaseResponse> {
             return this.http
-                  .post<PurchaseResponse>("http://localhost:3000/getPurchaseById", payload, httpOptions)
+                  .post<PurchaseResponse>(constants.serverUrl + 'getPurchaseById', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 
       getPurchaseProductsById(payload:Object): Observable<ProductResponse> {
             return this.http
-                  .post<ProductResponse>("http://localhost:3000/getPurchaseProductsById", payload, httpOptions)
+                  .post<ProductResponse>(constants.serverUrl + 'getPurchaseProductsById', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 
       addPurchase(payload:Object): Observable<AddResponse> {
             return this.http
-                  .post<AddResponse>('http://localhost:3000/addPurchase', payload, httpOptions)
+                  .post<AddResponse>(constants.serverUrl + 'addPurchase', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 }

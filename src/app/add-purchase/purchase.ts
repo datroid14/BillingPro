@@ -1,3 +1,5 @@
+import { PurchaseProduct } from "../add-purchase/purchase.product";
+
 export class Purchase {
     pur_id: number;
     pur_date: Date;
@@ -6,7 +8,7 @@ export class Purchase {
     pur_vend_address: string;
     pur_contact_person: string;
     pur_contact_no: string;
-    pur_products: string;
+    pur_products: PurchaseProduct[];
 
     constructor(id, date, vendor, address, contact_person, contact, products){
         this.pur_id = id;

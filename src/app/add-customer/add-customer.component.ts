@@ -98,6 +98,7 @@ export class AddCustomerComponent implements OnInit {
               console.log(error)
             });
         } else {
+          debugger;
           const addPayload = { "data": { "cust_name": this.customerName, "cust_contact_person": this.contactPerson, "cust_contact": this.contactNo, "cust_email": this.emailAddress, "cust_address": this.customerAddress } };
           this.customerService.addCustomer(addPayload).subscribe(response => {
             if (response.status == 200) {
