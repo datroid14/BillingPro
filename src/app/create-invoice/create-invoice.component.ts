@@ -76,6 +76,8 @@ export class CreateInvoiceComponent {
 
     this.isWithoutTax = false;
 
+    this.localProductList = [];
+
     this.appService.showDrawer(true);
 
     this.showUIChanges();
@@ -156,7 +158,6 @@ export class CreateInvoiceComponent {
   }
 
   addProduct() {
-    this.localProductList = [];
     if (this.challanDate != undefined && this.productName != undefined && this.productHSN != undefined && this.productUnit != undefined
       && this.productQuantity != undefined && this.productRate != undefined && this.productSubTotalAmount != undefined && this.totalAmount != undefined) {
       if (this.isWithoutTax || this.productTaxAmount == undefined) {
@@ -336,7 +337,6 @@ export class CreateInvoiceComponent {
   }
 
   getInvoiceProducts() {
-    debugger;
     const productPayload = { "data": { "inv_id": this.invoiceId } };
 
     this.invoiceService.getInvoiceProductsById(productPayload).subscribe(response => {

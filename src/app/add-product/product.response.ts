@@ -5,6 +5,4 @@ export class ProductResponse {
     public status: number;
     public message: string;
     public products: Product[];
-    constructor(
-    ){}
 }

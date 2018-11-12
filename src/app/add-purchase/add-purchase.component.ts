@@ -9,6 +9,7 @@ import { PurchaseProduct } from "../add-purchase/purchase.product";
 import { Location } from '@angular/common';
 import { AppService } from "../app.service";
 import * as moment from 'moment';
+import { debuglog } from 'util';
 
 @Component({
   selector: 'add-purchase',
@@ -58,38 +59,18 @@ export class AddPurchaseComponent {
     private appService: AppService, private location: Location) {
     this.route.queryParams.subscribe(params => {
       this.purchaseId = params["pur_id"];
-      this.purchaseDate = params["pur_date"];
-      this.vendorId = params["pur_vend_id"];
-      this.vendorName = params["pur_vendor"];
-      this.contactPerson = params["pur_contact_person"];
-      this.contactNo = params["pur_contact"];
-      this.vendorAddress = params["pur_address"];
     });
     this.addImagePath = "assets/images/ic_add_circle.svg";
     this.removeImagePath = "assets/images/ic_remove_circle.svg";
   }
 
   ngOnInit() {
-    if (this.productId != undefined) {
 
-      // Disable all fields for view mode
-      this.isFieldDisabled = true;
+    this.localProductList = [];
 
-      // Disable cancel button initially
-      this.isCancelDisabled = true;
+    this.appService.showDrawer(true);
 
-      // Get payment details by id
-      this.getPurchaseProductsById();
-    } else {
-      // Enable all fields for view mode
-      this.isFieldDisabled = false;
-
-      // Enable cancel button initially
-      this.isCancelDisabled = false;
-    }
-
-    // Change button label to save
-    this.changeButtonLabel(this.isFieldDisabled);
+    this.showUIChanges();
 
     const challanPayload = { "data": { "chal_vend_id": this.vendorId } };
 
@@ -113,6 +94,30 @@ export class AddPurchaseComponent {
       error => {
         console.log(error)
       });
+  }
+
+  showUIChanges(){
+
+    if (this.purchaseId != undefined) {
+
+      // Disable all fields for view mode
+      this.isFieldDisabled = true;
+
+      // Disable cancel button initially
+      this.isCancelDisabled = true;
+
+      // Get payment details by id
+      this.getPurchaseDetailsById();
+    } else {
+      // Enable all fields for view mode
+      this.isFieldDisabled = false;
+
+      // Enable cancel button initially
+      this.isCancelDisabled = false;
+    }
+
+    // Change button label to save
+    this.changeButtonLabel(this.isFieldDisabled);
   }
 
   changeButtonLabel(isDisabled) {
@@ -144,10 +149,10 @@ export class AddPurchaseComponent {
   }
 
   addProduct() {
-    this.localProductList = [];
     if (this.challanNo != undefined && this.challanDate != undefined && this.vehicleNo != undefined && this.productName != undefined && this.productHSN != undefined && this.productUnit != undefined
       && this.productQuantity != undefined && this.productRate != undefined && this.totalAmount != undefined) {
-      const product = new PurchaseProduct(this.challanNo, this.challanDate, this.vehicleNo, this.productId, this.productName, this.productHSN, this.productUnit, this.productQuantity,
+        var formattedChallanDate = moment(this.challanDate).format('YYYY-MM-DD');
+      const product = new PurchaseProduct(this.challanNo, formattedChallanDate, this.vehicleNo, this.productId, this.productName, this.productHSN, this.productUnit, this.productQuantity,
         this.productRate, this.totalAmount);
       this.localProductList.push(product);
       this.calculatePurchaseTotal();
@@ -163,12 +168,11 @@ export class AddPurchaseComponent {
   }
 
   addPurchase() {
-    debugger;
     if (this.buttonLabel == "SAVE") {
       if (this.purchaseDate != undefined && this.vendorName != undefined && this.vendorAddress != undefined
         && this.contactNo != undefined && (this.localProductList != undefined && this.localProductList.length > 0)) {
         var formattedPurchaseDate = moment(this.purchaseDate).format('YYYY-MM-DD');
-        const payload = { "data": { "pur_date": formattedPurchaseDate, "pur_total_amount": 14000, "pur_vendor_id": this.vendorId, "pur_products": this.localProductList } };
+        const payload = { "data": { "pur_date": formattedPurchaseDate, "pur_total_amount": this.totalPurchaseAmount, "pur_vendor_id": this.vendorId, "pur_products": this.localProductList } };
         this.purchaseService.addPurchase(payload).subscribe(response => {
           if (response.status == 200) {
             console.log("Add purchase " + response.message);
@@ -217,9 +221,9 @@ export class AddPurchaseComponent {
 
   calculatePurchaseTotal() {
     this.totalPurchaseAmount = 0;
-    if (this.products != undefined && this.products.length > 0) {
-      for (let i = 0; i < this.products.length; i++) {
-        this.totalPurchaseAmount += this.products[i].total;
+    if (this.localProductList != undefined && this.localProductList.length > 0) {
+      for (let i = 0; i < this.localProductList.length; i++) {
+        this.totalPurchaseAmount += this.localProductList[i].pur_prod_total;
       }
     }
   }
@@ -250,6 +254,7 @@ export class AddPurchaseComponent {
     this.contactPerson = purchase.pur_contact_person;
     this.vendorAddress = purchase.vend_address;
     this.contactNo = purchase.pur_contact;
+    this.totalPurchaseAmount = purchase.pur_total_amount;
 
     this.getPurchaseProductsById();
   }
