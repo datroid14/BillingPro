@@ -12,6 +12,10 @@
         </div>
 
         <mat-form-field>
+            <input matInput type="number" [(ngModel)]="challanNumber" placeholder="Challan Number" [disabled]="isFieldDisabled" required>
+        </mat-form-field>
+
+        <mat-form-field>
             <input matInput [matDatepicker]="picker" placeholder="Challan Date" [(ngModel)]="challanDate" [disabled]="isFieldDisabled">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>

@@ -17,7 +17,6 @@ const httpOptions = {
 export class CustomerService {
 
       constructor(private http: HttpClient) {
-            console.log("Customer " + constants.serverUrl);
       }
 
       getCustomers(): Observable<CustomerResponse> {

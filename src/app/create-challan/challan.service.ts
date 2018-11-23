@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { catchError, map, tap } from 'rxjs/operators';
 import { ChallanResponse } from '../create-challan/challan.response';
 import { AddResponse } from '../common/add.response';
-import { Customer } from '../add-customer/customer';
+import { constants } from '../common/constants';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -22,25 +22,25 @@ export class ChallanService {
 
       getChallans(): Observable<ChallanResponse> {
             return this.http
-                  .post<ChallanResponse>("http://localhost:3000/getChallans", null)
+                  .post<ChallanResponse>(constants.serverUrl + 'getChallans', null)
                   .pipe(tap(res => null));
       }
 
       getChallanById(payload:Object): Observable<ChallanResponse> {
             return this.http
-                  .post<ChallanResponse>("http://localhost:3000/getChallanById", payload, httpOptions)
+                  .post<ChallanResponse>(constants.serverUrl + 'getChallanById', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 
       addChallan(payload:Object): Observable<AddResponse> {
             return this.http
-                  .post<AddResponse>('http://localhost:3000/addChallan', payload, httpOptions)
+                  .post<AddResponse>(constants.serverUrl + 'addChallan', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 
       getChallansByCustomerId(payload:Object): Observable<ChallanResponse> {
             return this.http
-                  .post<ChallanResponse>("http://localhost:3000/getChallansByCustomerId", payload, httpOptions)
+                  .post<ChallanResponse>(constants.serverUrl + 'getChallansByCustomerId', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 }

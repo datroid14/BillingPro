@@ -194,6 +194,7 @@ export class AddProductComponent implements OnInit {
     this.productPrice = product.prod_rate;
     this.productDesc = product.prod_desc;
     this.productHSN = product.prod_hsn;
+    this.productHSNId = product.prod_hsn_id;
   }
 
   setGSTDetail(gst) {

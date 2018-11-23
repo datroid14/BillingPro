@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from "../add-product/product";
-import { CustomerService } from "../add-customer/customer.service";
 import { ProductService } from "../add-product/product.service";
 import { QuatationService } from "../create-quatation/quatation.service";
 import { Router, ActivatedRoute, NavigationExtras } from "@angular/router";
@@ -17,7 +16,6 @@ import * as moment from 'moment';
 export class CreateQuatationComponent implements OnInit {
 
   // Variables used for products
-  customers;
   products;
   quatationProducts;
   localProductList: Product[];
@@ -47,7 +45,7 @@ export class CreateQuatationComponent implements OnInit {
   addImagePath: string;
   removeImagePath: string;
 
-  constructor(private customerService: CustomerService, private productService: ProductService, private appService: AppService,
+  constructor(private productService: ProductService, private appService: AppService,
     private quatationService: QuatationService, private route: ActivatedRoute, private location: Location, private router: Router) {
     this.route.queryParams.subscribe(params => {
       this.quatationId = params["quat_id"];
@@ -58,16 +56,11 @@ export class CreateQuatationComponent implements OnInit {
 
   ngOnInit() {
 
+    this.localProductList = [];
+
     this.appService.showDrawer(true);
 
     this.showUIChanges();
-
-    this.customerService.getCustomers().subscribe(response => {
-      this.customers = response.customers;
-    },
-      error => {
-        console.log(error)
-      });
 
     this.productService.getProducts().subscribe(response => {
       this.products = response.products;

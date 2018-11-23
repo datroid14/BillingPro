@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { CustomerService } from "../add-customer/customer.service";
 import { ChallanService } from "../create-challan/challan.service";
@@ -17,7 +17,7 @@ import * as moment from 'moment';
   styleUrls: ['./create-invoice.component.css'],
 })
 
-export class CreateInvoiceComponent {
+export class CreateInvoiceComponent implements OnInit {
 
   // Variables used for products
   customers;
@@ -30,6 +30,7 @@ export class CreateInvoiceComponent {
   buttonLabel: string;
   isFieldDisabled: boolean;
   isCancelDisabled: boolean;
+  challanId: number;
   challanNo: number;
   challanDate: string;
   vehicleNo: string;
@@ -73,7 +74,6 @@ export class CreateInvoiceComponent {
   }
 
   ngOnInit() {
-
     this.isWithoutTax = false;
 
     this.localProductList = [];
@@ -102,8 +102,6 @@ export class CreateInvoiceComponent {
       error => {
         console.log(error)
       });
-
-    this.getInvoiceProducts();
   }
 
   showUIChanges() {
@@ -158,12 +156,12 @@ export class CreateInvoiceComponent {
   }
 
   addProduct() {
-    if (this.challanDate != undefined && this.productName != undefined && this.productHSN != undefined && this.productUnit != undefined
+      if (this.challanDate != undefined && this.productName != undefined && this.productHSN != undefined && this.productUnit != undefined
       && this.productQuantity != undefined && this.productRate != undefined && this.productSubTotalAmount != undefined && this.totalAmount != undefined) {
       if (this.isWithoutTax || this.productTaxAmount == undefined) {
         this.productTaxAmount = 0;
       }
-      const product = new InvoiceProduct(this.productId, this.challanNo, this.challanDate, this.vehicleNo, this.productName, this.productHSN, this.productUnit, this.productRate, this.productQuantity, this.productSubTotalAmount, this.productTaxAmount, this.totalAmount);
+      const product = new InvoiceProduct(this.productId, this.challanId, this.challanNo, this.challanDate, this.vehicleNo, this.productName, this.productHSN, this.productUnit, this.productRate, this.productQuantity, this.productSubTotalAmount, this.productTaxAmount, this.totalAmount);
       this.localProductList.push(product);
       this.calculateInvoiceTotal();
       this.clearProductFields();
@@ -173,6 +171,7 @@ export class CreateInvoiceComponent {
   }
 
   createInvoice() {
+    debugger;
     if (this.buttonLabel == "SAVE") {
       if (this.invoiceDate != undefined && this.customerName != undefined && this.customerAddress != undefined
         && this.contactNo != undefined && (this.localProductList != undefined && this.localProductList.length > 0)) {
@@ -198,6 +197,7 @@ export class CreateInvoiceComponent {
   }
 
   clearProductFields() {
+    this.challanId = undefined;
     this.challanNo = undefined;
     this.challanDate = undefined;
     this.vehicleNo = undefined;
@@ -263,8 +263,18 @@ export class CreateInvoiceComponent {
   calculateTotal() {
     if (!this.isWithoutTax) {
       this.totalAmount = this.productSubTotalAmount + this.productTaxAmount;
+      if(this.localProductList.length > 0){
+        for(var i=0;i<this.localProductList.length;i++){
+          this.localProductList[i].prod_total_amount = this.localProductList[i].prod_sub_total + this.localProductList[i].prod_tax;
+        }
+      }
     } else {
       this.totalAmount = this.productSubTotalAmount;
+      if(this.localProductList.length > 0){
+        for(var i=0;i<this.localProductList.length;i++){
+          this.localProductList[i].prod_total_amount = this.localProductList[i].prod_sub_total;
+        }
+      }
     }
   }
 
@@ -295,7 +305,8 @@ export class CreateInvoiceComponent {
   }
 
   setChallanDetail(challan) {
-    this.challanNo = challan.chal_id;
+    this.challanId = challan.chal_id;
+    this.challanNo = challan.chal_no;
     var formattedChallanDate = moment(challan.chal_date).format('YYYY-MM-DD');
     this.challanDate = formattedChallanDate;
     this.vehicleNo = challan.veh_number;
@@ -394,5 +405,22 @@ export class CreateInvoiceComponent {
     if (this.productSubTotalAmount != undefined && !this.isWithoutTax) {
       this.productTaxAmount = this.productSubTotalAmount * (this.gstPercentage / 100);
     }
+
+    if(this.localProductList.length > 0 && !this.isWithoutTax){
+      for(var i=0;i<this.localProductList.length;i++){
+        this.localProductList[i].prod_tax = this.localProductList[i].prod_sub_total * (this.gstPercentage / 100);
+      }
+    }
+  }
+
+  changeTaxSelection(){
+    this.isWithoutTax = !this.isWithoutTax;
+    this.calculateTaxAmount();
+    this.calculateTotal();
+    this.calculateInvoiceTotal();
+  }
+
+  removeProduct(index){
+    this.localProductList.splice(index);
   }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { AppService } from "../app.service";
 import { Location } from '@angular/common';
+import * as moment from 'moment';
 
 @Component({
   selector: 'view-invoice-copy',
@@ -11,7 +12,7 @@ import { Location } from '@angular/common';
 export class ViewInvoiceCopyComponent implements OnInit {
 
   invoiceNo: number;
-  invoiceDate: Date;
+  invoiceDate: string;
   customerName: string;
   customerAddress: string;
   contactNo: number;
@@ -21,23 +22,23 @@ export class ViewInvoiceCopyComponent implements OnInit {
   products = [];
 
   public constructor(private route: ActivatedRoute, private appService: AppService, private location: Location) {
-    debugger;
     this.taxAmount = 0;
     this.invoiceTotalAmount = 0;
     this.route.queryParams.subscribe(params => {
       this.invoiceNo = params["inv_id"];
-      this.invoiceDate = params["inv_date"];
+      this.invoiceDate = moment(params["inv_date"]).format('DD-MM-YYYY');
       this.customerName = params["inv_customer"];
       this.customerAddress = params["inv_address"];
       this.contactNo = params["inv_contact"];
       this.invoiceTotalAmount = parseInt(params["inv_total_amount"]);
       this.products = JSON.parse(params["inv_products"]);
-      console.log("Products "+ JSON.stringify(this.products));
     });
   }
 
   ngOnInit() {
     this.appService.showDrawer(true);
+
+    this.taxAmount = this.invoiceTotalAmount * (5 / 100);
   }
 
   printInvoice(): void {

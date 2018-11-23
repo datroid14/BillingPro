@@ -18,11 +18,7 @@
         </mat-form-field>
 
         <mat-form-field>
-            <mat-select [(ngModel)]="customerName" name="customerName" placeholder="Customer Name" [disabled]="isFieldDisabled" required>
-                <mat-option *ngFor="let customer of customers" [value]="customer.cust_name" (click)="setCustomerDetail(customer)">
-                    {{customer.cust_name}}
-                </mat-option>
-            </mat-select>
+            <input matInput [(ngModel)]="customerName" placeholder="Customer Name" [disabled]="isFieldDisabled" required>
         </mat-form-field>
 
         <mat-form-field>

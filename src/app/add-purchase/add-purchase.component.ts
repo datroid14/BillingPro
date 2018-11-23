@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { VendorService } from "../add-vendor/vendor.service";
 import { ProductService } from "../add-product/product.service";
@@ -9,14 +9,13 @@ import { PurchaseProduct } from "../add-purchase/purchase.product";
 import { Location } from '@angular/common';
 import { AppService } from "../app.service";
 import * as moment from 'moment';
-import { debuglog } from 'util';
 
 @Component({
   selector: 'add-purchase',
   templateUrl: './add-purchase.component.html',
   styleUrls: ['./add-purchase.component.css']
 })
-export class AddPurchaseComponent {
+export class AddPurchaseComponent implements OnInit {
 
   // Variables used for products
   challans;
@@ -65,7 +64,6 @@ export class AddPurchaseComponent {
   }
 
   ngOnInit() {
-
     this.localProductList = [];
 
     this.appService.showDrawer(true);

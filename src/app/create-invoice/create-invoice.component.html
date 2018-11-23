@@ -6,7 +6,7 @@
     </mat-card-header>
 
     <mat-card-content class="container-css">
-        <div><input type="checkbox" [checked]="isWithoutTax" (change)="isWithoutTax = !isWithoutTax" style="padding-left: 12px;">Without Tax
+        <div><input type="checkbox" [checked]="isWithoutTax" (change)="changeTaxSelection();" style="padding-left: 12px;">Without Tax
         </div>
         <div align="right" style="height: 32px;">
             <img (click)="addNewInvoice();" [src]="this.addImagePath" *ngIf="isFieldDisabled">
@@ -63,8 +63,8 @@
                         <th>
                             <mat-form-field class="table-form-field">
                                 <mat-select [(ngModel)]="challanNo" name="challanNo">
-                                    <mat-option *ngFor="let challan of challans" [value]="challan.chal_id" (click)="setChallanDetail(challan)">
-                                        {{challan.chal_id}}
+                                    <mat-option *ngFor="let challan of challans" [value]="challan.chal_no" (click)="setChallanDetail(challan)">
+                                        {{challan.chal_no}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -137,7 +137,7 @@
                 <tbody>
                     <tr *ngFor="let product of localProductList;let i=index">
                         <td class="input-text">{{i+1}}</td>
-                        <td class="input-text">{{product.chal_id}}</td>
+                        <td class="input-text">{{product.chal_no}}</td>
                         <td class="input-text">{{product.chal_date}}</td>
                         <td class="input-text">{{product.veh_number}}</td>
                         <td class="input-text">{{product.prod_name}}</td>
@@ -145,9 +145,9 @@
                         <td class="input-text">{{product.prod_unit}}</td>
                         <td class="input-text">{{product.prod_qty}}</td>
                         <td class="input-text">{{product.prod_rate}}</td>
-                        <td class="input-text">{{product.prod_sub_total}}</td>
-                        <td class="input-text" *ngIf="!isWithoutTax">{{product.prod_tax}}</td>
-                        <td class="input-text">{{product.prod_total_amount }}</td>
+                        <td class="input-text">{{(product.prod_sub_total).toFixed(2)}}</td>
+                        <td class="input-text" *ngIf="!isWithoutTax">{{(product.prod_tax).toFixed(2)}}</td>
+                        <td class="input-text">{{(product.prod_total_amount).toFixed(2)}}</td>
                         <td *ngIf="!isFieldDisabled">
                             <img (click)="removeProduct(product)" [src]="this.removeImagePath">
                         </td>

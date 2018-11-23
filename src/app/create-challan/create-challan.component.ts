@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CustomerService } from "../add-customer/customer.service";
 import { ProductService } from "../add-product/product.service";
 import { ChallanService } from "../create-challan/challan.service";
@@ -15,7 +15,7 @@ import * as moment from 'moment';
   templateUrl: './create-challan.component.html',
   styleUrls: ['./create-challan.component.css']
 })
-export class CreateChallanComponent {
+export class CreateChallanComponent implements OnInit {
 
   challans;
   customers;
@@ -29,6 +29,7 @@ export class CreateChallanComponent {
   isDeleteDisabled: boolean;
 
   challanId: number;
+  challanNumber: number;
   challanDate: Date;
   customerId: number;
   customerName: string;
@@ -150,11 +151,12 @@ export class CreateChallanComponent {
   }
 
   addChallan() {
+    debugger;
     if (this.buttonLabel == "SAVE") {
       if (this.customerId != undefined && this.productId != undefined && this.vehicleId != undefined &&
         this.productQuantity != undefined) {
         if (this.isEditClicked) {
-          // const updatePayload = { "data": { "chal_id": this.challanId, "chal_date": this.challanDate, "chal_cust_id": this.customerId, "chal_prod_id": this.productId, "chal_veh_id": this.vehicleId, "chal_quantity": this.productQuantity } };
+          // const updatePayload = { "data": { "chal_id": this.challanId, "chal_no": this.challanNumber, "chal_date": this.challanDate, "chal_cust_id": this.customerId, "chal_prod_id": this.productId, "chal_veh_id": this.vehicleId, "chal_quantity": this.productQuantity } };
           // this.vehicleService.updateChallan(updatePayload).subscribe(response => {
           //   if (response.status == 200) {
           //     this.location.back();
@@ -165,7 +167,7 @@ export class CreateChallanComponent {
           //   });
         } else {
           var formattedChallanDate = moment(this.challanDate).format('YYYY-MM-DD')
-          const payload = { "data": { "chal_date": formattedChallanDate, "chal_quantity": this.productQuantity, "chal_cust_id": this.customerId, "chal_prod_id": this.productId, "chal_veh_id": this.vehicleId, "chal_is_invoice_created": 0 } };
+          const payload = { "data": { "chal_no": this.challanNumber, "chal_date": formattedChallanDate, "chal_quantity": this.productQuantity, "chal_cust_id": this.customerId, "chal_prod_id": this.productId, "chal_veh_id": this.vehicleId, "chal_is_invoice_created": 0 } };
           this.challanService.addChallan(payload).subscribe(response => {
             if (response.status == 200) {
               this.location.back();
@@ -221,6 +223,7 @@ export class CreateChallanComponent {
 
   setChallanDetail(challan) {
     this.challanDate = challan.chal_date;
+    this.challanNumber = challan.chal_no;
     this.customerName = challan.chal_cust_name;
     this.customerAddress = challan.chal_cust_address;
     this.productName = challan.chal_prod_name;
@@ -231,6 +234,7 @@ export class CreateChallanComponent {
 
   clearChallanFields() {
     this.challanDate = undefined;
+    this.challanNumber = undefined;
     this.customerName = undefined;
     this.customerAddress = undefined;
     this.productName = undefined;
