@@ -1,0 +1,60 @@
+<mat-card class="card-css">
+    <mat-card-header>
+        <mat-card-title>
+            <h2>EMI Detail</h2>
+        </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="container-css">
+
+        <div align="right" style="height: 32px;">
+            <img (click)="addNewEmiDetail();" [src]="this.addImagePath" *ngIf="isFieldDisabled">
+        </div>
+
+        <mat-form-field>
+            <input matInput [matDatepicker]="picker1" placeholder="Date" [(ngModel)]="emiDate" [disabled]="isFieldDisabled" required>
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-select [(ngModel)]="vehicleNumber" placeholder="Vehicle Number" [disabled]="isFieldDisabled" maxlength="10" required>
+                <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle.veh_number" (click)="setVehicleDetail(vehicle);">
+                    {{vehicle.veh_number}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput [(ngModel)]="emiMonthYear" placeholder="Month & Year" [disabled]="isFieldDisabled" required>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput type="number" [(ngModel)]="emiAmount" placeholder="EMI Amount" [disabled]="isFieldDisabled" maxlength="10" required>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput [(ngModel)]="paymentMode" placeholder="Payment Mode" [disabled]="isFieldDisabled" />
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput [matDatepicker]="picker2" placeholder="Cheque Date" [(ngModel)]="chequeDate" [disabled]="isFieldDisabled">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput input="number" [(ngModel)]="chequeNumber" placeholder="Cheque Number" [disabled]="isFieldDisabled" />
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput [(ngModel)]="chequeBank" placeholder="Bank Name" [disabled]="isFieldDisabled" />
+        </mat-form-field>
+
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="addEmiDetail();">{{buttonLabel}}</button>
+        <button mat-raised-button color="primary" (click)="cancelClicked();" [disabled]="isCancelDisabled">CANCEL</button>
+        <button mat-raised-button color="primary" (click)="deleteEmiDetail();" [disabled]="isDeleteDisabled">DELETE</button>
+    </mat-card-actions>
+</mat-card>

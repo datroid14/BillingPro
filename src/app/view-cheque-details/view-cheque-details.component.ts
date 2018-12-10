@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { ChequeEntryService } from "../add-cheque-details/cheque-entry.service";
+import { ChequeEntryService } from "../add-cheque-detail/cheque-entry.service";
 import { Router, NavigationExtras } from '@angular/router';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { AppService } from '../app.service';
@@ -32,12 +32,12 @@ export class ViewChequeDetailsComponent implements OnInit {
       for (let i = 0; i < this.chequeEntries.length; i++) {
         this.chequeEntries[i].cheque_date = moment(this.chequeEntries[i].cheque_date).format('DD MMM YYYY');
       }
-      if (this.chequeEntries.length > 0) {
+      // if (this.chequeEntries.length > 0) {
         this.dataSource = new MatTableDataSource<CHEQUEENTRY>(this.chequeEntries);
         this.dataSource.paginator = this.paginator;
-      } else {
-        this.showChequeEntryDetails(undefined);
-      }
+      // } else {
+      //   this.showChequeEntryDetails(undefined);
+      // }
     },
       error => {
         console.log(error)

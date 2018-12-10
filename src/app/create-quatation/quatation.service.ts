@@ -1,10 +1,8 @@
-import { Component } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { catchError, map, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { QuatationResponse } from '../create-quatation/quatation.response';
 import { ProductResponse } from '../add-product/product.response';
 import { AddResponse } from '../common/add.response';
-import { Quatation } from '../create-quatation/quatation';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 

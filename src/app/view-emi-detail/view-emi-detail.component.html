@@ -1,0 +1,42 @@
+<div>
+    <label>Bank EMI Details</label>
+    <button (click)="showEmiDetails();">ADD NEW</button>
+</div>
+
+<div class="example-container mat-elevation-z8">
+
+    <mat-card style="padding:5px">
+        <mat-table #table [dataSource]="dataSource">
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="emi_date">
+                <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                <mat-cell *matCellDef="let emi"> {{emi.emi_date}} </mat-cell>
+            </ng-container>
+
+            <!-- Contact Person Column -->
+            <ng-container matColumnDef="vehicle_no">
+                <mat-header-cell *matHeaderCellDef> Vehicle </mat-header-cell>
+                <mat-cell *matCellDef="let emi"> {{emi.veh_number}} </mat-cell>
+            </ng-container>
+
+            <!-- Contact Column -->
+            <ng-container matColumnDef="month_year">
+                <mat-header-cell *matHeaderCellDef> Month & Year </mat-header-cell>
+                <mat-cell *matCellDef="let emi"> {{emi.emi_month_year}} </mat-cell>
+            </ng-container>
+
+            <!-- Email Column -->
+            <ng-container matColumnDef="amount">
+                <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
+                <mat-cell *matCellDef="let emi"> {{emi.emi_amount}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showEmiDetails(row)"></mat-row>
+        </mat-table>
+
+        <mat-paginator #paginator [pageSize]="15" [pageSizeOptions]="[15,20]" [showFirstLastButtons]="true">
+        </mat-paginator>
+    </mat-card>
+</div>

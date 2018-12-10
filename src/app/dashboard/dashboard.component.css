@@ -1,30 +1,30 @@
 .container {
-  min-height: 100%;
-  width: 100%;
+    min-height: 100%;
+    width: 100%;
 }
 
 .container-vertical {
     display: flex;
     flex-direction: column;
-  }
-  
-  .container-vertical > * {
-    width: 100%;
-  }
+}
 
-  .card-40{
+.container-vertical>* {
+    width: 90%;
+}
+
+.card-40 {
     max-width: 40%;
-  }
+}
 
-  .container-horizontal {
+.container-horizontal {
     display: flex;
     flex-direction: row;
-  }
+}
 
-  .container-horizontal > * {
+.container-horizontal>* {
     width: 100%;
-  }
+}
 
-  .card-60{
+.card-60 {
     max-width: 60%;
-  }
+}

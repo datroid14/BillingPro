@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 import { tap } from 'rxjs/operators';
-import { ChequeEntryResponse } from '../add-cheque-details/cheque-entry.response';
+import { ChequeEntryResponse } from '../add-cheque-detail/cheque-entry.response';
 import { AddResponse } from '../common/add.response';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';

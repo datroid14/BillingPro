@@ -7,7 +7,6 @@ import { InvoiceService } from "../create-invoice/invoice.service";
 import { InvoiceProduct } from "../create-invoice/invoice.product";
 import { Location } from '@angular/common';
 import { AppService } from '../app.service';
-import { Invoice } from '../create-invoice/invoice';
 import { GSTService } from "../add-gst/gst.service";
 import * as moment from 'moment';
 
@@ -156,7 +155,7 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   addProduct() {
-      if (this.challanDate != undefined && this.productName != undefined && this.productHSN != undefined && this.productUnit != undefined
+    if (this.challanDate != undefined && this.productName != undefined && this.productHSN != undefined && this.productUnit != undefined
       && this.productQuantity != undefined && this.productRate != undefined && this.productSubTotalAmount != undefined && this.totalAmount != undefined) {
       if (this.isWithoutTax || this.productTaxAmount == undefined) {
         this.productTaxAmount = 0;
@@ -171,7 +170,6 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   createInvoice() {
-    debugger;
     if (this.buttonLabel == "SAVE") {
       if (this.invoiceDate != undefined && this.customerName != undefined && this.customerAddress != undefined
         && this.contactNo != undefined && (this.localProductList != undefined && this.localProductList.length > 0)) {
@@ -263,15 +261,15 @@ export class CreateInvoiceComponent implements OnInit {
   calculateTotal() {
     if (!this.isWithoutTax) {
       this.totalAmount = this.productSubTotalAmount + this.productTaxAmount;
-      if(this.localProductList.length > 0){
-        for(var i=0;i<this.localProductList.length;i++){
+      if (this.localProductList.length > 0) {
+        for (var i = 0; i < this.localProductList.length; i++) {
           this.localProductList[i].prod_total_amount = this.localProductList[i].prod_sub_total + this.localProductList[i].prod_tax;
         }
       }
     } else {
       this.totalAmount = this.productSubTotalAmount;
-      if(this.localProductList.length > 0){
-        for(var i=0;i<this.localProductList.length;i++){
+      if (this.localProductList.length > 0) {
+        for (var i = 0; i < this.localProductList.length; i++) {
           this.localProductList[i].prod_total_amount = this.localProductList[i].prod_sub_total;
         }
       }
@@ -324,14 +322,11 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   printInvoiceDetail() {
-    const invoiceObj = new Invoice(this.invoiceId, this.invoiceDate, this.customerName, this.customerAddress, this.contactPerson, this.contactNo, this.totalInvoiceAmount, JSON.stringify(this.localProductList));
-    if (invoiceObj != undefined) {
-      let navigationExtras: NavigationExtras = {
-        queryParams: invoiceObj
-      };
-      // Redirect it to View Product screen
-      this.router.navigate(['/view-invoice-copy'], navigationExtras);
-    }
+    let navigationExtras: NavigationExtras = {
+      queryParams: { inv_id: this.invoiceId }
+    };
+    // Redirect it to View Product screen
+    this.router.navigate(['/view-invoice-copy'], navigationExtras);
   }
 
   setInvoiceDetail(invoice) {
@@ -342,7 +337,13 @@ export class CreateInvoiceComponent implements OnInit {
     this.contactNo = invoice.inv_contact;
     this.contactPerson = invoice.inv_contact_person;
     this.totalInvoiceAmount = invoice.inv_total_amount;
-
+    var isTax = invoice.inv_without_tax;
+    if (isTax == 0){
+      this.isWithoutTax = false;
+    } else {
+      this.isWithoutTax = true;
+    }
+     
     // Get Invoice products for selected invoice id
     this.getInvoiceProducts();
   }
@@ -406,21 +407,22 @@ export class CreateInvoiceComponent implements OnInit {
       this.productTaxAmount = this.productSubTotalAmount * (this.gstPercentage / 100);
     }
 
-    if(this.localProductList.length > 0 && !this.isWithoutTax){
-      for(var i=0;i<this.localProductList.length;i++){
+    if (this.localProductList.length > 0 && !this.isWithoutTax) {
+      for (var i = 0; i < this.localProductList.length; i++) {
         this.localProductList[i].prod_tax = this.localProductList[i].prod_sub_total * (this.gstPercentage / 100);
       }
     }
   }
 
-  changeTaxSelection(){
+  changeTaxSelection() {
     this.isWithoutTax = !this.isWithoutTax;
     this.calculateTaxAmount();
     this.calculateTotal();
     this.calculateInvoiceTotal();
   }
 
-  removeProduct(index){
-    this.localProductList.splice(index);
+  removeProduct(product) {
+    const index = this.localProductList.indexOf(product);
+    this.localProductList.splice(index, 1);
   }
 }

@@ -9,32 +9,47 @@
 </style>
 
 <mat-card class="card-css">
-    <mat-card-header>
-        <mat-card-title>
-            <h2 align="right">Tax Invoice</h2>
-        </mat-card-title>
-    </mat-card-header>
-    <mat-divider></mat-divider>
-    <mat-card-content>
-        <div id="print-section">
-            <div class="container-css">
-                <label>
-          <b>M/S:</b> {{this.customerName}}</label>
-                <label align="right">
-          <b>Date:</b> {{this.invoiceDate}}</label>
+    <div id="print-section">
+        <div align="center" class="container-vertical-css">
+            <label>TAX INVOICE</label>
+            <label>SHUBHAM ENTERPRISES</label>
+            <label>BUILDING MATERIAL SUPPLIERS</label>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="container-css">
+            <div align="left" class="container-vertical-css" style="width:50%">
+                <label><b>Office Address:</b></label>
+                <label>Office No. 7, Sayali Residency, Opp. to Water Tank, Dehugaon, Pune</label>
             </div>
-
-            <div class="container-css">
-                <label>{{this.customerAddress}}</label>
-                <label align="right">
-          <b>Invoice Number:</b> {{this.invoiceNo}}</label>
+            <div align="right" class="container-vertical-css" style="width:50%">
+                <label><b>Contact No - </b>9922991310/9604039293</label>
+                <label><b>Email - </b>shubham.enterprises@gmail.com</label>
+                <label><b>GST No - </b>27ABNFS5898QIZQ</label>
             </div>
-            <mat-card style="height:400px">
+        </div>
+        <mat-divider></mat-divider>
+        <mat-card-content>
+            <div class="container-css">
+                <div class="container-vertical-css" align="left" style="width:50%">
+                    <label>
+                <b>M/S: {{this.customerName}}</b></label>
+                    <label>{{this.customerAddress}}</label>
+                    <label><b>GST No: </b>27ABNFS5898QIZQ</label>
+                </div>
 
-                <table style="width:100%;">
+                <div class="container-vertical-css" align="right" style="width:50%">
+                    <label><b>Date:</b> {{this.invoiceDate}}</label>
+                    <label><b>Invoice Number:</b> {{this.invoiceNo}}</label>
+                </div>
+            </div>
+            <div style="width:100%;height:auto">
+                <table>
                     <thead>
                         <tr>
                             <th class="input-css">Sr. No.</th>
+                            <th class="input-css">Challan Date</th>
+                            <th class="input-css">Challan No</th>
+                            <th class="input-css">Vehicle No</th>
                             <th class="input-css">Material</th>
                             <th class="input-css">HSN Code</th>
                             <th class="input-css">Unit</th>
@@ -42,11 +57,13 @@
                             <th class="input-css">Rate</th>
                             <th class="input-css">Amount In Rs.</th>
                         </tr>
-
                     </thead>
                     <tbody>
-                        <tr *ngFor="let product of products;let i=index">
+                        <tr *ngFor="let product of invoiceProducts;let i=index">
                             <td class="input-css">{{i+1}}</td>
+                            <td class="input-css">{{product.chal_date}}</td>
+                            <td class="input-css">{{product.chal_no}}</td>
+                            <td class="input-css">{{product.veh_number}}</td>
                             <td class="input-css">{{product.prod_name}}</td>
                             <td class="input-css">{{product.prod_hsn}}</td>
                             <td class="input-css">{{product.prod_unit}}</td>
@@ -56,84 +73,88 @@
                         </tr>
                     </tbody>
                 </table>
-            </mat-card>
-
-            <div class="container-css">
-                <label>
-          <b>Bill Period From:</b> 15 Mar 2018 To: 30 Mar 2018</label>
-                <div class="container-vertical-css">
-                    <label align="right">
-            <b>Total: </b>{{this.invoiceTotal}}</label>
-                </div>
-            </div>
-
-            <div class="container-css">
-                <table>
-                    <thead>
-                        <tr>
-                            <th rowspan="2">Taxable Amount</th>
-                            <th colspan="2">Central Tax</th>
-                            <th colspan="2">State Tax</th>
-                        </tr>
-                        <tr>
-                            <td>Rate</td>
-                            <td>Amount</td>
-                            <td>Rate</td>
-                            <td>Amount</td>
-                        </tr>
-                        <tr>
-                            <td>{{this.invoiceTotalAmount}}</td>
-                            <td>2.50%</td>
-                            <td>{{taxAmount/2}}</td>
-                            <td>2.50%</td>
-                            <td>{{taxAmount/2}}</td>
-                        </tr>
-                    </thead>
-                </table>
-                <div class="container-vertical-css">
-                    <label align="right">
-            <b>CGST(2.5%): </b>{{this.taxAmount/2}}</label>
-                    <label align="right">
-            <b>SGST(2.5%): </b>{{this.taxAmount/2}}</label>
-                    <label align="right">
-            <b>Net Total: </b>{{this.invoiceTotalAmount}}</label>
-                    <label align="right">
-              <b>Round-Off Amount:</b>0.00</label>
-                </div>
             </div>
             <mat-divider></mat-divider>
-            <div style="padding:16px">
+            <div class="container-css">
+                <label align="left" style="width:60%" ng-if="true">
+          <b>Bill Period From:</b> {{this.minChallanDate}} To: {{this.maxChallanDate}}</label>
+
+                <label align="right" style="width:40%">
+            <b>Total: </b>{{this.invoiceTotalAmount}}</label>
+
+            </div>
+            <div class="container-vertical-css">
+                <div class="container-css" align="left">
+                    <table style="width:60%">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">Taxable Amount</th>
+                                <th colspan="2">Central Tax</th>
+                                <th colspan="2">State Tax</th>
+                            </tr>
+                            <tr>
+                                <td>Rate</td>
+                                <td>Amount</td>
+                                <td>Rate</td>
+                                <td>Amount</td>
+                            </tr>
+                            <tr>
+                                <td>{{this.invoiceTotalAmount}}</td>
+                                <td>2.50%</td>
+                                <td>{{(taxAmount/2).toFixed(2)}}</td>
+                                <td>2.50%</td>
+                                <td>{{(taxAmount/2).toFixed(2)}}</td>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="container-vertical-css" align="right" style="width:40%">
+                        <label>
+            <b>CGST(2.5%): </b>{{(taxAmount/2).toFixed(2)}}</label>
+                        <label>
+            <b>SGST(2.5%): </b>{{(taxAmount/2).toFixed(2)}}</label>
+                        <label>
+            <b>Net Total: </b>{{(taxAmount/2).toFixed(2)}}</label>
+                        <label>
+            <b>Round-Off Amount:</b>0.00</label>
+                    </div>
+                </div>
                 <label>
-          <b>Amount In Words:</b>Rupees Seventy Nine Thousand Three Hundred Eighty Only</label>
+                    <b>Amount In Words: </b>Rupees {{this.amountInWords}} only</label>
             </div>
             <mat-divider></mat-divider>
-            <label class="input-css">
-        <b>GST No.:</b>27ABNFS5898QIZQ</label>
-            <br/>
-            <div>
-                <p>We declare that this invoice shows the actual price of the goods described and all particulars are true and correct.</p>
+            <div class="container-vertical-css">
+                <label><b>Bank Details for NEFT/RTGS: </b></label>
+                <label><b>Bank Name - </b>Corporation Bank</label>
+                <label><b>Branch - </b>Dehugaon, Pune</label>
+                <label><b>A/C No - </b>00014001275</label>
+                <label><b>IFSC Code - </b>CORP0001400</label>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="container-vertical-css">
+                <label>
+          <b>Note:</b>
+        </label>
+                <label>1. Payment must be made by Account Payee Cheque/DD only.</label>
+                <label>2. Interest @24% will be charge after credit limit.</label>
+                <label>3. Measurement and Rate cannot be changed.</label>
+            </div>
+            <mat-divider></mat-divider>
+
+            <p>We declare that this invoice shows the actual price of the goods described and all particulars are true and correct.
+            </p>
+            <div align="right">
                 <label align="center">
           <b>Checked By:</b>
         </label>
-                <br/>
+                <br />
                 <label align="center">
-          For<br/>
-          <br/>
+          For<br />
+          <br />
           <b>Shubham Enterprises:</b>
         </label>
             </div>
-            <mat-divider></mat-divider>
-
-            <div class="container-vertical-css">
-                <label class="input-css">
-          <b>Note:</b>
-        </label>
-                <label>1. Payment must be made by Account Payee Cheque/DD only.</label><br/>
-                <label>2. Interest @24% will be charge after credit limit.</label><br/>
-                <label>3. Measurement and Rate cannot be changed.</label><br/>
-            </div>
-        </div>
-    </mat-card-content>
+        </mat-card-content>
+    </div>
     <mat-card-actions>
         <button mat-raised-button color="primary" (click)="back()">BACK</button>
         <button mat-raised-button color="primary" (click)="printInvoice()">PRINT</button>

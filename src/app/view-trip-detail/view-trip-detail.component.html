@@ -1,0 +1,48 @@
+<div>
+    <label>Trip Details</label>
+    <button (click)="showTripDetails();">ADD NEW</button>
+</div>
+
+<div class="example-container mat-elevation-z8">
+
+    <mat-card style="padding:5px">
+        <mat-table #table [dataSource]="dataSource">
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="trip_date">
+                <mat-header-cell *matHeaderCellDef> Trip Date </mat-header-cell>
+                <mat-cell *matCellDef="let trip"> {{trip.trip_date}} </mat-cell>
+            </ng-container>
+
+            <!-- Contact Person Column -->
+            <ng-container matColumnDef="vehicle_no">
+                <mat-header-cell *matHeaderCellDef> Vehicle </mat-header-cell>
+                <mat-cell *matCellDef="let trip"> {{trip.veh_number}} </mat-cell>
+            </ng-container>
+
+            <!-- Contact Column -->
+            <ng-container matColumnDef="source">
+                <mat-header-cell *matHeaderCellDef> Source </mat-header-cell>
+                <mat-cell *matCellDef="let trip"> {{trip.loading_place}} </mat-cell>
+            </ng-container>
+
+            <!-- Email Column -->
+            <ng-container matColumnDef="destination">
+                <mat-header-cell *matHeaderCellDef> Destination </mat-header-cell>
+                <mat-cell *matCellDef="let trip"> {{trip.unloading_place}} </mat-cell>
+            </ng-container>
+
+            <!-- Address Column -->
+            <ng-container matColumnDef="qty">
+                <mat-header-cell *matHeaderCellDef> Quantity </mat-header-cell>
+                <mat-cell *matCellDef="let trip"> {{trip.material_qty}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showTripDetails(row)"></mat-row>
+        </mat-table>
+
+        <mat-paginator #paginator [pageSize]="15" [pageSizeOptions]="[15,20]" [showFirstLastButtons]="true">
+        </mat-paginator>
+    </mat-card>
+</div>

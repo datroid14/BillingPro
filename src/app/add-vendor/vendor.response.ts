@@ -5,7 +5,4 @@ export class VendorResponse {
     public status: number;
     public message: string;
     public vendors: Vendor[];
-    constructor(
-       
-    ){}
 }

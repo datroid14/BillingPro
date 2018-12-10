@@ -27,15 +27,15 @@
         </mat-form-field>
 
         <mat-form-field>
-            <input matInput [(ngModel)]="customerAddress" placeholder="Address" [disabled]="isFieldDisabled" required>
+            <input matInput [(ngModel)]="customerAddress" placeholder="Address" [disabled]="true" required>
         </mat-form-field>
 
         <mat-form-field>
-            <input matInput [(ngModel)]="contactPerson" placeholder="Contact Person" [disabled]="isFieldDisabled" required>
+            <input matInput [(ngModel)]="contactPerson" placeholder="Contact Person" [disabled]="true" required>
         </mat-form-field>
 
         <mat-form-field>
-            <input matInput type="number" [(ngModel)]="contactNo" placeholder="Contact Number" [disabled]="isFieldDisabled" maxlength="10" required>
+            <input matInput type="number" [(ngModel)]="contactNo" placeholder="Contact Number" [disabled]="true" maxlength="10" required>
         </mat-form-field>
 
         <mat-card class="inner-card-css">

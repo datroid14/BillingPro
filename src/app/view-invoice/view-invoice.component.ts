@@ -38,18 +38,10 @@ export class ViewInvoiceComponent {
       });
   }
 
-  /**
-  * Set the paginator after the view init since this component will
-  * be able to query its view for the initialized paginator.
-  */
-  ngAfterViewInit() {
-
-  }
-
   showInvoiceDetails(invoice) {
     if (invoice != undefined) {
       let navigationExtras: NavigationExtras = {
-        queryParams: { inv_id: invoice.inv_id}
+        queryParams: { inv_id: invoice.inv_id }
       };
       // Redirect it to View Product screen
       this.router.navigate(['/create-invoice'], navigationExtras);
@@ -62,7 +54,7 @@ export class ViewInvoiceComponent {
 export interface INVOICE {
   inv_id: number;
   inv_date: Date;
-  inv_cust_id : number;
+  inv_cust_id: number;
   inv_cust_name: string;
   inv_address: string;
   inv_contact_person: string;

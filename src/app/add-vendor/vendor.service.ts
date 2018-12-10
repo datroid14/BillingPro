@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Observable';
-import { catchError, map, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { VendorResponse } from '../add-vendor/vendor.response';
 import { Injectable } from '@angular/core';
 import { AddResponse } from '../common/add.response';

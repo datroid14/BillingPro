@@ -23,6 +23,7 @@ export class AddDieselEntryComponent implements OnInit {
 
   employees;
   vehicles;
+  vehicleId: number;
   employeeId: number;
   employeeName: string;
 
@@ -191,13 +192,15 @@ export class AddDieselEntryComponent implements OnInit {
     this.dieselAmount = dieselEntry.diesel_amount;
     this.employeeId = dieselEntry.emp_id;
     this.employeeName = dieselEntry.emp_name;
-
   }
 
   setEmployeeDetail(employee) {
     this.employeeId = employee.emp_id;
     this.employeeName = employee.emp_name;
+  }
 
+  setVehicleDetail(vehicle) {
+    this.vehicleId = vehicle.veh_id;
   }
 
   getDieselEntryById() {

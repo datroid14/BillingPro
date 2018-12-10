@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
-import { ChequeEntryService } from "../add-cheque-details/cheque-entry.service";
+import { ChequeEntryService } from "../add-cheque-detail/cheque-entry.service";
 import { CustomerService } from "../add-customer/customer.service";
 import { Location } from '@angular/common';
 import { AppService } from "../app.service"
 import * as moment from 'moment';
 
 @Component({
-  selector: 'add-cheque-details',
-  templateUrl: './add-cheque-details.component.html',
-  styleUrls: ['./add-cheque-details.component.css']
+  selector: 'add-cheque-detail',
+  templateUrl: './add-cheque-detail.component.html',
+  styleUrls: ['./add-cheque-detail.component.css']
 })
 export class AddChequeDetailsComponent implements OnInit {
 
@@ -40,12 +40,6 @@ export class AddChequeDetailsComponent implements OnInit {
     });
     this.addImagePath = "assets/images/ic_add_circle.svg";
     this.removeImagePath = "assets/images/ic_remove_circle.svg";
-
-    if (this.chequeEntryId != undefined) {
-      this.getChequeEntryById();
-    } else {
-      this.addNewChequeEntry();
-    }
 
     this.customerService.getCustomers().subscribe(response => {
       this.customers = response.customers;

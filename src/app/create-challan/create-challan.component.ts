@@ -155,18 +155,18 @@ export class CreateChallanComponent implements OnInit {
     if (this.buttonLabel == "SAVE") {
       if (this.customerId != undefined && this.productId != undefined && this.vehicleId != undefined &&
         this.productQuantity != undefined) {
-        if (this.isEditClicked) {
-          // const updatePayload = { "data": { "chal_id": this.challanId, "chal_no": this.challanNumber, "chal_date": this.challanDate, "chal_cust_id": this.customerId, "chal_prod_id": this.productId, "chal_veh_id": this.vehicleId, "chal_quantity": this.productQuantity } };
-          // this.vehicleService.updateChallan(updatePayload).subscribe(response => {
-          //   if (response.status == 200) {
-          //     this.location.back();
-          //   }
-          // },
-          //   error => {
-          //     console.log(error)
-          //   });
-        } else {
           var formattedChallanDate = moment(this.challanDate).format('YYYY-MM-DD')
+        if (this.isEditClicked) {
+          const updatePayload = { "data": { "chal_id": this.challanId, "chal_no": this.challanNumber, "chal_date": formattedChallanDate, "chal_cust_id": this.customerId, "chal_prod_id": this.productId, "chal_veh_id": this.vehicleId, "chal_quantity": this.productQuantity } };
+          this.challanService.updateChallan(updatePayload).subscribe(response => {
+            if (response.status == 200) {
+              this.location.back();
+            }
+          },
+            error => {
+              console.log(error)
+            });
+        } else {
           const payload = { "data": { "chal_no": this.challanNumber, "chal_date": formattedChallanDate, "chal_quantity": this.productQuantity, "chal_cust_id": this.customerId, "chal_prod_id": this.productId, "chal_veh_id": this.vehicleId, "chal_is_invoice_created": 0 } };
           this.challanService.addChallan(payload).subscribe(response => {
             if (response.status == 200) {
@@ -224,11 +224,14 @@ export class CreateChallanComponent implements OnInit {
   setChallanDetail(challan) {
     this.challanDate = challan.chal_date;
     this.challanNumber = challan.chal_no;
+    this.customerId = challan.chal_cust_id;
     this.customerName = challan.chal_cust_name;
     this.customerAddress = challan.chal_cust_address;
+    this.productId = challan.chal_prod_id;
     this.productName = challan.chal_prod_name;
     this.productUnit = challan.chal_prod_unit;
     this.productQuantity = challan.chal_quantity;
+    this.vehicleId = challan.chal_veh_id;
     this.vehicleNumber = challan.chal_veh_no;
   }
 

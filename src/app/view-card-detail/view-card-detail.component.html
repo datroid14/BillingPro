@@ -1,0 +1,42 @@
+<div>
+    <label>Card Details</label>
+    <button (click)="showCardDetails();">ADD NEW</button>
+</div>
+
+<div class="example-container mat-elevation-z8">
+
+    <mat-card style="padding:5px">
+        <mat-table #table [dataSource]="dataSource">
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="card_date">
+                <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                <mat-cell *matCellDef="let card"> {{card.card_date}} </mat-cell>
+            </ng-container>
+
+            <!-- Contact Person Column -->
+            <ng-container matColumnDef="vehicle_no">
+                <mat-header-cell *matHeaderCellDef> Vehicle Number </mat-header-cell>
+                <mat-cell *matCellDef="let card"> {{card.veh_number}} </mat-cell>
+            </ng-container>
+
+            <!-- Contact Column -->
+            <ng-container matColumnDef="rto_pune">
+                <mat-header-cell *matHeaderCellDef> Pune RTO </mat-header-cell>
+                <mat-cell *matCellDef="let card"> {{card.rto_pune_amount}} </mat-cell>
+            </ng-container>
+
+            <!-- Email Column -->
+            <ng-container matColumnDef="rto_pcmc">
+                <mat-header-cell *matHeaderCellDef> PCMC RTO </mat-header-cell>
+                <mat-cell *matCellDef="let card"> {{card.rto_pcmc_amount}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showCardDetails(row)"></mat-row>
+        </mat-table>
+
+        <mat-paginator #paginator [pageSize]="15" [pageSizeOptions]="[15,20]" [showFirstLastButtons]="true">
+        </mat-paginator>
+    </mat-card>
+</div>

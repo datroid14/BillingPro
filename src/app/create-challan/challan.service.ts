@@ -38,6 +38,12 @@ export class ChallanService {
                   .pipe(tap(res => null));
       }
 
+      updateChallan(payload:Object): Observable<AddResponse> {
+            return this.http
+                  .post<AddResponse>(constants.serverUrl + 'updateChallan', payload, httpOptions)
+                  .pipe(tap(res => null));
+      }
+
       getChallansByCustomerId(payload:Object): Observable<ChallanResponse> {
             return this.http
                   .post<ChallanResponse>(constants.serverUrl + 'getChallansByCustomerId', payload, httpOptions)

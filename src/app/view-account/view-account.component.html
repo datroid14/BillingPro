@@ -1,0 +1,42 @@
+<div>
+    <label>Bank Account Details</label>
+    <button (click)="showAccountDetails();">ADD NEW</button>
+</div>
+
+<div class="example-container mat-elevation-z8">
+
+    <mat-card style="padding:5px">
+        <mat-table #table [dataSource]="dataSource">
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="account_number">
+                <mat-header-cell *matHeaderCellDef> Account No </mat-header-cell>
+                <mat-cell *matCellDef="let account"> {{account.account_number}} </mat-cell>
+            </ng-container>
+
+            <!-- Contact Person Column -->
+            <ng-container matColumnDef="bank_name">
+                <mat-header-cell *matHeaderCellDef> Bank Name </mat-header-cell>
+                <mat-cell *matCellDef="let account"> {{account.bank_name}} </mat-cell>
+            </ng-container>
+
+            <!-- Contact Column -->
+            <ng-container matColumnDef="bank_address">
+                <mat-header-cell *matHeaderCellDef> Bank Address </mat-header-cell>
+                <mat-cell *matCellDef="let account"> {{account.bank_address}} </mat-cell>
+            </ng-container>
+
+            <!-- Email Column -->
+            <ng-container matColumnDef="account_type">
+                <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+                <mat-cell *matCellDef="let account"> {{account.account_type}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showAccountDetails(row)"></mat-row>
+        </mat-table>
+
+        <mat-paginator #paginator [pageSize]="15" [pageSizeOptions]="[15,20]" [showFirstLastButtons]="true">
+        </mat-paginator>
+    </mat-card>
+</div>

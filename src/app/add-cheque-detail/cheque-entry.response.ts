@@ -1,4 +1,4 @@
-import { ChequeEntry } from '../add-cheque-details/cheque-entry';
+import { ChequeEntry } from '../add-cheque-detail/cheque-entry';
 
 export class ChequeEntryResponse {
 

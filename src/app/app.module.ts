@@ -25,37 +25,46 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { AppComponent } from './app.component';
 import { TableViewComponent } from './table-view/table-view.component';
 import { CreateInvoiceComponent } from './create-invoice/create-invoice.component';
+import { AddChequeDetailsComponent } from './add-cheque-detail/add-cheque-detail.component';
+import { AddCustomerComponent } from './add-customer/add-customer.component';
+import { AddDieselEntryComponent } from './add-diesel-entry/add-diesel-entry.component';
+import { AddEmployeeComponent } from './add-employee/add-employee.component';
+import { AddGstComponent } from './add-gst/add-gst.component';
+import { AddPaymentComponent } from './add-payment/add-payment.component';
 import { AddProductComponent } from './add-product/add-product.component';
-import { ViewInvoiceComponent } from './view-invoice/view-invoice.component';
+import { AddPurchaseComponent } from './add-purchase/add-purchase.component';
+import { AddVehicleComponent } from './add-vehicle/add-vehicle.component';
+import { AddVendorComponent } from './add-vendor/add-vendor.component';
+import { AddEmiDetailComponent } from './add-emi-detail/add-emi-detail.component';
+import { AddCardDetailComponent } from './add-card-detail/add-card-detail.component';
+import { AddTripDetailComponent } from './add-trip-detail/add-trip-detail.component';
+import { AddAccountComponent } from './add-account/add-account.component';
+
 import { CreateChallanComponent } from './create-challan/create-challan.component';
 import { CreateQuatationComponent } from './create-quatation/create-quatation.component';
-import { AddCustomerComponent } from './add-customer/add-customer.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { AddVendorComponent } from './add-vendor/add-vendor.component';
-import { AddPurchaseComponent } from './add-purchase/add-purchase.component';
 import { ViewCustomerComponent } from './view-customer/view-customer.component';
+import { ViewInvoiceComponent } from './view-invoice/view-invoice.component';
 import { ViewVendorComponent } from './view-vendor/view-vendor.component';
 import { ViewProductComponent } from './view-product/view-product.component';
 import { ViewChallanComponent } from './view-challan/view-challan.component';
 import { ViewPurchaseComponent } from './view-purchase/view-purchase.component';
 import { ViewQuatationComponent } from './view-quatation/view-quatation.component';
-import { AddVehicleComponent } from './add-vehicle/add-vehicle.component';
 import { ViewInvoiceCopyComponent } from './view-invoice-copy/view-invoice-copy.component';
 import { ViewVehicleComponent } from './view-vehicle/view-vehicle.component';
 import { ViewGstComponent } from './view-gst/view-gst.component';
-import { AddGstComponent } from './add-gst/add-gst.component';
 import { ViewChequeDetailsComponent } from './view-cheque-details/view-cheque-details.component';
-import { AddChequeDetailsComponent } from './add-cheque-details/add-cheque-details.component';
 import { ViewQuatationCopyComponent } from './view-quatation-copy/view-quatation-copy.component';
 import { ViewChallanCopyComponent } from './view-challan-copy/view-challan-copy.component';
 import { ViewPurchaseCopyComponent } from './view-purchase-copy/view-purchase-copy.component';
-import { AddDieselEntryComponent } from './add-diesel-entry/add-diesel-entry.component';
-import { AddEmployeeComponent } from './add-employee/add-employee.component';
-import { AddPaymentComponent } from './add-payment/add-payment.component';
 import { ViewDieselEntryComponent } from './view-diesel-entry/view-diesel-entry.component';
 import { ViewPaymentDetailComponent } from './view-payment-detail/view-payment-detail.component';
 import { ViewEmployeeComponent } from './view-employee/view-employee.component';
+import { ViewAccountComponent } from './view-account/view-account.component';
+import { ViewTripDetailComponent } from './view-trip-detail/view-trip-detail.component';
+import { ViewCardDetailComponent } from './view-card-detail/view-card-detail.component';
+import { ViewEmiDetailComponent } from './view-emi-detail/view-emi-detail.component';
 
 import { CustomerService } from './add-customer/customer.service';
 import { VendorService } from './add-vendor/vendor.service';
@@ -67,21 +76,34 @@ import { AppService } from './app.service';
 import { VehicleService } from './add-vehicle/vehicle.service';
 import { InvoiceService } from './create-invoice/invoice.service';
 import { GSTService } from './add-gst/gst.service';
-import { ChequeEntryService } from './add-cheque-details/cheque-entry.service';
+import { ChequeEntryService } from './add-cheque-detail/cheque-entry.service';
 import { EmployeeService } from './add-employee/employee.service';
 import { DieselEntryService } from './add-diesel-entry/diesel-entry.service';
 import { PaymentService } from './add-payment/payment.service';
+import { AccountService } from './add-account/account.service';
+import { EmiDetailService } from './add-emi-detail/emi-detail.service';
+import { TripDetailService } from './add-trip-detail/trip-detail.service';
+import { CardDetailService } from './add-card-detail/card-detail.service';
+import { DashboardService } from './dashboard/dashboard.service';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'table-view', component: TableViewComponent },
+  { path: 'add-account', component: AddAccountComponent },
+  { path: 'add-card-detail', component: AddCardDetailComponent },
+  { path: 'add-emi-detail', component: AddEmiDetailComponent },
+  { path: 'add-trip-detail', component: AddTripDetailComponent },
+  { path: 'add-cheque-details', component: AddChequeDetailsComponent },
   { path: 'add-customer', component: AddCustomerComponent },
+  { path: 'add-diesel-entry', component: AddDieselEntryComponent },
+  { path: 'add-employee', component: AddEmployeeComponent },
   { path: 'add-gst', component: AddGstComponent },
   { path: 'add-product', component: AddProductComponent },
   { path: 'add-purchase', component: AddPurchaseComponent },
-  { path: 'add-vendor', component: AddVendorComponent },
   { path: 'add-vehicle', component: AddVehicleComponent },
+  { path: 'add-vendor', component: AddVendorComponent },
+  { path: 'add-payment', component: AddPaymentComponent },
   { path: 'create-invoice', component: CreateInvoiceComponent },
   { path: 'create-challan', component: CreateChallanComponent },
   { path: 'create-quatation', component: CreateQuatationComponent },
@@ -95,17 +117,17 @@ const appRoutes: Routes = [
   { path: 'view-vendor', component: ViewVendorComponent },
   { path: 'view-vehicle', component: ViewVehicleComponent },
   { path: 'view-invoice-copy', component: ViewInvoiceCopyComponent },
-  { path: 'view-quatation-copy', component: ViewQuatationCopyComponent },
   { path: 'view-challan-copy', component: ViewChallanCopyComponent },
   { path: 'view-purchase-copy', component: ViewPurchaseCopyComponent },
-  { path: 'add-cheque-details', component: AddChequeDetailsComponent },
+  { path: 'view-quatation-copy', component: ViewQuatationCopyComponent },
   { path: 'view-cheque-details', component: ViewChequeDetailsComponent },
   { path: 'view-employee', component: ViewEmployeeComponent },
   { path: 'view-diesel-entry', component: ViewDieselEntryComponent },
   { path: 'view-payment-detail', component: ViewPaymentDetailComponent },
-  { path: 'add-diesel-entry', component: AddDieselEntryComponent },
-  { path: 'add-employee', component: AddEmployeeComponent },
-  { path: 'add-payment', component: AddPaymentComponent },
+  { path: 'view-trip-detail', component: ViewTripDetailComponent },
+  { path: 'view-account', component: ViewAccountComponent },
+  { path: 'view-card-detail', component: ViewCardDetailComponent },
+  { path: 'view-emi-detail', component: ViewEmiDetailComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 
@@ -144,7 +166,15 @@ const appRoutes: Routes = [
     AddPaymentComponent,
     ViewDieselEntryComponent,
     ViewPaymentDetailComponent,
-    ViewEmployeeComponent
+    ViewEmployeeComponent,
+    AddAccountComponent,
+    ViewAccountComponent,
+    ViewTripDetailComponent,
+    ViewCardDetailComponent,
+    ViewEmiDetailComponent,
+    AddEmiDetailComponent,
+    AddCardDetailComponent,
+    AddTripDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -171,7 +201,8 @@ const appRoutes: Routes = [
   ],
   providers: [AppService, CustomerService, VendorService, ProductService, QuatationService, ChallanService, 
     PurchaseService, VehicleService, InvoiceService, GSTService, ChequeEntryService, EmployeeService, 
-    DieselEntryService, PaymentService],
+    DieselEntryService, PaymentService, AccountService, CardDetailService, EmiDetailService, TripDetailService,
+    DashboardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
