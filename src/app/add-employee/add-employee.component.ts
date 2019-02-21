@@ -89,6 +89,7 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   addEmployee() {
+    debugger;
     if (this.buttonLabel == "SAVE") {
       if (this.employeeName != undefined && this.employeeAddress != undefined && this.employeeContact != undefined) {
         var formattedJoiningDate = moment(this.joiningDate).format('YYYY-MM-DD');

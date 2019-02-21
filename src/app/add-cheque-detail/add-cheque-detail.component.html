@@ -12,9 +12,9 @@
         </div>
 
         <mat-form-field>
-            <input matInput [matDatepicker]="picker" placeholder="Cheque Date" [(ngModel)]="chequeDate" [disabled]="isFieldDisabled">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
+            <input matInput [matDatepicker]="chequeDatePicker" placeholder="Cheque Date" [(ngModel)]="chequeDate" [disabled]="isFieldDisabled">
+            <mat-datepicker-toggle matSuffix [for]="chequeDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #chequeDatePicker></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field>
@@ -34,9 +34,9 @@
         </mat-form-field>
 
         <mat-form-field>
-            <input matInput [matDatepicker]="picker" placeholder="Clearence Date" [(ngModel)]="clearenceDate" [disabled]="isFieldDisabled">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
+            <input matInput [matDatepicker]="clearenceDatePicker" placeholder="Clearence Date" [(ngModel)]="clearenceDate" [disabled]="isFieldDisabled">
+            <mat-datepicker-toggle matSuffix [for]="clearenceDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #clearenceDatePicker></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field>

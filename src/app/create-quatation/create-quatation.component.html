@@ -58,17 +58,17 @@
                         </th>
                         <th class="input-css">
                             <mat-form-field>
-                                <input matInput [(ngModel)]="productDesc" required>
+                                <input matInput [(ngModel)]="productDesc" disabled="true" required>
                             </mat-form-field>
                         </th>
                         <th class="input-css">
                             <mat-form-field>
-                                <input matInput [(ngModel)]="productUnit" required>
+                                <input matInput [(ngModel)]="productUnit" disabled="true" required>
                             </mat-form-field>
                         </th>
                         <th class="input-css">
                             <mat-form-field>
-                                <input matInput type="number" [(ngModel)]="productRate" (ngModelChange)="calculateTotal($event)" maxlength="8" required>
+                                <input matInput type="number" [(ngModel)]="productRate" maxlength="8" required>
                             </mat-form-field>
                         </th>
                         <th>

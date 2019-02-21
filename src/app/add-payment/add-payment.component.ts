@@ -122,6 +122,7 @@ export class AddPaymentComponent implements OnInit {
   }
 
   addPaymentDetail() {
+    debugger;
     if (this.buttonLabel == "SAVE") {
       if (this.paymentDate != undefined && this.employeeId != undefined && this.paymentAmount != undefined) {
         this.isDeleteDisabled = false;
@@ -185,6 +186,7 @@ export class AddPaymentComponent implements OnInit {
 
   setPaymentDetail(payment) {
     this.paymentDate = payment.payment_date;
+    this.employeeId = payment.emp_id;
     this.employeeName = payment.emp_name;
     this.paymentAmount = payment.payment_amount;
     this.paymentMode = payment.payment_mode;

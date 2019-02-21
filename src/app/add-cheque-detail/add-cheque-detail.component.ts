@@ -27,6 +27,7 @@ export class AddChequeDetailsComponent implements OnInit {
   chequeNumber: string;
   chequeAmount: number;
   accountNo: string;
+  clearenceDate: string;
   chequeCustomerId: number;
 
   // Variables for image paths
@@ -123,7 +124,7 @@ export class AddChequeDetailsComponent implements OnInit {
         this.isDeleteDisabled = false;
         var formattedChequeDate = moment(this.chequeDate).format('YYYY-MM-DD');
         if (this.isEditClicked) {
-          const updatePayload = { "data": { "cheque_entry_id": this.chequeEntryId, "cheque_date": formattedChequeDate, "cheque_number": this.chequeNumber, "cheque_amount": this.chequeAmount, "account_no": this.accountNo, "cheque_cust_id": this.chequeCustomerId } };
+          const updatePayload = { "data": { "cheque_entry_id": this.chequeEntryId, "cheque_date": formattedChequeDate, "cheque_number": this.chequeNumber, "cheque_amount": this.chequeAmount, "account_no": this.accountNo, "cheque_clearence_date":this.clearenceDate, "cheque_cust_id": this.chequeCustomerId } };
           this.chequeEntryService.updateChequeEntry(updatePayload).subscribe(response => {
             if (response.status == 200) {
               this.location.back();
@@ -133,7 +134,7 @@ export class AddChequeDetailsComponent implements OnInit {
               console.log(error)
             });
         } else {
-          const addPayload = { "data": { "cheque_date": formattedChequeDate, "cheque_number": this.chequeNumber, "cheque_amount": this.chequeAmount, "account_no": this.accountNo, "cheque_cust_id": this.chequeCustomerId } };
+          const addPayload = { "data": { "cheque_date": formattedChequeDate, "cheque_number": this.chequeNumber, "cheque_amount": this.chequeAmount, "account_no": this.accountNo, "cheque_clearence_date":this.clearenceDate, "cheque_cust_id": this.chequeCustomerId } };
           this.chequeEntryService.addChequeEntry(addPayload).subscribe(response => {
             if (response.status == 200) {
               this.location.back();

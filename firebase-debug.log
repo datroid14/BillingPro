@@ -1,0 +1,45 @@
+[debug] [2019-02-11T10:50:08.555Z] ----------------------------------------------------------------------
+[debug] [2019-02-11T10:50:08.557Z] Command:       /usr/local/bin/node /usr/local/bin/firebase init
+[debug] [2019-02-11T10:50:08.558Z] CLI Version:   6.3.1
+[debug] [2019-02-11T10:50:08.558Z] Platform:      darwin
+[debug] [2019-02-11T10:50:08.558Z] Node Version:  v6.11.0
+[debug] [2019-02-11T10:50:08.559Z] Time:          Mon Feb 11 2019 16:20:08 GMT+0530 (IST)
+[debug] [2019-02-11T10:50:08.559Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-02-11T10:50:08.567Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-02-11T10:50:08.567Z] > authorizing via signed-in user
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/datta/Angular2/TableDemo/TablePro
+
+Before we get started, keep in mind:
+
+  * You are initializing in an existing Firebase project directory
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2019-02-11T10:50:13.616Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects?page_size=100  
+ 
+[debug] [2019-02-11T10:50:15.270Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-11T10:50:41.494Z] TypeError: Cannot read property 'setRawMode' of null
+    at ReadStream.setRawMode (tty.js:38:15)
+    at Interface._setRawMode (readline.js:194:16)
+    at Interface.close (readline.js:317:10)
+    at ReadStream.ontermend (readline.js:116:10)
+    at emitNone (events.js:91:20)
+    at ReadStream.emit (events.js:185:7)
+    at endReadableNT (_stream_readable.js:974:12)
+    at _combinedTickCallback (internal/process/next_tick.js:80:11)
+    at process._tickDomainCallback (internal/process/next_tick.js:128:9)

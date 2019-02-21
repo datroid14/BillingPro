@@ -30,6 +30,11 @@
         <mat-form-field>
             <input matInput [(ngModel)]="emailAddress" placeholder="Email Address" [disabled]="isFieldDisabled" required />
         </mat-form-field>
+
+        <mat-form-field>
+            <input matInput [(ngModel)]="gstNumber" placeholder="GST Number" [disabled]="isFieldDisabled" />
+        </mat-form-field>
+
     </mat-card-content>
     <mat-card-actions>
         <button mat-raised-button color="primary" (click)="addCustomer();">{{buttonLabel}}</button>

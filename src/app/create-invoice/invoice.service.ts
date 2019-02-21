@@ -5,6 +5,7 @@ import { InvoiceProductResponse } from '../create-invoice/invoice.product.respon
 import { AddResponse } from '../common/add.response';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { constants } from '../common/constants';
 
 const httpOptions = {
       headers: new HttpHeaders({
@@ -21,25 +22,25 @@ export class InvoiceService {
 
       getInvoices(): Observable<InvoiceResponse> {
             return this.http
-                  .post<InvoiceResponse>("http://localhost:3000/getInvoices", null)
+                  .post<InvoiceResponse>(constants.serverUrl + 'getInvoices', null)
                   .pipe(tap(res => null));
       }
 
       getInvoiceById(payload:Object): Observable<InvoiceResponse> {
             return this.http
-                  .post<InvoiceResponse>("http://localhost:3000/getInvoiceById", payload, httpOptions)
+                  .post<InvoiceResponse>(constants.serverUrl + 'getInvoiceById', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 
       getInvoiceProductsById(payload:Object): Observable<InvoiceProductResponse> {
             return this.http
-                  .post<InvoiceProductResponse>("http://localhost:3000/getInvoiceProductsById", payload, httpOptions)
+                  .post<InvoiceProductResponse>(constants.serverUrl + 'getInvoiceProductsById', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 
       addInvoice(payload:Object): Observable<AddResponse> {
             return this.http
-                  .post<AddResponse>('http://localhost:3000/addInvoice', payload, httpOptions)
+                  .post<AddResponse>(constants.serverUrl + 'addInvoice', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 }

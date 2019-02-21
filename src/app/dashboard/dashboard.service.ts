@@ -23,8 +23,8 @@ export class DashboardService {
             .pipe(tap(res => null));
     }
 
-    getInvoiceTotalWithoutTax(payload: Object): Observable<DashboardResponse> {
-        return this.http.post<DashboardResponse>(constants.serverUrl + 'getInvoiceTotalWithoutTax', payload, httpOptions)
+    getInvoiceTotalWithoutTax(): Observable<DashboardResponse> {
+        return this.http.post<DashboardResponse>(constants.serverUrl + 'getInvoiceTotalWithoutTax', null)
             .pipe(tap(res => null));
     }
 }

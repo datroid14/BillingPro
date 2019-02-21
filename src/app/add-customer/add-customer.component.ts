@@ -18,6 +18,7 @@ export class AddCustomerComponent implements OnInit {
   customerAddress: string;
   contactNo: string;
   emailAddress: string;
+  gstNumber: string;
 
   // Flag for enabling/disabling all fields in view mode
   isFieldDisabled: boolean;
@@ -88,7 +89,7 @@ export class AddCustomerComponent implements OnInit {
       if (this.customerName != undefined && this.customerAddress != undefined && this.contactNo != undefined) {
         if (this.isEditClicked) {
           this.isEditClicked = false;
-          const updatePayload = { "data": { "cust_id": this.customerId, "cust_name": this.customerName, "cust_contact_person": this.contactPerson, "cust_contact": this.contactNo, "cust_email": this.emailAddress, "cust_address": this.customerAddress } };
+          const updatePayload = { "data": { "cust_id": this.customerId, "cust_name": this.customerName, "cust_contact_person": this.contactPerson, "cust_contact": this.contactNo, "cust_email": this.emailAddress, "cust_address": this.customerAddress, "cust_gst_no":this.gstNumber } };
           this.customerService.updateCustomer(updatePayload).subscribe(response => {
             if (response.status == 200) {
               this.location.back();
@@ -98,8 +99,7 @@ export class AddCustomerComponent implements OnInit {
               console.log(error)
             });
         } else {
-          debugger;
-          const addPayload = { "data": { "cust_name": this.customerName, "cust_contact_person": this.contactPerson, "cust_contact": this.contactNo, "cust_email": this.emailAddress, "cust_address": this.customerAddress } };
+          const addPayload = { "data": { "cust_name": this.customerName, "cust_contact_person": this.contactPerson, "cust_contact": this.contactNo, "cust_email": this.emailAddress, "cust_address": this.customerAddress, "cust_gst_no":this.gstNumber } };
           this.customerService.addCustomer(addPayload).subscribe(response => {
             if (response.status == 200) {
               this.location.back();
@@ -127,6 +127,7 @@ export class AddCustomerComponent implements OnInit {
     this.contactPerson = undefined;
     this.emailAddress = undefined;
     this.customerAddress = undefined;
+    this.gstNumber = undefined;
   }
 
   changeButtonLabel(isDisabled) {
@@ -200,5 +201,6 @@ export class AddCustomerComponent implements OnInit {
     this.contactNo = customer.cust_contact;
     this.contactPerson = customer.cust_contact_person;
     this.emailAddress = customer.cust_email;
+    this.gstNumber = customer.cust_gst_no;
   }
 }

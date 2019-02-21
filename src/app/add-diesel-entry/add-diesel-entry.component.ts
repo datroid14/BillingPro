@@ -7,6 +7,7 @@ import { VehicleService } from "../add-vehicle/vehicle.service";
 import { Location } from '@angular/common';
 import { AppService } from "../app.service"
 import * as moment from 'moment';
+import { DieselEntry } from './diesel-entry';
 
 @Component({
   selector: 'add-diesel-entry',
@@ -24,6 +25,7 @@ export class AddDieselEntryComponent implements OnInit {
   employees;
   vehicles;
   vehicleId: number;
+  vehicleNumber: string;
   employeeId: number;
   employeeName: string;
 
@@ -192,6 +194,8 @@ export class AddDieselEntryComponent implements OnInit {
     this.dieselAmount = dieselEntry.diesel_amount;
     this.employeeId = dieselEntry.emp_id;
     this.employeeName = dieselEntry.emp_name;
+    this.vehicleId = dieselEntry.veh_id;
+    this.vehicleNumber = dieselEntry.veh_number;
   }
 
   setEmployeeDetail(employee) {

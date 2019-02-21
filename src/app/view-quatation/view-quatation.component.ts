@@ -4,6 +4,7 @@ import { Router, NavigationExtras } from '@angular/router';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { AppService } from '../app.service';
 import * as moment from 'moment';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'view-quatation',
@@ -19,11 +20,10 @@ export class ViewQuatationComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private quatationService: QuatationService, private appService: AppService, private router: Router) {
+  constructor(private quatationService: QuatationService, private appService: AppService, private router: Router, private location: Location) {
   }
 
   ngOnInit() {
-
     this.appService.showDrawer(true);
 
     this.quatationService.getQuatations().subscribe(response => {
@@ -40,14 +40,6 @@ export class ViewQuatationComponent implements OnInit {
       });
   }
 
-  /**
-  * Set the paginator after the view init since this component will
-  * be able to query its view for the initialized paginator.
-  */
-  ngAfterViewInit() {
-
-  }
-
   showQuatationDetails(quatation) {
 
     if (quatation != undefined) {
@@ -59,6 +51,10 @@ export class ViewQuatationComponent implements OnInit {
     } else {
       this.router.navigate(['/create-quatation']);
     }
+  }
+
+  back() {
+    this.location.back();
   }
 }
 

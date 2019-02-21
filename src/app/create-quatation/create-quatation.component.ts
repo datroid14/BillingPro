@@ -23,6 +23,7 @@ export class CreateQuatationComponent implements OnInit {
   buttonLabel: string;
   isFieldDisabled: boolean;
   isCancelDisabled: boolean;
+  isEditClicked: boolean;
   quatationId: number;
   productId: number;
   productName: string;
@@ -141,22 +142,36 @@ export class CreateQuatationComponent implements OnInit {
     if (this.buttonLabel == "SAVE") {
       if (this.customerName != undefined && this.customerAddress != undefined && this.contactPerson != undefined
         && this.contactNo != undefined && (this.localProductList != undefined && this.localProductList.length > 0)) {
-        var formattedQuatationDate = moment(this.quatationDate).format('YYYY-MM-DD');
-        const payload = { "data": { "quat_date": formattedQuatationDate, "quat_cust_id": this.customerId, "quat_products": this.localProductList } };
-        this.quatationService.addQuatation(payload).subscribe(response => {
-          if (response.status == 200) {
-            this.buttonLabel = "EDIT";
-          }
-        },
-          error => {
-            console.log(error)
-          });
-        this.location.back();
+          var formattedQuatationDate = moment(this.quatationDate).format('YYYY-MM-DD');
+        if (this.isEditClicked) {
+          const payload = { "data": { "quat_id": this.quatationId, "quat_date": formattedQuatationDate, "quat_cust_name": this.customerName, "quat_cust_address": this.customerAddress, "quat_cont_person": this.contactPerson, "quat_cont_no": this.contactNo, "quat_products": this.localProductList } };
+          this.quatationService.updateQuatation(payload).subscribe(response => {
+            if (response.status == 200) {
+              this.buttonLabel = "EDIT";
+              this.location.back();
+            }
+          },
+            error => {
+              console.log(error)
+            });
+        } else {
+          const payload = { "data": { "quat_date": formattedQuatationDate, "quat_cust_name": this.customerName, "quat_cust_address": this.customerAddress, "quat_cont_person": this.contactPerson, "quat_cont_no": this.contactNo, "quat_products": this.localProductList } };
+          this.quatationService.addQuatation(payload).subscribe(response => {
+            if (response.status == 200) {
+              this.buttonLabel = "EDIT";
+              this.location.back();
+            }
+          },
+            error => {
+              console.log(error)
+            });
+        }
       } else {
         alert('Please fill all mandatory fields');
       }
     } else {
       this.buttonLabel = "SAVE";
+      this.isEditClicked = true;
       this.isFieldDisabled = false;
       this.isCancelDisabled = false;
     }
@@ -167,13 +182,6 @@ export class CreateQuatationComponent implements OnInit {
     this.productDesc = undefined;
     this.productUnit = undefined;
     this.productRate = undefined;
-  }
-
-  setCustomerDetail(customer) {
-    this.customerId = customer.cust_id;
-    this.customerAddress = customer.cust_address;
-    this.contactNo = customer.cust_contact;
-    this.contactPerson = customer.cust_contact_person;
   }
 
   setProductDetail(product) {
@@ -206,18 +214,18 @@ export class CreateQuatationComponent implements OnInit {
   }
 
   getQuatationById() {
-    if(this.quatationId != undefined){
-    const payload = { "data": { "quat_id": this.quatationId } };
-    this.quatationService.getQuatationById(payload).subscribe(response => {
-      if (response.status == 200) {
-        if (response.quatations != undefined && response.quatations.length > 0) {
-          this.setQuatationDetail(response.quatations[0]);
+    if (this.quatationId != undefined) {
+      const payload = { "data": { "quat_id": this.quatationId } };
+      this.quatationService.getQuatationById(payload).subscribe(response => {
+        if (response.status == 200) {
+          if (response.quatations != undefined && response.quatations.length > 0) {
+            this.setQuatationDetail(response.quatations[0]);
+          }
         }
-      }
-    },
-      error => {
-        console.log(error)
-      });
+      },
+        error => {
+          console.log(error)
+        });
     } else {
       this.location.back();
     }

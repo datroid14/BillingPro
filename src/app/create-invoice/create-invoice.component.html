@@ -126,7 +126,7 @@
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="totalAmount" maxlength="8" [disabled]="true" required>
+                                <input matInput type="number" [(ngModel)]="productTotalAmount" maxlength="8" [disabled]="true" required>
                             </mat-form-field>
                         </th>
                         <th>
@@ -152,13 +152,29 @@
                             <img (click)="removeProduct(product)" [src]="this.removeImagePath">
                         </td>
                     </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align:center">
+                            {{(subTotalAmount).toFixed(2)}}
+                        </td>
+                        <td style="text-align:center">
+                            {{(taxTotalAmount).toFixed(2)}}
+                        </td>
+                        <td style="text-align:center">
+                            {{(totalInvoiceAmount).toFixed(2)}}
+                        </td>
+                        <td></td>
+                    </tr>
                 </tbody>
             </table>
-            <div align="right">
-                <mat-form-field>
-                    <b><input style="text-align: right" matInput type="number" [disabled]="true" [(ngModel)]="totalInvoiceAmount" maxlength="8" required></b>
-                </mat-form-field>
-            </div>
         </mat-card>
     </mat-card-content>
     <mat-card-actions>

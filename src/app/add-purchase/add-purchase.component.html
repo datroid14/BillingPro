@@ -26,15 +26,15 @@
         </mat-form-field>
 
         <mat-form-field>
-            <input matInput [(ngModel)]="vendorAddress" placeholder="Address" [disabled]="isFieldDisabled" required>
+            <input matInput [(ngModel)]="vendorAddress" placeholder="Address" [disabled]="true" required>
         </mat-form-field>
 
         <mat-form-field>
-            <input matInput [(ngModel)]="contactPerson" placeholder="Contact Person" [disabled]="isFieldDisabled" required>
+            <input matInput [(ngModel)]="contactPerson" placeholder="Contact Person" [disabled]="true" required>
         </mat-form-field>
 
         <mat-form-field>
-            <input matInput type="number" [(ngModel)]="contactNo" placeholder="Contact Number" [disabled]="isFieldDisabled" maxlength="10" required>
+            <input matInput type="number" [(ngModel)]="contactNo" placeholder="Contact Number" [disabled]="true" maxlength="10" required>
         </mat-form-field>
 
         <mat-card class="inner-card-css">
@@ -51,6 +51,8 @@
                         <th>Unit</th>
                         <th>Rate</th>
                         <th>Msr. Total</th>
+                        <th>Sub Total</th>
+                        <th>Tax</th>
                         <th>Total</th>
                     </tr>
                     <tr *ngIf="!isFieldDisabled">
@@ -58,7 +60,7 @@
                         </th>
                         <th>
                             <mat-form-field class="table-form-wide-field">
-                                <input matInput [(ngModel)]="challanNo" required/>
+                                <input matInput [(ngModel)]="challanNumber" required/>
                             </mat-form-field>
                         </th>
                         <th>
@@ -94,17 +96,27 @@
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="productRate" (ngModelChange)="calculateTotal($event)" maxlength="8" required>
+                                <input matInput type="number" [(ngModel)]="productRate" (ngModelChange)="calculateSubTotal($event)" maxlength="8" required>
                             </mat-form-field>
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="productQuantity" (ngModelChange)="calculateTotal($event)" maxlength="8" required>
+                                <input matInput type="number" [(ngModel)]="productQuantity" (ngModelChange)="calculateSubTotal($event)" maxlength="8" required>
                             </mat-form-field>
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="totalAmount" maxlength="8" required>
+                                <input matInput type="number" [(ngModel)]="productSubTotalAmount" (ngModelChange)="calculateTaxAmount()" disabled="true" maxlength="8" required>
+                            </mat-form-field>
+                        </th>
+                        <th>
+                            <mat-form-field class="table-form-field">
+                                <input matInput type="number" [(ngModel)]="productTaxAmount" maxlength="8" disabled="true" required>
+                            </mat-form-field>
+                        </th>
+                        <th>
+                            <mat-form-field class="table-form-field">
+                                <input matInput type="number" [(ngModel)]="productTotalAmount" maxlength="8" disabled="true" required>
                             </mat-form-field>
                         </th>
                         <th>
@@ -123,6 +135,8 @@
                         <td class="input-css">{{product.pur_prod_unit}}</td>
                         <td class="input-css">{{product.pur_prod_rate}}</td>
                         <td class="input-css">{{product.pur_prod_qty}}</td>
+                        <td class="input-css">{{product.pur_prod_subtotal}}</td>
+                        <td class="input-css">{{product.pur_prod_tax}}</td>
                         <td class="input-css">{{product.pur_prod_total}}</td>
                         <td *ngIf="!isFieldDisabled">
                             <img (click)="removeProduct(product)" [src]="this.removeImagePath">
