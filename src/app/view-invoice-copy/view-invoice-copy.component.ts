@@ -10,6 +10,7 @@ import { InvoiceService } from "../create-invoice/invoice.service";
   templateUrl: './view-invoice-copy.component.html',
   styleUrls: ['./view-invoice-copy.component.css']
 })
+
 export class ViewInvoiceCopyComponent implements OnInit {
 
   invoiceNo: number;
@@ -105,7 +106,7 @@ export class ViewInvoiceCopyComponent implements OnInit {
     this.isWithoutTax = invoice.inv_without_tax;
 
     this.taxAmount = this.invoiceTotalAmount * (5 / 100);
-    this.amountInWords = this.convertNumberToWords(this.invoiceTotalAmount);
+    this.amountInWords = this.convertNumberToWords(this.invoiceTotalAmount + this.taxAmount);
 
     // Get Invoice products for selected invoice id
     this.getInvoiceProducts();
@@ -179,7 +180,7 @@ export class ViewInvoiceCopyComponent implements OnInit {
       var n_array = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0);
       var received_n_array = new Array();
       for (var i = 0; i < n_length; i++) {
-        received_n_array[i] = number.substr(i, 1);
+        received_n_array[i] = + number.substr(i, 1);
       }
       for (var i = 9 - n_length, j = 0; i < 9; i++ , j++) {
         n_array[i] = received_n_array[j];
@@ -187,7 +188,7 @@ export class ViewInvoiceCopyComponent implements OnInit {
       for (var i = 0, j = 1; i < 9; i++ , j++) {
         if (i == 0 || i == 2 || i == 4 || i == 7) {
           if (n_array[i] == 1) {
-            n_array[j] = 10 + n_array[j];
+            n_array[j] = 10 + (+ n_array[j]);
             n_array[i] = 0;
           }
         }

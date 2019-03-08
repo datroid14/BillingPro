@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
-import { AppService } from "../app.service";
+import { Location } from '@angular/common';
+import * as moment from 'moment';
 
 @Component({
   selector: 'view-quatation-copy',
@@ -10,18 +11,17 @@ import { AppService } from "../app.service";
 export class ViewQuatationCopyComponent {
 
   quatationNo: number;
-  quatationDate: Date;
+  quatationDate: string;
   customerName: string;
   customerAddress: string;
   contactPerson: string;
   contactNo: number;
   products = [];
 
-  constructor(private route: ActivatedRoute, private appService: AppService) {
+  constructor(private route: ActivatedRoute, private location: Location) {
     this.route.queryParams.subscribe(params => {
-      debugger;
       this.quatationNo = params["quat_id"];
-      this.quatationDate = params["quat_date"];
+      this.quatationDate = moment(params["quat_date"]).format('DD MMM YYYY');
       this.customerName = params["quat_cust_name"];
       this.customerAddress = params["quat_cust_address"];
       this.contactNo = params["quat_contact_no"];
@@ -53,5 +53,9 @@ export class ViewQuatationCopyComponent {
       </html>`
     );
     popupWin.document.close();
+  }
+
+  back() {
+    this.location.back();
   }
 }

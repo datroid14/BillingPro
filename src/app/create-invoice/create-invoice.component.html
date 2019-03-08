@@ -165,7 +165,7 @@
                         <td style="text-align:center">
                             {{(subTotalAmount).toFixed(2)}}
                         </td>
-                        <td style="text-align:center">
+                        <td style="text-align:center" *ngIf="!isWithoutTax">
                             {{(taxTotalAmount).toFixed(2)}}
                         </td>
                         <td style="text-align:center">

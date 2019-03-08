@@ -151,7 +151,6 @@ export class CreateChallanComponent implements OnInit {
   }
 
   addChallan() {
-    debugger;
     if (this.buttonLabel == "SAVE") {
       if (this.customerId != undefined && this.productId != undefined && this.vehicleId != undefined &&
         this.productQuantity != undefined) {

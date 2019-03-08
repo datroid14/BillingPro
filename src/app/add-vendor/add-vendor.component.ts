@@ -114,7 +114,6 @@ export class AddVendorComponent implements OnInit {
   }
 
   addVendor() {
-    debugger;
     if (this.buttonLabel == "SAVE") {
       if (this.vendorName != undefined && this.vendorAddress != undefined && this.contactNo != undefined) {
         if (this.isEditClicked) {

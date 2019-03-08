@@ -112,7 +112,6 @@ export class AddTripDetailComponent implements OnInit {
   }
 
   addTripDetail() {
-    debugger;
     if (this.buttonLabel == "SAVE") {
       if (this.tripDate != undefined && this.vehicleId != undefined && this.loadingPlace != undefined && this.unloadingPlace != undefined && this.employeeId != undefined) {
         var formattedTripDate = moment(this.tripDate).format('YYYY-MM-DD');

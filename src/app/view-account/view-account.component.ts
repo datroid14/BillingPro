@@ -24,7 +24,6 @@ export class ViewAccountComponent implements OnInit {
   ngOnInit() {
     // Show drawer
     this.appService.showDrawer(true);
-    debugger;
     this.accountService.getAccounts().subscribe(response => {
       this.accountDetails = response.account_details;
       this.dataSource = new MatTableDataSource<ACCOUNT>(this.accountDetails);
@@ -38,7 +37,7 @@ export class ViewAccountComponent implements OnInit {
   showAccountDetails(account) {
     if (account != undefined) {
       let navigationExtras: NavigationExtras = {
-        queryParams: { account_id: account.acc_id }
+        queryParams: { account_id: account.account_id }
       };
       // Redirect it to View Product screen
       this.router.navigate(['/add-account'], navigationExtras);

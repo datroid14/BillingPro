@@ -25,7 +25,6 @@ export class ViewTripDetailComponent implements OnInit {
   ngOnInit() {
     // Show drawer
     this.appService.showDrawer(true);
-    debugger;
     this.tripDetailService.getTripDetails().subscribe(response => {
       this.tripDetails = response.trip_details;
       // Format the date in required format
