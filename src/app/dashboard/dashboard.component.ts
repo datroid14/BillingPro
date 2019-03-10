@@ -11,7 +11,12 @@ import { DashboardService } from '../dashboard/dashboard.service';
 })
 export class DashboardComponent implements OnInit{
 
-  invoiceTotalWithTax: number;
+  saleMonthTotalWithTax: number;
+  saleTodaysTotalWithTax: number;
+  saleInvoiceTotalWithTax: number;
+  purchaseMonthTotalWithTax: number;
+  purchasetodaysTotalWithTax: number;
+  purchaseinvoiceTotalWithTax: number;
   invoiceTotalWithoutTax: number;
 
   constructor(private router: Router, private appService: AppService, private dashboardService: DashboardService) { }
@@ -19,14 +24,16 @@ export class DashboardComponent implements OnInit{
   ngOnInit(){
     this.appService.showDrawer(true);
     this.dashboardService.getInvoiceTotalWithTax().subscribe(response => {
-      this.invoiceTotalWithTax = response.invoice_total;
+      this.saleInvoiceTotalWithTax = response.invoice_total;
+      this.saleMonthTotalWithTax = response.current_month_total;
+      this.saleTodaysTotalWithTax = response.todays_total;
     },
       error => {
         console.log(error)
       });
 
       this.dashboardService.getInvoiceTotalWithoutTax().subscribe(response => {
-        this.invoiceTotalWithoutTax = response.invoice_total;
+        this.invoiceTotalWithoutTax = response.current_month_total;
       },
         error => {
           console.log(error)

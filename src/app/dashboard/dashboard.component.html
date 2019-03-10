@@ -6,9 +6,9 @@
                     <h2>Purchase</h2>
                 </mat-card-title>
             </mat-card-header>
-            <label>Today's Purchase - {{invoiceTotalWithTax}}</label>
-            <label>Monthly Purchase</label>
-            <label>Total Purchase</label>
+            <label>Today's Purchase - {{saleTodaysTotalWithTax}}</label>
+            <label>Monthly Purchase - {{saleMonthTotalWithTax}}</label>
+            <label>Total Purchase - {{saleInvoiceTotalWithTax}}</label>
         </mat-card>
     </div>
     <div>
@@ -19,8 +19,8 @@
                 </mat-card-title>
             </mat-card-header>
             <label>Today's Sale - {{invoiceTotalWithoutTax}}</label>
-            <label>Monthly Sale</label>
-            <label>Total Sale</label>
+            <label>Monthly Sale - {{saleMonthTotalWithTax}}</label>
+            <label>Total Sale - {{saleInvoiceTotalWithTax}}</label>
         </mat-card>
     </div>
 </div>
