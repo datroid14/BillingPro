@@ -26,6 +26,8 @@ export class ViewInvoiceCopyComponent implements OnInit {
   amountInWords: string;
   minChallanDate: string;
   maxChallanDate: string;
+  logoImagePath: string;
+  saiLogoImagePath: string;
   invoiceProducts = [];
 
   public constructor(private route: ActivatedRoute, private appService: AppService, private invoiceService: InvoiceService, private location: Location) {
@@ -37,6 +39,11 @@ export class ViewInvoiceCopyComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    // Image paths
+    this.logoImagePath = "assets/images/ic_logo.png"; 
+    this.saiLogoImagePath = "assets/images/sai_logo.png";
+
     this.appService.showDrawer(true);
 
     this.getInvoiceDetailById();
@@ -61,13 +68,11 @@ export class ViewInvoiceCopyComponent implements OnInit {
               .container-css {
                 display: flex;
                 flex-direction: row;
-                padding: 12px;
             }
             
             .container-vertical-css {
                 display: flex;
                 flex-direction: column;
-                padding: 12px;
             }
         </style>
         </head>

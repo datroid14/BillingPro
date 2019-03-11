@@ -1,26 +1,53 @@
-<div class="container-horizontal">
+<div class="container-horizontal" style="margin:16px;">
     <div>
-        <mat-card class="container-vertical">
+        <mat-card class=" container-vertical ">
             <mat-card-header>
                 <mat-card-title>
                     <h2>Purchase</h2>
                 </mat-card-title>
             </mat-card-header>
-            <label>Today's Purchase - {{saleTodaysTotalWithTax}}</label>
-            <label>Monthly Purchase - {{saleMonthTotalWithTax}}</label>
-            <label>Total Purchase - {{saleInvoiceTotalWithTax}}</label>
+            <label>Today's Purchase - {{purchaseTodaysTotalWithTax}}</label>
+            <label>Monthly Purchase - {{purchaseMonthTotalWithTax}}</label>
+            <label>Total Purchase - {{purchaseInvoiceTotalWithTax}}</label>
         </mat-card>
     </div>
     <div>
-        <mat-card class="container-vertical">
+        <mat-card class="container-vertical " style="margin-left:16px; ">
             <mat-card-header>
                 <mat-card-title>
                     <h2>Sale</h2>
                 </mat-card-title>
             </mat-card-header>
-            <label>Today's Sale - {{invoiceTotalWithoutTax}}</label>
+            <label>Today's Sale - {{saleTodaysTotalWithTax}}</label>
             <label>Monthly Sale - {{saleMonthTotalWithTax}}</label>
             <label>Total Sale - {{saleInvoiceTotalWithTax}}</label>
+        </mat-card>
+    </div>
+</div>
+
+<div class="container-horizontal " style="margin:16px; ">
+    <div>
+        <mat-card class="container-vertical ">
+            <mat-card-header>
+                <mat-card-title>
+                    <h2>Non Taxable Purchase</h2>
+                </mat-card-title>
+            </mat-card-header>
+            <label>Today's Purchase - {{purchaseTodaysTotalWithoutTax}}</label>
+            <label>Monthly Purchase - {{purchaseMonthTotalWithoutTax}}</label>
+            <label>Total Purchase - {{purchaseInvoiceTotalWithoutTax}}</label>
+        </mat-card>
+    </div>
+    <div>
+        <mat-card class="container-vertical " style="margin-left:16px; ">
+            <mat-card-header>
+                <mat-card-title>
+                    <h2>Non Taxable Sale</h2>
+                </mat-card-title>
+            </mat-card-header>
+            <label>Today's Sale - {{saleTodaysTotalWithoutTax}}</label>
+            <label>Monthly Sale - {{saleMonthTotalWithoutTax}}</label>
+            <label>Total Sale - {{saleInvoiceTotalWithoutTax}}</label>
         </mat-card>
     </div>
 </div>

@@ -18,13 +18,23 @@ export class DashboardService {
     constructor(private http: HttpClient) {
     }
 
-    getInvoiceTotalWithTax(): Observable<DashboardResponse> {
-        return this.http.post<DashboardResponse>(constants.serverUrl + 'getInvoiceTotalWithTax', null)
+    getInvoiceTotalWithTax(payload): Observable<DashboardResponse> {
+        return this.http.post<DashboardResponse>(constants.serverUrl + 'getInvoiceTotalWithTax',  payload, httpOptions)
             .pipe(tap(res => null));
     }
 
-    getInvoiceTotalWithoutTax(): Observable<DashboardResponse> {
-        return this.http.post<DashboardResponse>(constants.serverUrl + 'getInvoiceTotalWithoutTax', null)
+    getPurchaseTotalWithTax(payload): Observable<DashboardResponse> {
+        return this.http.post<DashboardResponse>(constants.serverUrl + 'getPurchaseTotalWithTax',  payload, httpOptions)
+            .pipe(tap(res => null));
+    }
+
+    getInvoiceTotalWithoutTax(payload): Observable<DashboardResponse> {
+        return this.http.post<DashboardResponse>(constants.serverUrl + 'getInvoiceTotalWithoutTax',  payload, httpOptions)
+            .pipe(tap(res => null));
+    }
+
+    getPurchaseTotalWithoutTax(payload): Observable<DashboardResponse> {
+        return this.http.post<DashboardResponse>(constants.serverUrl + 'getPurchaseTotalWithoutTax',  payload, httpOptions)
             .pipe(tap(res => null));
     }
 }

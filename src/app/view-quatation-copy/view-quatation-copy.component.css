@@ -1,3 +1,17 @@
+.container-css {
+    display: flex;
+    flex-direction: row;
+}
+
+.container-vertical-css {
+    display: flex;
+    flex-direction: column;
+}
+
+.container-css>* {
+    width: 100%;
+}
+
 .input-css {
     padding: 12px;
     text-align: left;

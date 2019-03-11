@@ -1,20 +1,45 @@
 <mat-card class="card-css">
-    <mat-card-header>
-        <mat-card-title>
-            <h2>Quatation</h2>
-        </mat-card-title>
-    </mat-card-header>
-    <mat-divider></mat-divider>
     <mat-card-content>
         <div id="print-section">
-            <p>Quatation Date: {{quatationDate}} </p>
-            <p>Quatation Number: {{quatationNo}} </p>
-            <p><b>M/S. - {{customerName}} <br/> {{customerAddress}}</b></p>
-            <p>Contact Person: {{contactPerson}}</p>
-            <p>Subject: Quotation for supply of all types of Stone Metal</p>
-            <p>Respected Sir, </p>
+            <div class="container-css">
+                <div align="left" style="width:20%">
+                    <img [src]="this.logoImagePath">
+                </div>
+                <div class="container-vertical-css" style="width:60%">
+                    <label style="font: 1.2em sans-serif;">SHUBHAM ENTERPRISES</label>
+                    <label style="font: 0.8em sans-serif;">BUILDING MATERIAL SUPPLIERS, JCB AVAILABLE ON RENT</label>
+                    <label><b>Office Address - </b>Bodkewadi, Dehugaon, Pune 412109</label>
+                    <label><b>Contact No - </b>9922991310/9604039293</label>
+                    <label><b>Email - </b>shubham.enterprise1616@gmail.com</label>
+                    <label><b>GST No - </b>27CDYPB0443D1ZP</label>
+                </div>
+                <div align="right" style="width:20%">
+                    <img [src]="this.saiLogoImagePath">
+                </div>
+            </div>
+            <mat-divider></mat-divider>
+            <div align="center">
+                <label><b>Quatation</b></label>
+            </div>
+            <div class="container-css">
+                <div class="container-vertical-css" align="left" style="width:50%">
+                    <label>
+                    <b>M/S: {{this.customerName}}</b></label>
+                    <label>{{this.customerAddress}}</label>
+                    <label><b>Contact Person : </b>{{contactPerson}}</label>
+                    <label><b>GST No: </b>27ABNFS5898QIZQ</label>
+                </div>
+
+                <div class="container-vertical-css" align="right" style="width:50%">
+                    <label><b>Quatation Date : </b> {{this.quatationDate}}</label>
+                    <label><b>Quatation Number : </b> {{quatationNo}}</label>
+                </div>
+            </div>
+
+            <p align="center"><b>Subject : </b>Quotation for supply of all types of Stone Metal</p>
+            <p><b>Respected Sir/Madam, </b></p>
             <p>Thank you for your inquiry. We are delighted to introduce ourself as pioneer of the Stone Suppliers in Pune District. We are supplier of all types of Stone Metals.</p>
-            <p>We like to quote our Quatation for supplying required material for you as follows - </p>
+            <p>We like to quote for supplying required material for you as follows - </p>
             <table style="width:100%;border:1">
                 <thead>
                     <tr>
@@ -36,12 +61,19 @@
                     </tr>
                 </tbody>
             </table>
-            <p>Terms and Conditions:</p>
-            <p>1. GST @5% extra.<br> 2. Credit will be allowed only for 15 days from the date of Invoice.<br>3. We accept payments in two Installments (50% at the time of Purchase Order and next at the time of delivery).<br> 4. Delivery Time 15-30 Days from
-                the date of Purchase Order.</p>
+            <p><b>Terms and Conditions:</b></p>
+            <p>1. Payment within 15 days from reciept of the bill.<br> 2. Above rates are exclusive of GST charges @5%.</p>
             <p>Please contact us if you have any queries.</p>
             <p>We assure you quantity, quality and genuine service.</p>
-            <p> For Order Placement, mail to info@shubhamenterprises.com</p>
+
+            <p>Thanking you.</p>
+
+            <div class="container-vertical-css" align="right">
+                <label>Yours faithfully,</label>
+                <br>
+                <br>
+                <label>For <b>Shubham Enterprises</b></label>
+            </div>
         </div>
     </mat-card-content>
     <mat-card-actions>
