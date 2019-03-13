@@ -1,3 +1,12 @@
+<style>
+    table,
+    th,
+    td {
+        border: 1px solid grey;
+        border-collapse: collapse;
+        padding: 2px;
+    }
+</style>
 <mat-card class="card-css">
     <mat-card-content>
         <div id="print-section">
@@ -5,7 +14,7 @@
                 <div align="left" style="width:20%">
                     <img [src]="this.logoImagePath">
                 </div>
-                <div class="container-vertical-css" style="width:60%">
+                <div class="container-vertical-css" style="width:60%; margin-left: 24px">
                     <label style="font: 1.2em sans-serif;">SHUBHAM ENTERPRISES</label>
                     <label style="font: 0.8em sans-serif;">BUILDING MATERIAL SUPPLIERS, JCB AVAILABLE ON RENT</label>
                     <label><b>Office Address - </b>Bodkewadi, Dehugaon, Pune 412109</label>
@@ -17,7 +26,7 @@
                     <img [src]="this.saiLogoImagePath">
                 </div>
             </div>
-            <mat-divider></mat-divider>
+            <hr>
             <div align="center">
                 <label><b>Quatation</b></label>
             </div>

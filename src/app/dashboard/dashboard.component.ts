@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { AppService } from '../app.service';
 import { DashboardService } from '../dashboard/dashboard.service';
 import { DatePipe } from '@angular/common';
+import { ExcelService } from '../common/excel.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'dashboard',
@@ -26,8 +28,10 @@ export class DashboardComponent implements OnInit{
   saleInvoiceTotalWithoutTax: number;
   invoiceTotalWithoutTax: number;
   todaysDate = new Date();
+  invoices: any;
 
-  constructor(private router: Router, private appService: AppService, private dashboardService: DashboardService, private datePipe:DatePipe) { }
+  constructor(private router: Router, private appService: AppService, private dashboardService: DashboardService, 
+   private datePipe:DatePipe, private excelService:ExcelService) { }
 
   ngOnInit(){
     this.appService.showDrawer(true);
@@ -69,5 +73,21 @@ export class DashboardComponent implements OnInit{
         error => {
           console.log(error)
         });
+
+        const invoicePayload = { "data": { "selected_month": 2 } };
+        this.dashboardService.getSelectedMonthInvoices(invoicePayload).subscribe(response => {
+          this.invoices = response.invoices;
+          for (let i = 0; i < this.invoices.length; i++) {
+            this.invoices[i].inv_date = moment(this.invoices[i].inv_date).format('DD MMM YYYY');
+          }
+        },
+          error => {
+            console.log(error)
+          });
+    
   }
+
+  exportAsXLSX():void {
+    this.excelService.exportAsExcelFile(this.invoices, 'sample');
+ }
 }

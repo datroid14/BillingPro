@@ -85,6 +85,7 @@ import { EmiDetailService } from './add-emi-detail/emi-detail.service';
 import { TripDetailService } from './add-trip-detail/trip-detail.service';
 import { CardDetailService } from './add-card-detail/card-detail.service';
 import { DashboardService } from './dashboard/dashboard.service';
+import { ExcelService } from './common/excel.service';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -202,7 +203,7 @@ const appRoutes: Routes = [
   providers: [AppService, CustomerService, VendorService, ProductService, QuatationService, ChallanService, 
     PurchaseService, VehicleService, InvoiceService, GSTService, ChequeEntryService, EmployeeService, 
     DieselEntryService, PaymentService, AccountService, CardDetailService, EmiDetailService, TripDetailService,
-    DashboardService],
+    DashboardService, ExcelService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -46,7 +46,6 @@ export class ViewQuatationCopyComponent implements OnInit {
     popupWin.document.write(`
       <html>
         <head>
-          <title>Quatation</title>
           <style>
             table,
             th,
