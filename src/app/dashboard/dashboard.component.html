@@ -1,26 +1,84 @@
-<div class="container-horizontal">
+<style>
+    table,
+    th,
+    td {
+        border: 1px solid grey;
+        border-collapse: collapse;
+        padding: 2px;
+    }
+</style>
+<div class="container-horizontal" style="margin:16px;">
     <div>
-        <mat-card class="container-vertical">
+        <mat-card class=" container-vertical ">
             <mat-card-header>
                 <mat-card-title>
                     <h2>Purchase</h2>
                 </mat-card-title>
             </mat-card-header>
-            <label>Today's Purchase - {{invoiceTotalWithTax}}</label>
-            <label>Monthly Purchase</label>
-            <label>Total Purchase</label>
+            <label>Today's Purchase - {{purchaseTodaysTotalWithTax}}</label>
+            <label>Monthly Purchase - {{purchaseMonthTotalWithTax}}</label>
+            <label>Total Purchase - {{purchaseTotalWithTax}}</label>
         </mat-card>
     </div>
     <div>
-        <mat-card class="container-vertical">
+        <mat-card class="container-vertical " style="margin-left:16px; ">
             <mat-card-header>
                 <mat-card-title>
                     <h2>Sale</h2>
                 </mat-card-title>
             </mat-card-header>
-            <label>Today's Sale - {{invoiceTotalWithoutTax}}</label>
-            <label>Monthly Sale</label>
-            <label>Total Sale</label>
+            <label>Today's Sale - {{saleTodaysTotalWithTax}}</label>
+            <label>Monthly Sale - {{saleMonthTotalWithTax}}</label>
+            <label>Total Sale - {{saleInvoiceTotalWithTax}}</label>
         </mat-card>
     </div>
 </div>
+
+<div class="container-horizontal " style="margin:16px; ">
+    <div>
+        <mat-card class="container-vertical ">
+            <mat-card-header>
+                <mat-card-title>
+                    <h2>Non Taxable Purchase</h2>
+                </mat-card-title>
+            </mat-card-header>
+            <label>Today's Purchase - {{purchaseTodaysTotalWithoutTax}}</label>
+            <label>Monthly Purchase - {{purchaseMonthTotalWithoutTax}}</label>
+            <label>Total Purchase - {{purchaseInvoiceTotalWithoutTax}}</label>
+        </mat-card>
+    </div>
+    <div>
+        <mat-card class="container-vertical " style="margin-left:16px; ">
+            <mat-card-header>
+                <mat-card-title>
+                    <h2>Non Taxable Sale</h2>
+                </mat-card-title>
+            </mat-card-header>
+            <label>Today's Sale - {{saleTodaysTotalWithoutTax}}</label>
+            <label>Monthly Sale - {{saleMonthTotalWithoutTax}}</label>
+            <label>Total Sale - {{saleInvoiceTotalWithoutTax}}</label>
+        </mat-card>
+    </div>
+</div>
+
+<p>Exporting an excel file of type .xslx !!!</p>
+<p>Export as XLSX by clicking the below button</p>
+<button (click)="exportAsXLSX()"><i class="fa fa-file-excel-o" style="color:blue">Download Report</i></button>
+<table>
+    <tr>
+        <td>Invoice Date</td>
+        <td>Invoice Number</td>
+        <td>Customer Name</td>
+        <td>Gross Amount</td>
+        <td>Total Tax</td>
+        <td>Total Amount</td>
+    </tr>
+    <tr *ngFor="let invoice of invoices" align="center">
+        <td>{{invoice.inv_date}}</td>
+        <td>{{invoice.inv_id}}</td>
+        <td>{{invoice.inv_customer}}</td>
+        <td>{{invoice.inv_product_total}}</td>
+        <td>{{invoice.inv_total_tax}}</td>
+        <td>{{invoice.inv_total_amount}}</td>
+    </tr>
+</table>

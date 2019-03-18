@@ -1,6 +1,8 @@
 import { Observable } from 'rxjs/Observable';
 import { tap } from 'rxjs/operators';
 import { DashboardResponse } from './dashboard.response';
+import { InvoiceResponse } from '../create-invoice/invoice.response';
+
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { constants } from '../common/constants';
@@ -18,13 +20,28 @@ export class DashboardService {
     constructor(private http: HttpClient) {
     }
 
-    getInvoiceTotalWithTax(): Observable<DashboardResponse> {
-        return this.http.post<DashboardResponse>(constants.serverUrl + 'getInvoiceTotalWithTax', null)
+    getInvoiceTotalWithTax(payload): Observable<DashboardResponse> {
+        return this.http.post<DashboardResponse>(constants.serverUrl + 'getInvoiceTotalWithTax',  payload, httpOptions)
             .pipe(tap(res => null));
     }
 
-    getInvoiceTotalWithoutTax(): Observable<DashboardResponse> {
-        return this.http.post<DashboardResponse>(constants.serverUrl + 'getInvoiceTotalWithoutTax', null)
+    getPurchaseTotalWithTax(payload): Observable<DashboardResponse> {
+        return this.http.post<DashboardResponse>(constants.serverUrl + 'getPurchaseTotalWithTax',  payload, httpOptions)
+            .pipe(tap(res => null));
+    }
+
+    getInvoiceTotalWithoutTax(payload): Observable<DashboardResponse> {
+        return this.http.post<DashboardResponse>(constants.serverUrl + 'getInvoiceTotalWithoutTax',  payload, httpOptions)
+            .pipe(tap(res => null));
+    }
+
+    getPurchaseTotalWithoutTax(payload): Observable<DashboardResponse> {
+        return this.http.post<DashboardResponse>(constants.serverUrl + 'getPurchaseTotalWithoutTax',  payload, httpOptions)
+            .pipe(tap(res => null));
+    }
+
+    getSelectedMonthInvoices(payload): Observable<InvoiceResponse> {
+        return this.http.post<InvoiceResponse>(constants.serverUrl + 'getSelectedMonthInvoices',  payload, httpOptions)
             .pipe(tap(res => null));
     }
 }

@@ -10,25 +10,28 @@
 
 <mat-card class="card-css">
     <div id="print-section">
-        <div align="center" class="container-vertical-css">
-            <label>TAX INVOICE</label>
-            <label>SHUBHAM ENTERPRISES</label>
-            <label>BUILDING MATERIAL SUPPLIERS</label>
+        <div class="container-css">
+            <div align="left" style="width:22%">
+                <img [src]="this.logoImagePath">
+            </div>
+            <div class="container-vertical-css" style="width:56%">
+                <label style="font: 1.2em sans-serif;">SHUBHAM ENTERPRISES</label>
+                <label style="font: 0.8em sans-serif;">BUILDING MATERIAL SUPPLIERS, JCB AVAILABLE ON RENT</label>
+                <label><b>Office Address - </b>Bodkewadi, Dehugaon, Pune 412109</label>
+                <label><b>Contact No - </b>9922991310/9604039293</label>
+                <label><b>Email - </b>shubham.enterprise1616@gmail.com</label>
+                <label><b>GST No - </b>27CDYPB0443D1ZP</label>
+            </div>
+            <div align="right" style="width:22%">
+                <img [src]="this.saiLogoImagePath">
+            </div>
         </div>
         <mat-divider></mat-divider>
-        <div class="container-css">
-            <div align="left" class="container-vertical-css" style="width:50%">
-                <label><b>Office Address:</b></label>
-                <label>Office No. 7, Sayali Residency, Opp. to Water Tank, Dehugaon, Pune</label>
-            </div>
-            <div align="right" class="container-vertical-css" style="width:50%">
-                <label><b>Contact No - </b>9922991310/9604039293</label>
-                <label><b>Email - </b>shubham.enterprises@gmail.com</label>
-                <label><b>GST No - </b>27ABNFS5898QIZQ</label>
-            </div>
-        </div>
         <mat-divider></mat-divider>
         <mat-card-content>
+            <div align="center">
+                <label><b>TAX INVOICE</b></label>
+            </div>
             <div class="container-css">
                 <div class="container-vertical-css" align="left" style="width:50%">
                     <label>

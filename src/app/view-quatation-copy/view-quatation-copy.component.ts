@@ -8,7 +8,7 @@ import * as moment from 'moment';
   templateUrl: './view-quatation-copy.component.html',
   styleUrls: ['./view-quatation-copy.component.css']
 })
-export class ViewQuatationCopyComponent {
+export class ViewQuatationCopyComponent implements OnInit {
 
   quatationNo: number;
   quatationDate: string;
@@ -16,6 +16,8 @@ export class ViewQuatationCopyComponent {
   customerAddress: string;
   contactPerson: string;
   contactNo: number;
+  logoImagePath: string;
+  saiLogoImagePath: string;
   products = [];
 
   constructor(private route: ActivatedRoute, private location: Location) {
@@ -25,10 +27,16 @@ export class ViewQuatationCopyComponent {
       this.customerName = params["quat_cust_name"];
       this.customerAddress = params["quat_cust_address"];
       this.contactNo = params["quat_contact_no"];
-      this.contactPerson = params["quat_contact_person"];      
+      this.contactPerson = params["quat_contact_person"];
       this.products = JSON.parse(params["quat_products"]);
     });
-   }
+  }
+
+  ngOnInit() {
+    // Image paths
+    this.logoImagePath = "assets/images/ic_logo.png";
+    this.saiLogoImagePath = "assets/images/sai_logo.png";
+  }
 
   printQuatation(): void {
     let printContents, popupWin;
@@ -38,16 +46,24 @@ export class ViewQuatationCopyComponent {
     popupWin.document.write(`
       <html>
         <head>
-          <title>Quatation</title>
           <style>
-    table,
-    th,
-    td {
-        border: 1px solid grey;
-        border-collapse: collapse;
-        padding: 2px;
-    }
-</style>
+            table,
+            th,
+            td {
+                border: 1px solid grey;
+                border-collapse: collapse;
+                padding: 2px;
+              }
+              .container-css {
+                display: flex;
+                flex-direction: row;
+            }
+            
+            .container-vertical-css {
+                display: flex;
+                flex-direction: column;
+            }
+        </style>
         </head>
         <body onload="window.print();window.close()">${printContents}</body>
       </html>`
