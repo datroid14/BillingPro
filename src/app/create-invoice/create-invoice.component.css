@@ -12,7 +12,8 @@
 }
 
 .inner-card-css {
-    max-width: 96%;
+    max-width: 100%;
+    padding: 8px;
 }
 
 .input-text {
@@ -26,17 +27,17 @@
 }
 
 .table-form-field {
-    width: 80px !important;
+    width: 72px !important;
     padding: 8px;
 }
 
 .table-form-med-field {
-    width: 100px !important;
+    width: 84px !important;
     padding: 8px;
 }
 
 .table-form-wide-field {
-    width: 140px !important;
+    width: 120px !important;
     padding: 8px;
     text-align: left;
 }

@@ -1,33 +1,33 @@
 <!-- <h1>Shubham Enterprises</h1> -->
 
-<div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.xs="0">
-    <div style="height:1000px;" fxFlex="20%" *ngIf="isLoginPage | async">
+<div class="container" fxLayout fxLayoutAlign="center" fxLayoutGap="8px">
+    <div style="height:1000px;" fxFlex="15%" *ngIf="isLoginPage | async">
         <mat-card>
 
             <nav [ngClass]="'menu'" fxLayout="column">
-                <a routerLink="/dashboard" routerLinkActive="active-link" style="margin:12px;">Dashboard</a>
-                <a routerLink="/view-customer" routerLinkActive="active-link" style="margin:12px;">Customers</a>
-                <a routerLink="/view-product" routerLinkActive="active-link" style="margin:12px;">Products</a>
-                <a routerLink="/view-vendor" routerLinkActive="active-link" style="margin:12px;">Vendors</a>
-                <a routerLink="/view-invoice" routerLinkActive="active-link" style="margin:12px;">Invoices</a>
-                <a routerLink="/view-challan" routerLinkActive="active-link" style="margin:12px;">Delivery Challans</a>
-                <a routerLink="/view-purchase" routerLinkActive="active-link" style="margin:12px;">Purchases</a>
-                <a routerLink="/view-quatation" routerLinkActive="active-link" style="margin:12px;">Quatations</a>
-                <a routerLink="/view-cheque-details" routerLinkActive="active-link" style="margin:12px;">Cheque Entries</a>
-                <a routerLink="/view-employee" routerLinkActive="active-link" style="margin:12px;">Employees</a>
-                <a routerLink="/view-payment-detail" routerLinkActive="active-link" style="margin:12px;">Payment Details</a>
-                <a routerLink="/view-diesel-entry" routerLinkActive="active-link" style="margin:12px;">Diesel Entries</a>
-                <a routerLink="/view-vehicle" routerLinkActive="active-link" style="margin:12px;">Vehicles</a>
-                <a routerLink="/view-gst" routerLinkActive="active-link" style="margin:12px;">GST Details</a>
-                <a routerLink="/view-account" routerLinkActive="active-link" style="margin:12px;">Account Details</a>
-                <a routerLink="/view-trip-detail" routerLinkActive="active-link" style="margin:12px;">Trip Details</a>
-                <a routerLink="/view-card-detail" routerLinkActive="active-link" style="margin:12px;">Card Details</a>
-                <a routerLink="/view-emi-detail" routerLinkActive="active-link" style="margin:12px;">EMI Details</a>
+                <a routerLink="/dashboard" routerLinkActive="active-link" class="drawer-menu">Dashboard</a>
+                <a routerLink="/view-customer" routerLinkActive="active-link" class="drawer-menu">Customers</a>
+                <a routerLink="/view-product" routerLinkActive="active-link" class="drawer-menu">Products</a>
+                <a routerLink="/view-vendor" routerLinkActive="active-link" class="drawer-menu">Vendors</a>
+                <a routerLink="/view-invoice" routerLinkActive="active-link" class="drawer-menu">Invoices</a>
+                <a routerLink="/view-challan" routerLinkActive="active-link" class="drawer-menu">Delivery Challans</a>
+                <a routerLink="/view-purchase" routerLinkActive="active-link" class="drawer-menu">Purchases</a>
+                <a routerLink="/view-quatation" routerLinkActive="active-link" class="drawer-menu">Quatations</a>
+                <a routerLink="/view-cheque-details" routerLinkActive="active-link" class="drawer-menu">Cheque Entries</a>
+                <a routerLink="/view-employee" routerLinkActive="active-link" class="drawer-menu">Employees</a>
+                <a routerLink="/view-payment-detail" routerLinkActive="active-link" class="drawer-menu">Payment Details</a>
+                <a routerLink="/view-diesel-entry" routerLinkActive="active-link" class="drawer-menu">Diesel Entries</a>
+                <a routerLink="/view-vehicle" routerLinkActive="active-link" class="drawer-menu">Vehicles</a>
+                <a routerLink="/view-gst" routerLinkActive="active-link" class="drawer-menu">GST Details</a>
+                <a routerLink="/view-account" routerLinkActive="active-link" class="drawer-menu">Account Details</a>
+                <a routerLink="/view-trip-detail" routerLinkActive="active-link" class="drawer-menu">Trip Details</a>
+                <a routerLink="/view-card-detail" routerLinkActive="active-link" class="drawer-menu">Card Details</a>
+                <a routerLink="/view-emi-detail" routerLinkActive="active-link" class="drawer-menu">EMI Details</a>
             </nav>
 
         </mat-card>
     </div>
-    <div fxFlex="80%">
+    <div fxFlex="85%">
         <router-outlet></router-outlet>
     </div>
 </div>
