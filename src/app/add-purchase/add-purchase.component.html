@@ -59,24 +59,24 @@
                         <th>
                         </th>
                         <th>
-                            <mat-form-field class="table-form-wide-field">
+                            <mat-form-field class="table-form-field">
                                 <input matInput [(ngModel)]="challanNumber" required/>
                             </mat-form-field>
                         </th>
                         <th>
-                            <mat-form-field>
+                            <mat-form-field class="table-form-field">
                                 <input matInput [matDatepicker]="picker" [(ngModel)]="challanDate" [disabled]="isFieldDisabled">
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-datepicker #picker></mat-datepicker>
                             </mat-form-field>
                         </th>
                         <th>
-                            <mat-form-field class="table-form-wide-field">
+                            <mat-form-field class="table-form-field">
                                 <input matInput [(ngModel)]="vehicleNo" maxlength="10" required />
                             </mat-form-field>
                         </th>
                         <th>
-                            <mat-form-field style="width: 200px !important; padding: 8px;">
+                            <mat-form-field class="table-form-wide-field">
                                 <mat-select [(ngModel)]="productName" name="productName">
                                     <mat-option *ngFor="let product of products" [value]="product.prod_name" (click)="setProductDetail(product)">
                                         {{product.prod_name}}
