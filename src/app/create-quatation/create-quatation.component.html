@@ -49,21 +49,17 @@
                         </th>
                         <th class="input-css">
                             <mat-form-field>
-                                <mat-select [(ngModel)]="productName" name="productName" required>
-                                    <mat-option *ngFor="let product of products" [value]="product.prod_name" (click)="setProductDetail(product)">
-                                        {{product.prod_name}}
-                                    </mat-option>
-                                </mat-select>
+                                <input matInput [(ngModel)]="productName" required>
                             </mat-form-field>
                         </th>
                         <th class="input-css">
                             <mat-form-field>
-                                <input matInput [(ngModel)]="productDesc" disabled="true" required>
+                                <input matInput [(ngModel)]="productDesc">
                             </mat-form-field>
                         </th>
                         <th class="input-css">
                             <mat-form-field>
-                                <input matInput [(ngModel)]="productUnit" disabled="true" required>
+                                <input matInput [(ngModel)]="productUnit" required>
                             </mat-form-field>
                         </th>
                         <th class="input-css">
@@ -82,10 +78,14 @@
                         <td class="input-css">{{product.prod_name}}</td>
                         <td class="input-css">{{product.prod_desc}}</td>
                         <td class="input-css">{{product.prod_unit}}</td>
-                        <td class="input-css amount-css">{{product.prod_rate}}</td>
-                        <td *ngIf="!isFieldDisabled">
-                            <img (click)="removeProduct(product)" [src]="this.removeImagePath">
+                        <td class="input-css amount-css">
+                            <mat-form-field>
+                                <input matInput type="number" [(ngModel)]="product.prod_rate" maxlength="8" required>
+                            </mat-form-field>
                         </td>
+                        <!-- <td *ngIf="!isFieldDisabled">
+                            <img (click)="removeProduct(product)" [src]="this.removeImagePath">
+                        </td> -->
                     </tr>
                 </tbody>
             </table>

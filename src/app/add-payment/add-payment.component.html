@@ -12,15 +12,23 @@
         </div>
 
         <mat-form-field>
-            <input matInput [matDatepicker]="picker" placeholder="Payment Date" [(ngModel)]="paymentDate" [disabled]="isFieldDisabled">
+            <input matInput [matDatepicker]="picker" placeholder="Payment Date" [(ngModel)]="paymentDate" [disabled]="isFieldDisabled" required>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field>
-            <mat-select [(ngModel)]="employeeName" name="employeeName" placeholder="Employee Name" [disabled]="isFieldDisabled" required>
-                <mat-option *ngFor="let employee of employees" [value]="employee.emp_name" (click)="setEmployeeDetail(employee)">
-                    {{employee.emp_name}}
+            <mat-select [(ngModel)]="payeeType" name="payeeType" placeholder="Payee Type" [disabled]="isFieldDisabled" required>
+                <mat-option *ngFor="let payeeType of payeeTypes" [value]="payeeType.payee_type" (click)="setPayeeType(payeeType.payee_id)">
+                    {{payeeType.payee_type}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-select [(ngModel)]="payeeName" name="payeeName" placeholder="Payee Name" [disabled]="isFieldDisabled" required>
+                <mat-option *ngFor="let payee of payeeNames" [value]="payee.payee_name">
+                    {{payee.payee_name}}
                 </mat-option>
             </mat-select>
         </mat-form-field>
@@ -30,11 +38,27 @@
         </mat-form-field>
 
         <mat-form-field>
-            <input matInput [(ngModel)]="paymentMode" placeholder="Payment Mode" [disabled]="isFieldDisabled" required>
+            <mat-select [(ngModel)]="paymentMode" name="paymentMode" placeholder="Payment Mode" [disabled]="isFieldDisabled" required>
+                <mat-option *ngFor="let mode of paymentModes" [value]="mode.payment_mode">
+                    {{mode.payment_mode}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="paymentMode != 'Cash'">
+            <mat-select [(ngModel)]="paymentAccountNo" name="paymentAccountNo" placeholder="Account Number" [disabled]="isFieldDisabled" required>
+                <mat-option *ngFor="let account of accounts" [value]="account.account_number" (click)="setAccountDetail(account)">
+                    {{account.account_number}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="paymentMode != 'Cash'">
+            <input matInput [(ngModel)]="paymentBankDetails" placeholder="Bank Details" [disabled]="true" required>
         </mat-form-field>
 
         <mat-form-field>
-            <input matInput [(ngModel)]="paymentType" placeholder="Payment Type" [disabled]="isFieldDisabled" required>
+            <input matInput [(ngModel)]="paymentDesc" placeholder="Payment Description" [disabled]="isFieldDisabled">
         </mat-form-field>
 
     </mat-card-content>

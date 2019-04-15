@@ -45,8 +45,8 @@
                     <label><b>Invoice Number:</b> {{this.invoiceNo}}</label>
                 </div>
             </div>
-            <div style="width:100%;height:auto">
-                <table>
+            <div style="height:400px">
+                <table style="width:100%;">
                     <thead>
                         <tr>
                             <th class="input-css">Sr. No.</th>
@@ -79,36 +79,34 @@
             </div>
             <mat-divider></mat-divider>
             <div class="container-css">
-                <label align="left" style="width:60%" ng-if="true">
-          <b>Bill Period From:</b> {{this.minChallanDate}} To: {{this.maxChallanDate}}</label>
+                <p align="left" style="width:60%" ng-if="true">
+                    <b>Bill Period From:</b> {{this.minChallanDate}} To: {{this.maxChallanDate}}</p>
 
                 <label align="right" style="width:40%">
             <b>Total: </b>{{this.invoiceTotalAmount}}</label>
 
             </div>
             <div class="container-vertical-css">
-                <div class="container-css" align="left">
+                <div class="container-css">
                     <table style="width:60%">
-                        <thead>
-                            <tr>
-                                <th rowspan="2">Taxable Amount</th>
-                                <th colspan="2">Central Tax</th>
-                                <th colspan="2">State Tax</th>
-                            </tr>
-                            <tr>
-                                <td>Rate</td>
-                                <td>Amount</td>
-                                <td>Rate</td>
-                                <td>Amount</td>
-                            </tr>
-                            <tr>
-                                <td>{{this.invoiceTotalAmount}}</td>
-                                <td>2.50%</td>
-                                <td>{{(taxAmount/2).toFixed(2)}}</td>
-                                <td>2.50%</td>
-                                <td>{{(taxAmount/2).toFixed(2)}}</td>
-                            </tr>
-                        </thead>
+                        <tr>
+                            <th rowspan="2">Taxable Amount</th>
+                            <th colspan="2">Central Tax</th>
+                            <th colspan="2">State Tax</th>
+                        </tr>
+                        <tr>
+                            <td>Rate</td>
+                            <td>Amount</td>
+                            <td>Rate</td>
+                            <td>Amount</td>
+                        </tr>
+                        <tr>
+                            <td>{{this.invoiceTotalAmount}}</td>
+                            <td>2.50%</td>
+                            <td>{{(taxAmount/2).toFixed(2)}}</td>
+                            <td>2.50%</td>
+                            <td>{{(taxAmount/2).toFixed(2)}}</td>
+                        </tr>
                     </table>
                     <div class="container-vertical-css" align="right" style="width:40%">
                         <label>
@@ -121,41 +119,41 @@
             <b>Round-Off Amount:</b>0.00</label>
                     </div>
                 </div>
-                <label>
-                    <b>Amount In Words: </b>Rupees {{this.amountInWords}} only</label>
+                <p>
+                    <b>Amount In Words: </b>Rupees {{this.amountInWords}} only</p>
             </div>
-            <mat-divider></mat-divider>
-            <div class="container-vertical-css">
-                <label><b>Bank Details for NEFT/RTGS: </b></label>
-                <label><b>Bank Name - </b>Corporation Bank</label>
-                <label><b>Branch - </b>Dehugaon, Pune</label>
-                <label><b>A/C No - </b>00014001275</label>
-                <label><b>IFSC Code - </b>CORP0001400</label>
-            </div>
-            <mat-divider></mat-divider>
-            <div class="container-vertical-css">
-                <label>
-          <b>Note:</b>
-        </label>
-                <label>1. Payment must be made by Account Payee Cheque/DD only.</label>
-                <label>2. Interest @24% will be charge after credit limit.</label>
-                <label>3. Measurement and Rate cannot be changed.</label>
-            </div>
-            <mat-divider></mat-divider>
+
+            <table style="width: 100%;">
+                <tr>
+                    <th>Bank Details for NEFT/RTGS: </th>
+                    <th>Terms & Conditions:</th>
+                </tr>
+                <tr>
+                    <td><b>Bank Name - </b>Corporation Bank<br>
+                        <b>Branch - </b>Dehugaon, Pune<br>
+                        <b>A/C No - </b>00014001275<br>
+                        <b>IFSC Code - </b>CORP0001400</td>
+                    <td>1. Payment must be made by Account Payee Cheque/DD only. <br>2. Interest @24% will be charge after credit limit. <br>3. Measurement and Rate cannot be changed.</td>
+                </tr>
+            </table>
 
             <p>We declare that this invoice shows the actual price of the goods described and all particulars are true and correct.
             </p>
-            <div align="right">
-                <label align="center">
-          <b>Checked By:</b>
-        </label>
-                <br />
-                <label align="center">
-          For<br />
-          <br />
-          <b>Shubham Enterprises:</b>
-        </label>
-            </div>
+            <table style="width: 100%;height:80px">
+                <tr>
+                    <th valign="bottom">
+                        Received By
+                    </th>
+
+                    <th valign="bottom">
+                        Checked By
+                    </th>
+
+                    <th valign="bottom">
+                        Shubham Enterprises
+                    </th>
+                </tr>
+            </table>
         </mat-card-content>
     </div>
     <mat-card-actions>

@@ -107,7 +107,7 @@ export class ViewInvoiceCopyComponent implements OnInit {
     this.customerAddress = invoice.inv_address;
     this.contactNo = invoice.inv_contact;
     this.contactPerson = invoice.inv_contact_person;
-    this.invoiceTotalAmount = invoice.inv_total_amount;
+    this.invoiceTotalAmount = invoice.inv_product_total;
     this.isWithoutTax = invoice.inv_without_tax;
 
     this.taxAmount = this.invoiceTotalAmount * (5 / 100);

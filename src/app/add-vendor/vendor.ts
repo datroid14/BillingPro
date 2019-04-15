@@ -1,9 +1,9 @@
 export class Vendor {
-    public vendor_id: number;
-    public vendor_name: string;
-    public vendor_contact: number;
-    public vendor_email: string;
-    public vendor_address: string
+    public vend_id: number;
+    public vend_name: string;
+    public vend_contact: number;
+    public vend_email: string;
+    public vend_address: string
     constructor(
 
     ) { }

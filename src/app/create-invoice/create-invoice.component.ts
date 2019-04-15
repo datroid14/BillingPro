@@ -59,6 +59,7 @@ export class CreateInvoiceComponent implements OnInit {
   gstId: number;
   gstPercentage: number;
   isWithoutTax: boolean;
+  isWithoutTaxCheckVisible: boolean;
 
   // Variables for image paths
   addImagePath: string;
@@ -79,7 +80,7 @@ export class CreateInvoiceComponent implements OnInit {
     this.subTotalAmount = 0;
     this.totalInvoiceAmount = 0;
     this.isWithoutTax = false;
-
+    this.isWithoutTaxCheckVisible = false;
     this.localProductList = [];
 
     this.appService.showDrawer(true);
@@ -134,6 +135,7 @@ export class CreateInvoiceComponent implements OnInit {
   addNewInvoice() {
     this.isFieldDisabled = !this.isFieldDisabled;
     this.isCancelDisabled = !this.isCancelDisabled;
+    this.isWithoutTaxCheckVisible = true;
     this.changeButtonLabel(this.isFieldDisabled);
     this.clearInvoiceFields();
     this.clearProductFields();
@@ -150,6 +152,7 @@ export class CreateInvoiceComponent implements OnInit {
   cancelClicked() {
     this.isFieldDisabled = !this.isFieldDisabled;
     this.isCancelDisabled = !this.isCancelDisabled;
+    this.isWithoutTaxCheckVisible = false;
     if (this.buttonLabel == "SAVE") {
       this.buttonLabel = "EDIT";
       // Show last shown record
@@ -224,8 +227,11 @@ export class CreateInvoiceComponent implements OnInit {
     this.customerAddress = undefined;
     this.contactNo = undefined;
     this.contactPerson = undefined;
-    this.totalInvoiceAmount = undefined;
     this.localProductList = [];
+    this.subTotalAmount = 0;
+    this.taxTotalAmount = 0;
+    this.totalInvoiceAmount = 0;
+    this.isWithoutTax = false;
   }
 
   calculateSubTotal() {
@@ -279,6 +285,10 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   calculateTotal() {
+
+    this.subTotalAmount = 0;
+    this.taxTotalAmount = 0;
+    this.totalInvoiceAmount = 0;
 
     if (!this.isWithoutTax) {
       this.productTotalAmount = this.productSubTotalAmount + this.productTaxAmount;
@@ -365,6 +375,7 @@ export class CreateInvoiceComponent implements OnInit {
       this.isWithoutTax = false;
     } else {
       this.isWithoutTax = true;
+      this.isWithoutTaxCheckVisible = true;
     }
 
     // Get Invoice products for selected invoice id
@@ -447,5 +458,7 @@ export class CreateInvoiceComponent implements OnInit {
   removeProduct(product) {
     const index = this.localProductList.indexOf(product);
     this.localProductList.splice(index, 1);
+
+    this.calculateInvoiceTotal();
   }
 }

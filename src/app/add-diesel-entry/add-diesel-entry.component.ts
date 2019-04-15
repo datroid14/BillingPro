@@ -26,6 +26,7 @@ export class AddDieselEntryComponent implements OnInit {
   vehicles;
   vehicleId: number;
   vehicleNumber: string;
+  pumpAddress: string;
   employeeId: number;
   employeeName: string;
 
@@ -132,9 +133,9 @@ export class AddDieselEntryComponent implements OnInit {
   addDieselEntry() {
     if (this.buttonLabel == "SAVE") {
       if (this.dieselFilledDate != undefined && this.employeeName != undefined && this.dieselQuantity != undefined && this.dieselAmount != undefined) {
-        var formattedDieselDate = moment(this.dieselFilledDate).format('YYYY-MM-DD');
+        var formattedDieselDate = moment(this.dieselFilledDate).format('DD-MM-YYYY');
         if (this.isEditClicked) {
-          const updatePayload = { "data": { "diesel_entry_id": this.dieselEntryId, "diesel_filling_date": formattedDieselDate, "diesel_qty": this.dieselQuantity, "diesel_amount": this.dieselAmount, "emp_id": this.employeeId } };
+          const updatePayload = { "data": { "diesel_entry_id": this.dieselEntryId, "diesel_filling_date": formattedDieselDate, "diesel_qty": this.dieselQuantity, "diesel_amount": this.dieselAmount, "emp_id": this.employeeId, "veh_id": this.vehicleId, "pump_address": this.pumpAddress } };
           this.dieselEntryService.updateDieselEntry(updatePayload).subscribe(response => {
             if (response.status == 200) {
               this.location.back();
@@ -144,7 +145,7 @@ export class AddDieselEntryComponent implements OnInit {
               console.log(error)
             });
         } else {
-          const addPayload = { "data": { "diesel_filling_date": formattedDieselDate, "diesel_qty": this.dieselQuantity, "diesel_amount": this.dieselAmount, "emp_id": this.employeeId } };
+          const addPayload = { "data": { "diesel_filling_date": formattedDieselDate, "diesel_qty": this.dieselQuantity, "diesel_amount": this.dieselAmount, "emp_id": this.employeeId, "veh_id": this.vehicleId, "pump_address": this.pumpAddress } };
           this.dieselEntryService.addDieselEntry(addPayload).subscribe(response => {
             if (response.status == 200) {
               this.location.back();
@@ -189,6 +190,7 @@ export class AddDieselEntryComponent implements OnInit {
   }
 
   setDieselEntryDetail(dieselEntry) {
+    // var formattedDieselDate = moment(dieselEntry.diesel_filling_date).format('YYYY-MM-DD');
     this.dieselFilledDate = dieselEntry.diesel_filling_date;
     this.dieselQuantity = dieselEntry.diesel_qty;
     this.dieselAmount = dieselEntry.diesel_amount;
@@ -196,6 +198,7 @@ export class AddDieselEntryComponent implements OnInit {
     this.employeeName = dieselEntry.emp_name;
     this.vehicleId = dieselEntry.veh_id;
     this.vehicleNumber = dieselEntry.veh_number;
+    this.pumpAddress = dieselEntry.pump_address;
   }
 
   setEmployeeDetail(employee) {

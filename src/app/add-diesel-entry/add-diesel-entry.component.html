@@ -12,7 +12,7 @@
         </div>
 
         <mat-form-field>
-            <input matInput [matDatepicker]="picker" placeholder="Date" [(ngModel)]="dieselFilledDate" [disabled]="isFieldDisabled">
+            <input matInput [matDatepicker]="picker" placeholder="Date" [(ngModel)]="dieselFilledDate" [disabled]="isFieldDisabled" format="DD MMM YYYY">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
@@ -39,6 +39,10 @@
                     {{vehicle.veh_number}}
                 </mat-option>
             </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput [(ngModel)]="pumpAddress" placeholder="Pump Address" [disabled]="isFieldDisabled">
         </mat-form-field>
 
     </mat-card-content>

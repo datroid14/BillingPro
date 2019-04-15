@@ -16,7 +16,7 @@
             <!-- Contact Person Column -->
             <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-                <mat-cell *matCellDef="let payment"> {{payment.emp_name}} </mat-cell>
+                <mat-cell *matCellDef="let payment"> {{payment.payee_name}} </mat-cell>
             </ng-container>
 
             <!-- Contact Column -->
@@ -28,7 +28,7 @@
             <!-- Email Column -->
             <ng-container matColumnDef="type">
                 <mat-header-cell *matHeaderCellDef> Payment Type </mat-header-cell>
-                <mat-cell *matCellDef="let payment"> {{payment.payment_type}} </mat-cell>
+                <mat-cell *matCellDef="let payment"> {{payment.payment_mode}} </mat-cell>
             </ng-container>
 
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

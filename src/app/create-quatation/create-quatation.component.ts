@@ -17,8 +17,8 @@ export class CreateQuatationComponent implements OnInit {
 
   // Variables used for products
   products;
-  quatationProducts;
   localProductList: Product[];
+  isProductDataLoaded: boolean;
 
   buttonLabel: string;
   isFieldDisabled: boolean;
@@ -57,6 +57,8 @@ export class CreateQuatationComponent implements OnInit {
 
   ngOnInit() {
 
+    this.isProductDataLoaded = false;
+
     this.localProductList = [];
 
     this.appService.showDrawer(true);
@@ -64,7 +66,7 @@ export class CreateQuatationComponent implements OnInit {
     this.showUIChanges();
 
     this.productService.getProducts().subscribe(response => {
-      this.products = response.products;
+      this.localProductList = response.products;
     },
       error => {
         console.log(error)
@@ -240,5 +242,10 @@ export class CreateQuatationComponent implements OnInit {
       // Redirect it to View Product screen
       this.router.navigate(['/view-quatation-copy'], navigationExtras);
     }
+  }
+
+  removeProduct(product) {
+    const index = this.localProductList.indexOf(product);
+    this.localProductList.splice(index, 1);
   }
 }

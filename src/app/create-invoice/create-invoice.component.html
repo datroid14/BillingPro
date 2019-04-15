@@ -6,7 +6,7 @@
     </mat-card-header>
 
     <mat-card-content class="container-css">
-        <div><input type="checkbox" [checked]="isWithoutTax" (change)="changeTaxSelection();" style="padding-left: 12px;">Without Tax
+        <div *ngIf="isWithoutTaxCheckVisible"><input type="checkbox" [checked]="isWithoutTax" (change)="changeTaxSelection();" style="padding-left: 12px;">Without Tax
         </div>
         <div align="right" style="height: 32px;">
             <img (click)="addNewInvoice();" [src]="this.addImagePath" *ngIf="isFieldDisabled">
