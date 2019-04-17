@@ -1,7 +1,7 @@
 <!-- <h1>Shubham Enterprises</h1> -->
 
 <div class="container" fxLayout fxLayoutAlign="center" fxLayoutGap="8px">
-    <div style="height:1000px;" fxFlex="15%" *ngIf="isLoginPage | async">
+    <div fxFlex="15%" *ngIf="isLoginPage | async">
         <mat-card>
 
             <nav [ngClass]="'menu'" fxLayout="column">
@@ -23,6 +23,7 @@
                 <a routerLink="/view-trip-detail" routerLinkActive="active-link" class="drawer-menu">Trip Details</a>
                 <a routerLink="/view-card-detail" routerLinkActive="active-link" class="drawer-menu">Card Details</a>
                 <a routerLink="/view-emi-detail" routerLinkActive="active-link" class="drawer-menu">EMI Details</a>
+                <a routerLink="/view-insurance-detail" routerLinkActive="active-link" class="drawer-menu">Insurance Details</a>
             </nav>
 
         </mat-card>

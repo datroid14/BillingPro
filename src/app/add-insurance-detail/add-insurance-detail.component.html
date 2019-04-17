@@ -1,0 +1,54 @@
+<mat-card class="card-css">
+    <mat-card-header>
+        <mat-card-title>
+            <h2>Insurance Detail</h2>
+        </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="container-css">
+
+        <div align="right" style="height: 32px;">
+            <img (click)="addNewInsuranceDetail();" [src]="this.addImagePath" *ngIf="isFieldDisabled">
+        </div>
+
+        <mat-form-field>
+            <input matInput [(ngModel)]="policyNumber" placeholder="Policy Number" [disabled]="isFieldDisabled" required>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="Date" [(ngModel)]="policyIssuedDate" [disabled]="isFieldDisabled">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-select [(ngModel)]="vehicleNumber" name="vehicleNumber" placeholder="Vehicle Number" [disabled]="isFieldDisabled" maxlength="10" required>
+                <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle.veh_number" (click)="setVehicleDetail(vehicle);">
+                    {{vehicle.veh_number}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput type="number" [(ngModel)]="premiumAmount" placeholder="Premium Amount" [disabled]="isFieldDisabled" required />
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput [(ngModel)]="insuranceCompany" placeholder="Insurance Company" [disabled]="isFieldDisabled" required>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput [(ngModel)]="nomineeName" placeholder="Nominee Name" [disabled]="isFieldDisabled" required />
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput [(ngModel)]="additionalComments" placeholder="Additional Comments" [disabled]="isFieldDisabled" />
+        </mat-form-field>
+
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="addInsuranceDetail();">{{buttonLabel}}</button>
+        <button mat-raised-button color="primary" (click)="cancelClicked();" [disabled]="isCancelDisabled">CANCEL</button>
+        <button mat-raised-button color="primary" (click)="deleteInsuranceDetail();" [disabled]="isDeleteDisabled">DELETE</button>
+    </mat-card-actions>
+</mat-card>

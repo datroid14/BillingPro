@@ -1,0 +1,48 @@
+<div>
+    <label>Insurance Details</label>
+    <button (click)="showInsuranceDetail();">ADD NEW</button>
+</div>
+
+<div class="example-container mat-elevation-z8">
+
+    <mat-card style="padding:5px">
+        <mat-table #table [dataSource]="dataSource">
+
+            <!-- Policy No Column -->
+            <ng-container matColumnDef="policy_no">
+                <mat-header-cell *matHeaderCellDef> Policy Number </mat-header-cell>
+                <mat-cell *matCellDef="let insurance"> {{insurance.policy_no}} </mat-cell>
+            </ng-container>
+
+            <!-- Policy Issued Date Column -->
+            <ng-container matColumnDef="issued_date">
+                <mat-header-cell *matHeaderCellDef> Issued Date </mat-header-cell>
+                <mat-cell *matCellDef="let insurance"> {{insurance.policy_issued_date}} </mat-cell>
+            </ng-container>
+
+            <!-- Vehicle No Column -->
+            <ng-container matColumnDef="vehicle_no">
+                <mat-header-cell *matHeaderCellDef> Vehicle Number </mat-header-cell>
+                <mat-cell *matCellDef="let insurance"> {{insurance.vehicle_no}} </mat-cell>
+            </ng-container>
+
+            <!-- Email Column -->
+            <ng-container matColumnDef="amount">
+                <mat-header-cell *matHeaderCellDef> Premium Amount </mat-header-cell>
+                <mat-cell *matCellDef="let insurance"> {{insurance.premium_amount}} </mat-cell>
+            </ng-container>
+
+            <!-- Email Column -->
+            <ng-container matColumnDef="company">
+                <mat-header-cell *matHeaderCellDef> Insurance Company </mat-header-cell>
+                <mat-cell *matCellDef="let insurance"> {{insurance.insurance_company}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showInsuranceDetail(row)"></mat-row>
+        </mat-table>
+
+        <mat-paginator #paginator [pageSize]="15" [pageSizeOptions]="[15,20]" [showFirstLastButtons]="true">
+        </mat-paginator>
+    </mat-card>
+</div>

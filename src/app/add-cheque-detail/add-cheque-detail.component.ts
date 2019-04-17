@@ -41,6 +41,11 @@ export class AddChequeDetailsComponent implements OnInit {
     });
     this.addImagePath = "assets/images/ic_add_circle.svg";
     this.removeImagePath = "assets/images/ic_remove_circle.svg";
+  }
+
+  ngOnInit() {
+    // Show drawer
+    this.appService.showDrawer(true);
 
     this.customerService.getCustomers().subscribe(response => {
       this.customers = response.customers;
@@ -48,11 +53,6 @@ export class AddChequeDetailsComponent implements OnInit {
       error => {
         console.log(error)
       });
-  }
-
-  ngOnInit() {
-    // Show drawer
-    this.appService.showDrawer(true);
 
     // Make necessary changes based on selection from view payment details
     this.showUIChanges();
