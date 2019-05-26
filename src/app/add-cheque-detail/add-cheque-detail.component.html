@@ -26,6 +26,10 @@
         </mat-form-field>
 
         <mat-form-field>
+            <input matInput [(ngModel)]="customerAddress" placeholder="Customer Address" [disabled]="isFieldDisabled" required>
+        </mat-form-field>
+
+        <mat-form-field>
             <input matInput type="number" [(ngModel)]="chequeNumber" placeholder="Cheque Number" [disabled]="isFieldDisabled" maxlength="6" required>
         </mat-form-field>
 
@@ -40,7 +44,15 @@
         </mat-form-field>
 
         <mat-form-field>
-            <input matInput [(ngModel)]="accountNo" placeholder="Account Number" [disabled]="isFieldDisabled" required>
+            <mat-select [(ngModel)]="accountNo" name="accountNo" placeholder="Account Number" [disabled]="isFieldDisabled" required>
+                <mat-option *ngFor="let account of accounts" [value]="account.account_number" (click)="setAccountDetail(account)">
+                    {{account.account_number}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput [(ngModel)]="bankDetail" placeholder="Bank Detail" [disabled]="isFieldDisabled" required>
         </mat-form-field>
 
     </mat-card-content>

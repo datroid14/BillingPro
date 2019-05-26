@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { ChequeEntryService } from "../add-cheque-detail/cheque-entry.service";
 import { CustomerService } from "../add-customer/customer.service";
+import { AccountService } from "../add-account/account.service";
 import { Location } from '@angular/common';
 import { AppService } from "../app.service"
 import * as moment from 'moment';
+import { ACCOUNT } from '../view-account/view-account.component';
 
 @Component({
   selector: 'add-cheque-detail',
@@ -21,12 +23,16 @@ export class AddChequeDetailsComponent implements OnInit {
 
   chequeEntries = [];
   customers;
+  accounts;
   chequeEntryId: number;
   chequeDate: string;
   customerName: string;
+  customerAddress: string;
   chequeNumber: string;
   chequeAmount: number;
+  accountId: number;
   accountNo: string;
+  bankDetail: string;
   clearenceDate: string;
   chequeCustomerId: number;
 
@@ -35,7 +41,7 @@ export class AddChequeDetailsComponent implements OnInit {
   removeImagePath: string;
 
   public constructor(private route: ActivatedRoute, private appService: AppService, private chequeEntryService: ChequeEntryService,
-    private customerService: CustomerService, private location: Location) {
+    private customerService: CustomerService, private accountService: AccountService, private location: Location) {
     this.route.queryParams.subscribe(params => {
       this.chequeEntryId = params["cheque_entry_id"];
     });
@@ -53,6 +59,13 @@ export class AddChequeDetailsComponent implements OnInit {
       error => {
         console.log(error)
       });
+
+      this.accountService.getAccounts().subscribe(response => {
+        this.accounts = response.account_details;
+      },
+        error => {
+          console.log(error)
+        });
 
     // Make necessary changes based on selection from view payment details
     this.showUIChanges();
@@ -120,11 +133,12 @@ export class AddChequeDetailsComponent implements OnInit {
 
   addChequeEntry() {
     if (this.buttonLabel == "SAVE") {
-      if (this.chequeDate != undefined && this.customerName != undefined && this.chequeNumber != undefined && this.chequeAmount != undefined && this.accountNo != undefined) {
+      if (this.chequeDate != undefined && this.customerName != undefined && this.chequeNumber != undefined && this.chequeAmount != undefined && this.accountId != undefined) {
         this.isDeleteDisabled = false;
         var formattedChequeDate = moment(this.chequeDate).format('YYYY-MM-DD');
+        var formattedClearenceDate = moment(this.clearenceDate).format('YYYY-MM-DD');
         if (this.isEditClicked) {
-          const updatePayload = { "data": { "cheque_entry_id": this.chequeEntryId, "cheque_date": formattedChequeDate, "cheque_number": this.chequeNumber, "cheque_amount": this.chequeAmount, "account_no": this.accountNo, "cheque_clearence_date":this.clearenceDate, "cheque_cust_id": this.chequeCustomerId } };
+          const updatePayload = { "data": { "cheque_entry_id": this.chequeEntryId, "cheque_date": formattedChequeDate, "cheque_number": this.chequeNumber, "cheque_amount": this.chequeAmount, "account_id": this.accountId, "cheque_clearence_date":formattedClearenceDate, "cheque_cust_id": this.chequeCustomerId } };
           this.chequeEntryService.updateChequeEntry(updatePayload).subscribe(response => {
             if (response.status == 200) {
               this.location.back();
@@ -134,7 +148,7 @@ export class AddChequeDetailsComponent implements OnInit {
               console.log(error)
             });
         } else {
-          const addPayload = { "data": { "cheque_date": formattedChequeDate, "cheque_number": this.chequeNumber, "cheque_amount": this.chequeAmount, "account_no": this.accountNo, "cheque_clearence_date":this.clearenceDate, "cheque_cust_id": this.chequeCustomerId } };
+          const addPayload = { "data": { "cheque_date": formattedChequeDate, "cheque_number": this.chequeNumber, "cheque_amount": this.chequeAmount, "account_id": this.accountId, "cheque_clearence_date":formattedClearenceDate, "cheque_cust_id": this.chequeCustomerId } };
           this.chequeEntryService.addChequeEntry(addPayload).subscribe(response => {
             if (response.status == 200) {
               this.location.back();
@@ -161,6 +175,7 @@ export class AddChequeDetailsComponent implements OnInit {
     this.customerName = undefined;
     this.chequeNumber = undefined;
     this.chequeAmount = undefined;
+    this.clearenceDate = undefined;
     this.accountNo = undefined;
   }
 
@@ -182,13 +197,18 @@ export class AddChequeDetailsComponent implements OnInit {
     this.chequeDate = cheque_entry.cheque_date;
     this.chequeCustomerId = cheque_entry.cheque_cust_id;
     this.customerName = cheque_entry.cust_name;
+    this.customerAddress = cheque_entry.cust_address;
     this.chequeNumber = cheque_entry.cheque_number;
     this.chequeAmount = cheque_entry.cheque_amount;
-    this.accountNo = cheque_entry.account_no;
+    this.clearenceDate = cheque_entry.cheque_clearence_date;
+    this.accountId = cheque_entry.account_id;
+    this.accountNo = cheque_entry.account_number;
+    this.bankDetail = cheque_entry.bank_name + ", " + cheque_entry.bank_address;
   }
 
   setCustomerDetail(customer) {
     this.chequeCustomerId = customer.cust_id;
+    this.customerAddress = customer.cust_address;
   }
 
   getChequeEntryById() {
@@ -207,5 +227,10 @@ export class AddChequeDetailsComponent implements OnInit {
     } else {
       this.location.back();
     }
+  }
+
+  setAccountDetail(account) {
+    this.accountId = account.account_id;
+    this.bankDetail = account.bank_name + ", " + account.bank_address;
   }
 }

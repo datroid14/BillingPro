@@ -154,7 +154,12 @@ export class CreateChallanComponent implements OnInit {
     if (this.buttonLabel == "SAVE") {
       if (this.customerId != undefined && this.productId != undefined && this.vehicleId != undefined &&
         this.productQuantity != undefined) {
-          var formattedChallanDate = moment(this.challanDate).format('YYYY-MM-DD')
+          var formattedChallanDate;
+          if (this.challanDate != undefined){
+            formattedChallanDate = moment(this.challanDate).format('YYYY-MM-DD');
+          } else {
+            formattedChallanDate = null;
+          }
         if (this.isEditClicked) {
           const updatePayload = { "data": { "chal_id": this.challanId, "chal_no": this.challanNumber, "chal_date": formattedChallanDate, "chal_cust_id": this.customerId, "chal_prod_id": this.productId, "chal_veh_id": this.vehicleId, "chal_quantity": this.productQuantity } };
           this.challanService.updateChallan(updatePayload).subscribe(response => {

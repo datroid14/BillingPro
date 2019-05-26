@@ -39,7 +39,6 @@
         </mat-form-field>
 
         <mat-card class="inner-card-css">
-
             <table style="width: 100%;">
                 <thead>
                     <tr>
@@ -61,13 +60,15 @@
                         <th class="input-text">
                         </th>
                         <th>
-                            <mat-form-field class="table-form-field">
-                                <mat-select [(ngModel)]="challanNo" name="challanNo">
-                                    <mat-option *ngFor="let challan of challans" [value]="challan.chal_no" (click)="setChallanDetail(challan)">
-                                        {{challan.chal_no}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                            <form (keydown)="keyDownFunction($event)">
+                                <mat-form-field class="table-form-field">
+                                    <mat-select [(ngModel)]="challanNo" name="challanNo">
+                                        <mat-option *ngFor="let challan of tempChallanList" [value]="challan.chal_no" (click)="setChallanDetail(challan)">
+                                            {{challan.chal_no}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </form>
                         </th>
                         <th>
                             <mat-form-field class="table-form-med-field">
@@ -163,13 +164,53 @@
                         <td></td>
                         <td></td>
                         <td style="text-align:center">
-                            {{(subTotalAmount).toFixed(2)}}
+                            <b>{{(subTotalAmount).toFixed(2)}}</b>
                         </td>
                         <td style="text-align:center" *ngIf="!isWithoutTax">
-                            {{(taxTotalAmount).toFixed(2)}}
+                            <b>{{(taxTotalAmount).toFixed(2)}}</b>
                         </td>
                         <td style="text-align:center">
-                            {{(totalInvoiceAmount).toFixed(2)}}
+                            <b>{{(totalInvoiceAmount).toFixed(2)}}</b>
+                        </td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align:center">
+                            Round off</td>
+                        <td></td>
+                        <td style="text-align:center" *ngIf="!isFieldDisabled">
+                            <mat-form-field class="table-form-field" style="text-align:right">
+                                <input matInput type="number" [(ngModel)]="roundOffAmount" maxlength="3" (blur)="calculateNetTotal()" step="0.10" required>
+                            </mat-form-field>
+                        </td>
+                        <td style="text-align:center" *ngIf="isFieldDisabled">{{roundOffAmount}}</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align:center">
+                            <b>Net Total</b></td>
+                        <td></td>
+                        <td style="text-align:center">
+                            <b>{{(netTotalAmount).toFixed(2)}}</b>
                         </td>
                         <td></td>
                     </tr>
@@ -181,5 +222,6 @@
         <button mat-raised-button color="primary" (click)="createInvoice()">{{buttonLabel}}</button>
         <button mat-raised-button color="primary" (click)="cancelClicked()" [disabled]="isCancelDisabled">CANCEL</button>
         <button mat-raised-button color="primary" (click)="printInvoiceDetail()">PRINT</button>
+        <button mat-raised-button color="primary" (click)="printChallanStatement()" *ngIf="localProductList.length > 5">CHALLAN STATEMENT</button>
     </mat-card-actions>
 </mat-card>

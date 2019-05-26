@@ -32,10 +32,10 @@
                 <mat-cell *matCellDef="let vendor"> {{vendor.vend_email}} </mat-cell>
             </ng-container>
 
-            <!-- Address Column -->
-            <ng-container matColumnDef="address">
-                <mat-header-cell *matHeaderCellDef> Address </mat-header-cell>
-                <mat-cell *matCellDef="let vendor"> {{vendor.vend_address}} </mat-cell>
+            <!-- GST Number Column -->
+            <ng-container matColumnDef="gst">
+                <mat-header-cell *matHeaderCellDef> GST No. </mat-header-cell>
+                <mat-cell *matCellDef="let vendor"> {{vendor.vend_gst_no}} </mat-cell>
             </ng-container>
 
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

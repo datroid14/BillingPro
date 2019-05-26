@@ -80,7 +80,7 @@
                         <td class="input-css">{{product.prod_unit}}</td>
                         <td class="input-css amount-css">
                             <mat-form-field>
-                                <input matInput type="number" [(ngModel)]="product.prod_rate" maxlength="8" required>
+                                <input matInput type="number" [(ngModel)]="product.prod_rate" [disabled]="isFieldDisabled" maxlength="8" required>
                             </mat-form-field>
                         </td>
                         <!-- <td *ngIf="!isFieldDisabled">

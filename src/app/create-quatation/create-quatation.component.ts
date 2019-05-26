@@ -115,6 +115,14 @@ export class CreateQuatationComponent implements OnInit {
     this.contactNo = undefined;
     this.localProductList = [];
     this.clearProductFields();
+
+    // Get product list for creating new quatation
+    this.productService.getProducts().subscribe(response => {
+      this.localProductList = response.products;
+    },
+      error => {
+        console.log(error)
+      });
   }
 
   cancelClicked() {

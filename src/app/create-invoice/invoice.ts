@@ -8,9 +8,10 @@ export class Invoice {
     inv_contact_person: string;
     inv_contact: string;
     inv_total_amount: number;
+    inv_gst_id: number;
     inv_products: InvoiceProduct[];
 
-    constructor(id, date, customer, address, contact_person, contact, amount, products){
+    constructor(id, date, customer, address, contact_person, contact, amount, gst_id, products){
         this.inv_id = id;
         this.inv_date = date;
         this.inv_customer = customer;
@@ -18,7 +19,7 @@ export class Invoice {
         this.inv_contact_person = contact_person;
         this.inv_contact = contact;
         this.inv_total_amount = amount;
-        this.inv_date = date;
+        this.inv_gst_id = gst_id;
         this.inv_products = products;
     }
 }

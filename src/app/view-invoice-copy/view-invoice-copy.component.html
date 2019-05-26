@@ -79,16 +79,18 @@
             </div>
             <mat-divider></mat-divider>
             <div class="container-css">
-                <p align="left" style="width:60%" ng-if="true">
+                <p align="left" style="width:60%">
                     <b>Bill Period From:</b> {{this.minChallanDate}} To: {{this.maxChallanDate}}</p>
 
-                <label align="right" style="width:40%">
+                <label align="right" style="width:40%;padding: 14px 0">
             <b>Total: </b>{{this.invoiceTotalAmount}}</label>
 
             </div>
             <div class="container-vertical-css">
                 <div class="container-css">
-                    <table style="width:60%">
+                    <p>
+                        <b>Amount In Words: </b>Rupees {{this.amountInWords}} only</p>
+                    <table style="width:60%" *ngIf="false">
                         <tr>
                             <th rowspan="2">Taxable Amount</th>
                             <th colspan="2">Central Tax</th>
@@ -102,25 +104,24 @@
                         </tr>
                         <tr>
                             <td>{{this.invoiceTotalAmount}}</td>
-                            <td>2.50%</td>
+                            <td>{{this.invoiceGSTPercentage}}%</td>
                             <td>{{(taxAmount/2).toFixed(2)}}</td>
-                            <td>2.50%</td>
+                            <td>{{this.invoiceGSTPercentage}}%</td>
                             <td>{{(taxAmount/2).toFixed(2)}}</td>
                         </tr>
                     </table>
                     <div class="container-vertical-css" align="right" style="width:40%">
                         <label>
-            <b>CGST(2.5%): </b>{{(taxAmount/2).toFixed(2)}}</label>
+            <b>CGST({{invoiceGSTPercentage}}%): </b>{{(taxAmount/2).toFixed(2)}}</label>
                         <label>
-            <b>SGST(2.5%): </b>{{(taxAmount/2).toFixed(2)}}</label>
+            <b>SGST({{invoiceGSTPercentage}}%): </b>{{(taxAmount/2).toFixed(2)}}</label>
                         <label>
             <b>Net Total: </b>{{(this.invoiceTotalAmount + taxAmount).toFixed(2)}}</label>
                         <label>
             <b>Round-Off Amount:</b>0.00</label>
                     </div>
                 </div>
-                <p>
-                    <b>Amount In Words: </b>Rupees {{this.amountInWords}} only</p>
+
             </div>
 
             <table style="width: 100%;">
@@ -130,7 +131,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <b>Account Name - </b>Shubham Enterprises<br>    
+                        <b>Account Name - </b>Shubham Enterprises<br>
                         <b>Bank Name - </b>HDFC Bank<br>
                         <b>Branch - </b>Thermax Chowk, Sambhaji Nagar, Pune 411019<br>
                         <b>A/C No - </b>50200037466011<br>

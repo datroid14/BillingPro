@@ -21,7 +21,7 @@ export class AddPurchaseComponent implements OnInit {
   challans;
   vendors;
   products;
-  localProductList : PurchaseProduct[];
+  localProductList: PurchaseProduct[];
 
   buttonLabel: string;
   isFieldDisabled: boolean;
@@ -50,8 +50,13 @@ export class AddPurchaseComponent implements OnInit {
   vendorAddress: string;
   contactPerson: string;
   contactNo: number;
+  subTotalAmount: number;
+  taxTotalAmount: number;
   totalPurchaseAmount: number;
   gstPercentage: number;
+
+  minChallanDate: string;
+  maxChallanDate: string;
 
   // Variables for image paths
   addImagePath: string;
@@ -100,7 +105,7 @@ export class AddPurchaseComponent implements OnInit {
       });
   }
 
-  showUIChanges(){
+  showUIChanges() {
 
     if (this.purchaseId != undefined) {
 
@@ -155,7 +160,7 @@ export class AddPurchaseComponent implements OnInit {
   addProduct() {
     if (this.challanNumber != undefined && this.challanDate != undefined && this.vehicleNo != undefined && this.productName != undefined && this.productHSN != undefined && this.productUnit != undefined
       && this.productQuantity != undefined && this.productRate != undefined && this.productTotalAmount != undefined) {
-        var formattedChallanDate = moment(this.challanDate).format('YYYY-MM-DD');
+      var formattedChallanDate = moment(this.challanDate).format('YYYY-MM-DD');
       const product = new PurchaseProduct(this.challanNumber, formattedChallanDate, this.vehicleNo, this.productId, this.productName, this.productHSN, this.productUnit, this.productQuantity,
         this.productRate, this.productSubTotalAmount, this.productTaxAmount, this.productTotalAmount);
       this.localProductList.push(product);
@@ -219,11 +224,15 @@ export class AddPurchaseComponent implements OnInit {
   }
 
   calculatePurchaseTotal() {
+    this.subTotalAmount = 0;
+    this.taxTotalAmount = 0;
     this.totalPurchaseAmount = 0;
     if (this.localProductList != undefined && this.localProductList.length > 0) {
       for (let i = 0; i < this.localProductList.length; i++) {
-        this.totalPurchaseAmount += this.localProductList[i].pur_prod_total;
+        this.subTotalAmount += this.localProductList[i].pur_prod_subtotal;
+        this.taxTotalAmount += this.localProductList[i].pur_prod_tax;
       }
+      this.totalPurchaseAmount = this.subTotalAmount + this.taxTotalAmount;
     }
   }
 
@@ -288,20 +297,43 @@ export class AddPurchaseComponent implements OnInit {
     this.contactPerson = purchase.pur_contact_person;
     this.vendorAddress = purchase.vend_address;
     this.contactNo = purchase.pur_contact;
-    this.totalPurchaseAmount = purchase.pur_total_amount;
+    this.subTotalAmount = purchase.pur_product_total;
+    this.taxTotalAmount = purchase.pur_total_tax;
+    this.totalPurchaseAmount = purchase.pur_total_amount;    
+    var isTax = purchase.inv_without_tax;
+    if (isTax == 0) {
+      this.isWithoutTax = false;
+    } else {
+      this.isWithoutTax = true;
+      // this.isWithoutTaxCheckVisible = true;
+    }
 
     this.getPurchaseProductsById();
   }
 
   getPurchaseProductsById() {
+    var purchaseDates = [];
+
     const productPayload = { "data": { "pur_id": this.purchaseId } };
 
     this.purchaseService.getPurchaseProductsById(productPayload).subscribe(response => {
       this.localProductList = response.products;
-      for (var i = 0; i < this.localProductList.length; i++){
+      for (var i = 0; i < this.localProductList.length; i++) {
         this.localProductList[i].pur_chal_date = moment(this.localProductList[i].pur_chal_date).format('DD MMM YYYY');
       }
 
+      // Format date for displaying in desire format
+      if (this.localProductList != undefined && this.localProductList.length > 0) {
+        for (var i = 0; i < this.localProductList.length; i++) {
+          var formattedChallanDate = moment(this.localProductList[i].pur_chal_date).format('MM/DD/YYYY');
+          this.localProductList[i].pur_chal_date = moment(this.localProductList[i].pur_chal_date).format('DD/MM/YYYY');
+          purchaseDates.push(new Date(formattedChallanDate));
+        }
+
+        var sorted = purchaseDates.sort(this.sortDates);
+        this.minChallanDate = moment(sorted[0]).format('DD/MM/YYYY');
+        this.maxChallanDate = moment(sorted[sorted.length - 1]).format('DD/MM/YYYY');
+      }
       this.calculateSubTotal();
     },
       error => {
@@ -309,8 +341,12 @@ export class AddPurchaseComponent implements OnInit {
       });
   }
 
+  sortDates(a, b) {
+    return a.getTime() - b.getTime();
+  }
+
   printPurchaseDetail() {
-    const purchaseObj = new Purchase(this.purchaseId, this.purchaseDate, this.vendorName, this.vendorAddress, this.contactPerson, this.contactNo, JSON.stringify(this.localProductList));
+    const purchaseObj = new Purchase(this.purchaseId, this.purchaseDate, this.vendorName,  this.vendorAddress, this.contactPerson, this.contactNo, JSON.stringify(this.localProductList));
     if (purchaseObj != undefined) {
       let navigationExtras: NavigationExtras = {
         queryParams: purchaseObj
@@ -320,9 +356,9 @@ export class AddPurchaseComponent implements OnInit {
     }
   }
 
-  getPurchaseDetailsById(){
-    if(this.purchaseId != undefined){
-    const payload = { "data": { "pur_id": this.purchaseId } };
+  getPurchaseDetailsById() {
+    if (this.purchaseId != undefined) {
+      const payload = { "data": { "pur_id": this.purchaseId } };
       this.purchaseService.getPurchaseById(payload).subscribe(response => {
         if (response.status == 200) {
           if (response.purchases != undefined && response.purchases.length > 0) {
@@ -333,8 +369,8 @@ export class AddPurchaseComponent implements OnInit {
         error => {
           console.log(error)
         });
-      } else {
-        this.location.back();
-      }
+    } else {
+      this.location.back();
+    }
   }
 }

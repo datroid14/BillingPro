@@ -13,7 +13,7 @@ export class ViewCustomerComponent implements OnInit {
 
   customers;
 
-  displayedColumns = ['name', 'contact_person', 'contact', 'email', 'address'];
+  displayedColumns = ['name', 'contact_person', 'contact', 'email', 'gst'];
   dataSource;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -47,6 +47,10 @@ export class ViewCustomerComponent implements OnInit {
       this.router.navigate(['/add-customer']);
     }
   }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 }
 
 export interface CUSTOMER {
@@ -54,6 +58,6 @@ export interface CUSTOMER {
   cust_name: string;
   cust_contact: string;
   cust_contact_person: string;
-  cust_address: string;
   cust_email: string;
+  cust_gst_no: string;
 }

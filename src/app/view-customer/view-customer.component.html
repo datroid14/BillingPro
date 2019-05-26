@@ -3,9 +3,14 @@
     <button (click)="showCustomerDetails();">ADD NEW</button>
 </div>
 
-<div class="example-container mat-elevation-z8">
+<div>
 
     <mat-card style="padding:5px">
+
+        <mat-form-field style="width:40%">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+        </mat-form-field>
+
         <mat-table #table [dataSource]="dataSource">
 
             <!-- Name Column -->
@@ -32,10 +37,10 @@
                 <mat-cell *matCellDef="let customer"> {{customer.cust_email}} </mat-cell>
             </ng-container>
 
-            <!-- Address Column -->
-            <ng-container matColumnDef="address">
-                <mat-header-cell *matHeaderCellDef> Address </mat-header-cell>
-                <mat-cell *matCellDef="let customer"> {{customer.cust_address}} </mat-cell>
+            <!-- GST Number Column -->
+            <ng-container matColumnDef="gst">
+                <mat-header-cell *matHeaderCellDef> GST No. </mat-header-cell>
+                <mat-cell *matCellDef="let customer"> {{customer.cust_gst_no}} </mat-cell>
             </ng-container>
 
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

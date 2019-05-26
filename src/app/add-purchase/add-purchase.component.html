@@ -142,11 +142,34 @@
                             <img (click)="removeProduct(product)" [src]="this.removeImagePath">
                         </td>
                     </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align:center;font-weight: bold">
+                            {{subTotalAmount}}
+                        </td>
+                        <td style="text-align:center;font-weight: bold">
+                            {{taxTotalAmount}}
+                        </td>
+                        <td style="text-align:center;font-weight: bold">
+                            {{totalPurchaseAmount}}
+                        </td>
+                        <td></td>
+                    </tr>
                 </tbody>
             </table>
-            <mat-form-field>
-                <input matInput type="number" [disabled]="true" [(ngModel)]="totalPurchaseAmount" maxlength="8" required>
-            </mat-form-field>
+
+            <div class="container-css">
+                <p align="left" style="width:60%">
+                    <b>Bill Period From:</b> {{this.minChallanDate}} To: {{this.maxChallanDate}}</p>
+            </div>
         </mat-card>
     </mat-card-content>
     <mat-card-actions>

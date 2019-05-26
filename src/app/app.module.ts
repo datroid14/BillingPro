@@ -89,6 +89,7 @@ import { InsuranceService } from './add-insurance-detail/insurance.service';
 import { ExcelService } from './common/excel.service';
 import { ViewInsuranceDetailComponent } from './view-insurance-detail/view-insurance-detail.component';
 import { AddInsuranceDetailComponent } from './add-insurance-detail/add-insurance-detail.component';
+import { ViewChallanStatementComponent } from './view-challan-statement/view-challan-statement.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -134,6 +135,7 @@ const appRoutes: Routes = [
   { path: 'view-card-detail', component: ViewCardDetailComponent },
   { path: 'view-emi-detail', component: ViewEmiDetailComponent },
   { path: 'view-insurance-detail', component: ViewInsuranceDetailComponent },
+  { path: 'view-challan-statement', component: ViewChallanStatementComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 
@@ -182,7 +184,8 @@ const appRoutes: Routes = [
     AddCardDetailComponent,
     AddTripDetailComponent,
     ViewInsuranceDetailComponent,
-    AddInsuranceDetailComponent
+    AddInsuranceDetailComponent,
+    ViewChallanStatementComponent
   ],
   imports: [
     BrowserModule,
