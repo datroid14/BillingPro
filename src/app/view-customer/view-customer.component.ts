@@ -13,7 +13,7 @@ export class ViewCustomerComponent implements OnInit {
 
   customers;
 
-  displayedColumns = ['name', 'contact_person', 'contact', 'email', 'gst'];
+  displayedColumns = ['name', 'contact_person', 'contact', 'address', 'gst'];
   dataSource;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -58,6 +58,6 @@ export interface CUSTOMER {
   cust_name: string;
   cust_contact: string;
   cust_contact_person: string;
-  cust_email: string;
+  cust_address: string;
   cust_gst_no: string;
 }
