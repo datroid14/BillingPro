@@ -37,7 +37,7 @@
                     <label>
                 <b>M/S: {{this.customerName}}</b></label>
                     <label>{{this.customerAddress}}</label>
-                    <label><b>GST No: </b>27ABNFS5898QIZQ</label>
+                    <label><b>GST No: </b>{{this.customerGSTNumber}}</label>
                 </div>
 
                 <div class="container-vertical-css" align="right" style="width:50%">
@@ -116,9 +116,9 @@
                         <label>
             <b>SGST({{invoiceGSTPercentage}}%): </b>{{(taxAmount/2).toFixed(2)}}</label>
                         <label>
-            <b>Net Total: </b>{{(this.invoiceTotalAmount + taxAmount).toFixed(2)}}</label>
+            <b>Net Total: </b>{{(invoiceTotalAmount + taxAmount + roundOffAmount).toFixed(2)}}</label>
                         <label>
-            <b>Round-Off Amount:</b>0.00</label>
+            <b>Round-Off Amount:</b>{{roundOffAmount}}</label>
                     </div>
                 </div>
 
@@ -142,7 +142,7 @@
 
             <p>We declare that this invoice shows the actual price of the goods described and all particulars are true and correct.
             </p>
-            <table style="width: 100%;height:80px">
+            <table style="width: 100%;height:80px;border: 0">
                 <tr>
                     <th valign="bottom">
                         Received By

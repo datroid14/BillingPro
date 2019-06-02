@@ -200,7 +200,7 @@ export class CreateInvoiceComponent implements OnInit {
         if (this.isWithoutTax) {
           isTax = 1;
         }
-        const invoicePayload = { "data": { "inv_date": formattedInvoiceDate, "inv_cust_id": this.customerId, "inv_product_total": this.subTotalAmount, "inv_total_tax": this.taxTotalAmount, "inv_total_amount": this.totalInvoiceAmount, "inv_round_off": 0, "inv_without_tax": isTax, "gst_id": this.localProductList[0].prod_gst_id, "inv_products": this.localProductList } };
+        const invoicePayload = { "data": { "inv_date": formattedInvoiceDate, "inv_cust_id": this.customerId, "inv_product_total": this.subTotalAmount, "inv_total_tax": this.taxTotalAmount, "inv_total_amount": this.totalInvoiceAmount, "inv_round_off": this.roundOffAmount, "inv_without_tax": isTax, "gst_id": this.localProductList[0].prod_gst_id, "inv_products": this.localProductList } };
         this.invoiceService.addInvoice(invoicePayload).subscribe(response => {
           if (response.status == 200) {
             this.buttonLabel = "EDIT";

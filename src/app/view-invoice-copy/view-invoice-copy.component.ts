@@ -17,6 +17,7 @@ export class ViewInvoiceCopyComponent implements OnInit {
   invoiceDate: string;
   customerName: string;
   customerAddress: string;
+  customerGSTNumber: string;
   contactNo: number;
   contactPerson: string;
   invoiceSubTotal: number;
@@ -24,6 +25,7 @@ export class ViewInvoiceCopyComponent implements OnInit {
   invoiceTotalAmount: number;
   invoiceGSTId: number;
   invoiceGSTPercentage: number;
+  roundOffAmount : number;
   isWithoutTax: boolean;
   amountInWords: string;
   minChallanDate: string;
@@ -109,10 +111,12 @@ export class ViewInvoiceCopyComponent implements OnInit {
     this.customerAddress = invoice.inv_address;
     this.contactNo = invoice.inv_contact;
     this.contactPerson = invoice.inv_contact_person;
+    this.customerGSTNumber = invoice.cust_gst_no;
     this.invoiceTotalAmount = invoice.inv_product_total;
     this.invoiceGSTId = invoice.inv_gst_id;
     this.isWithoutTax = invoice.inv_without_tax;
     this.invoiceGSTPercentage = invoice.gst_percentage;
+    this.roundOffAmount = invoice.inv_round_off;
     this.taxAmount = this.invoiceTotalAmount * (this.invoiceGSTPercentage / 100);
     this.amountInWords = this.convertNumberToWords(this.invoiceTotalAmount + this.taxAmount);
 

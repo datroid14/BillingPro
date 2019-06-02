@@ -6,21 +6,25 @@
     </mat-card-header>
 
     <mat-card-content class="container-css">
-        <div *ngIf="isWithoutTaxCheckVisible"><input type="checkbox" [checked]="isWithoutTax" (change)="changeTaxSelection();" style="padding-left: 12px;">Without Tax
+        <div *ngIf="isWithoutTaxCheckVisible"><input type="checkbox" [checked]="isWithoutTax"
+                (change)="changeTaxSelection();" style="padding-left: 12px;">Without Tax
         </div>
         <div align="right" style="height: 32px;">
             <img (click)="addNewInvoice();" [src]="this.addImagePath" *ngIf="isFieldDisabled">
         </div>
 
         <mat-form-field>
-            <input matInput [matDatepicker]="picker" placeholder="Invoice Date" [(ngModel)]="invoiceDate" [disabled]="isFieldDisabled">
+            <input matInput [matDatepicker]="picker" placeholder="Invoice Date" [(ngModel)]="invoiceDate"
+                [disabled]="isFieldDisabled">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field>
-            <mat-select [(ngModel)]="customerName" name="customerName" placeholder="Customer Name" [disabled]="isFieldDisabled" required>
-                <mat-option *ngFor="let customer of customers" [value]="customer.cust_name" (click)="setCustomerDetail(customer)">
+            <mat-select [(ngModel)]="customerName" name="customerName" placeholder="Customer Name"
+                [disabled]="isFieldDisabled" required>
+                <mat-option *ngFor="let customer of customers" [value]="customer.cust_name"
+                    (click)="setCustomerDetail(customer)">
                     {{customer.cust_name}}
                 </mat-option>
             </mat-select>
@@ -35,7 +39,8 @@
         </mat-form-field>
 
         <mat-form-field>
-            <input matInput type="number" [(ngModel)]="contactNo" placeholder="Contact Number" [disabled]="true" maxlength="10" required>
+            <input matInput type="number" [(ngModel)]="contactNo" placeholder="Contact Number" [disabled]="true"
+                maxlength="10" required>
         </mat-form-field>
 
         <mat-card class="inner-card-css">
@@ -63,7 +68,8 @@
                             <form (keydown)="keyDownFunction($event)">
                                 <mat-form-field class="table-form-field">
                                     <mat-select [(ngModel)]="challanNo" name="challanNo">
-                                        <mat-option *ngFor="let challan of tempChallanList" [value]="challan.chal_no" (click)="setChallanDetail(challan)">
+                                        <mat-option *ngFor="let challan of tempChallanList" [value]="challan.chal_no"
+                                            (click)="setChallanDetail(challan)">
                                             {{challan.chal_no}}
                                         </mat-option>
                                     </mat-select>
@@ -85,7 +91,8 @@
                         <th>
                             <mat-form-field class="table-form-wide-field">
                                 <mat-select [(ngModel)]="productName" name="productName" [disabled]="true">
-                                    <mat-option *ngFor="let product of products" [value]="product.prod_name" (click)="setProductDetail(product)">
+                                    <mat-option *ngFor="let product of products" [value]="product.prod_name"
+                                        (click)="setProductDetail(product)">
                                         {{product.prod_name}}
                                     </mat-option>
                                 </mat-select>
@@ -94,7 +101,8 @@
                         <th>
                             <mat-form-field class="table-form-field">
                                 <mat-select [(ngModel)]="productHSN" name="productHSN" [disabled]="true">
-                                    <mat-option *ngFor="let gst of gstDetails" [value]="gst.gst_hsn" (click)="setGSTDetail(gst)">
+                                    <mat-option *ngFor="let gst of gstDetails" [value]="gst.gst_hsn"
+                                        (click)="setGSTDetail(gst)">
                                         {{gst.gst_hsn}}
                                     </mat-option>
                                 </mat-select>
@@ -106,28 +114,39 @@
                             </mat-form-field>
                         </th>
                         <th>
+                                <form (keydown)="keyDownFunction($event)">
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="productQuantity" (ngModelChange)="productName == 'JCB' ? calculateForJCB() : calculateSubTotal()" maxlength="6" required>
+                                <input matInput type="number" [(ngModel)]="productQuantity" name="productQuantity"
+                                    (ngModelChange)="productName == 'JCB' ? calculateForJCB() : calculateSubTotal()"
+                                    maxlength="6" required>
                             </mat-form-field>
+                            </form>
+                        </th>
+                        <th>
+                            <form (keydown)="keyDownFunction($event)">
+                                <mat-form-field class="table-form-field">
+                                    <input matInput type="number" [(ngModel)]="productRate" name="productRate"
+                                        (ngModelChange)="productName == 'JCB' ? calculateForJCB() : calculateSubTotal()"
+                                        maxlength="8" required>
+                                </mat-form-field>
+                            </form>
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="productRate" (ngModelChange)="productName == 'JCB' ? calculateForJCB() : calculateSubTotal()" maxlength="8" required>
-                            </mat-form-field>
-                        </th>
-                        <th>
-                            <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="productSubTotalAmount" maxlength="8" (ngModelChange)="calculateTaxAmount()" [disabled]="true" required>
+                                <input matInput type="number" [(ngModel)]="productSubTotalAmount" maxlength="8"
+                                    (ngModelChange)="calculateTaxAmount()" [disabled]="true" required>
                             </mat-form-field>
                         </th>
                         <th *ngIf="!isWithoutTax">
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="productTaxAmount" maxlength="8" [disabled]="true" required>
+                                <input matInput type="number" [(ngModel)]="productTaxAmount" maxlength="8"
+                                    [disabled]="true" required>
                             </mat-form-field>
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="productTotalAmount" maxlength="8" [disabled]="true" required>
+                                <input matInput type="number" [(ngModel)]="productTotalAmount" maxlength="8"
+                                    [disabled]="true" required>
                             </mat-form-field>
                         </th>
                         <th>
@@ -190,7 +209,8 @@
                         <td></td>
                         <td style="text-align:center" *ngIf="!isFieldDisabled">
                             <mat-form-field class="table-form-field" style="text-align:right">
-                                <input matInput type="number" [(ngModel)]="roundOffAmount" maxlength="3" (blur)="calculateNetTotal()" step="0.10" required>
+                                <input matInput type="number" [(ngModel)]="roundOffAmount" maxlength="3"
+                                    (blur)="calculateNetTotal()" step="0.10" required>
                             </mat-form-field>
                         </td>
                         <td style="text-align:center" *ngIf="isFieldDisabled">{{roundOffAmount}}</td>
@@ -220,8 +240,10 @@
     </mat-card-content>
     <mat-card-actions>
         <button mat-raised-button color="primary" (click)="createInvoice()">{{buttonLabel}}</button>
-        <button mat-raised-button color="primary" (click)="cancelClicked()" [disabled]="isCancelDisabled">CANCEL</button>
+        <button mat-raised-button color="primary" (click)="cancelClicked()"
+            [disabled]="isCancelDisabled">CANCEL</button>
         <button mat-raised-button color="primary" (click)="printInvoiceDetail()">PRINT</button>
-        <button mat-raised-button color="primary" (click)="printChallanStatement()" *ngIf="localProductList.length > 5">CHALLAN STATEMENT</button>
+        <button mat-raised-button color="primary" (click)="printChallanStatement()"
+            *ngIf="localProductList.length > 5">CHALLAN STATEMENT</button>
     </mat-card-actions>
 </mat-card>
