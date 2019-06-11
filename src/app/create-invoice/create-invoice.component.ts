@@ -416,6 +416,7 @@ export class CreateInvoiceComponent implements OnInit {
           var formattedChallanDate = moment(this.localProductList[i].chal_date).format('MM/DD/YYYY');
           this.localProductList[i].chal_date = moment(this.localProductList[i].chal_date).format('DD/MM/YYYY');
         }
+      }
     },
       error => {
         console.log(error)
