@@ -43,4 +43,10 @@ export class InvoiceService {
                   .post<AddResponse>(constants.serverUrl + 'addInvoice', payload, httpOptions)
                   .pipe(tap(res => null));
       }
+
+      getInvoiceProductsQuantityById(payload:Object): Observable<InvoiceProductResponse> {
+            return this.http
+                  .post<InvoiceProductResponse>(constants.serverUrl + 'getInvoiceProductsQuantityById', payload, httpOptions)
+                  .pipe(tap(res => null));
+      }
 }

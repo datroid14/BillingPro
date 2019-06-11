@@ -1,39 +1,44 @@
 <mat-card class="inner-card-css">
-    <table style="width: 100%;">
-        <thead>
-            <tr>
-                <th>No.</th>
-                <th>Challan No.</th>
-                <th>Challan Date</th>
-                <th>Vehicle No.</th>
-                <th>Material</th>
-                <th>Unit</th>
-                <th>Measurement</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let product of invoiceProducts;let i=index">
-                <td class="input-text">{{i+1}}</td>
-                <td class="input-text">{{product.chal_no}}</td>
-                <td class="input-text">{{product.chal_date}}</td>
-                <td class="input-text">{{product.veh_number}}</td>
-                <td class="input-text">{{product.prod_name}}</td>
-                <td class="input-text">{{product.prod_unit}}</td>
-                <td class="input-text">{{product.prod_qty}}</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td style="text-align:center">
-                    Total
-                </td>
-                <td></td>
-                <td style="text-align:center">
-                    <b></b>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div id="print-section">
+        <mat-card-content>
+            <table style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Challan No.</th>
+                        <th>Challan Date</th>
+                        <th>Vehicle No.</th>
+                        <th>Material</th>
+                        <th>Unit</th>
+                        <th>Measurement</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let product of invoiceProducts;let i=index">
+                        <td class="input-text">{{i+1}}</td>
+                        <td class="input-text">{{product.chal_date}}</td>
+                        <td class="input-text">{{product.chal_no}}</td>
+                        <td class="input-text">{{product.veh_number}}</td>
+                        <td class="input-text"><span
+                                *ngIf=" i != 0 ? invoiceProducts[i-1].prod_id != product.prod_id : true">{{product.prod_name}}</span><br>
+                            <span
+                                *ngIf="i !=  invoiceProducts.length-1 ? invoiceProducts[i+1].prod_id != product.prod_id : true">
+                                <hr> Total </span></td>
+                        <td class="input-text"><span
+                                *ngIf=" i != 0 ? invoiceProducts[i-1].prod_id != product.prod_id : true">{{product.prod_unit}}</span>
+                        </td>
+                        <td class="input-text">{{product.prod_qty}}<br>
+                            <span
+                                *ngIf="i !=  invoiceProducts.length-1 ? invoiceProducts[i+1].prod_id != product.prod_id : true">
+                                <hr> {{product.prod_total_qty}}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </mat-card-content>
+    </div>
+    <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="back()">BACK</button>
+        <button mat-raised-button color="primary" (click)="printChallan()">PRINT</button>
+    </mat-card-actions>
 </mat-card>

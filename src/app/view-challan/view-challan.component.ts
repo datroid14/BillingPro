@@ -15,7 +15,7 @@ export class ViewChallanComponent implements OnInit {
 
   challans;
 
-  displayedColumns = ['name', 'address', 'material', 'unit', 'quantity', 'vehicle'];
+  displayedColumns = ['chal_no', 'name', 'address', 'material', 'unit', 'quantity', 'vehicle'];
   dataSource;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -56,6 +56,7 @@ export class ViewChallanComponent implements OnInit {
 
 export interface CHALLAN {
   chal_id: number;
+  chal_no: number;
   chal_cust_name: string;
   chal_cust_address: string;
   chal_prod_name: string;
