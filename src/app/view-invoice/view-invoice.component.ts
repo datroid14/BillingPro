@@ -25,17 +25,7 @@ export class ViewInvoiceComponent {
   ngOnInit() {
     this.appService.showDrawer(true);
 
-    this.invoiceService.getInvoices().subscribe(response => {
-      this.invoices = response.invoices;
-      for (let i = 0; i < this.invoices.length; i++) {
-        this.invoices[i].inv_date = moment(this.invoices[i].inv_date).format('DD MMM YYYY');
-      }
-      this.dataSource = new MatTableDataSource<INVOICE>(this.invoices);
-      this.dataSource.paginator = this.paginator;
-    },
-      error => {
-        console.log(error)
-      });
+    this.showInvoices(false);
   }
 
   showInvoiceDetails(invoice) {
@@ -47,6 +37,34 @@ export class ViewInvoiceComponent {
       this.router.navigate(['/create-invoice'], navigationExtras);
     } else {
       this.router.navigate(['/create-invoice']);
+    }
+  }
+
+  showInvoices(isWithoutTax) {
+    if (isWithoutTax) {
+      this.invoiceService.getInvoicesWithoutTax().subscribe(response => {
+        this.invoices = response.invoices;
+        for (let i = 0; i < this.invoices.length; i++) {
+          this.invoices[i].inv_date = moment(this.invoices[i].inv_date).format('DD MMM YYYY');
+        }
+        this.dataSource = new MatTableDataSource<INVOICE>(this.invoices);
+        this.dataSource.paginator = this.paginator;
+      },
+        error => {
+          console.log(error)
+        });
+    } else {
+      this.invoiceService.getInvoices().subscribe(response => {
+        this.invoices = response.invoices;
+        for (let i = 0; i < this.invoices.length; i++) {
+          this.invoices[i].inv_date = moment(this.invoices[i].inv_date).format('DD MMM YYYY');
+        }
+        this.dataSource = new MatTableDataSource<INVOICE>(this.invoices);
+        this.dataSource.paginator = this.paginator;
+      },
+        error => {
+          console.log(error)
+        });
     }
   }
 }

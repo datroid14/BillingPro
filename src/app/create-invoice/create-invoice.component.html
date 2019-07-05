@@ -6,7 +6,8 @@
     </mat-card-header>
 
     <mat-card-content class="container-css">
-        <div *ngIf="isWithoutTaxCheckVisible"><input type="checkbox" [checked]="isWithoutTax" (change)="changeTaxSelection();" style="padding-left: 12px;">Without Tax
+        <div *ngIf="!isFieldDisabled">
+            <input type="checkbox" [checked]="isWithoutTax" (change)="changeTaxSelection();" style="padding-left: 12px;">Without Tax
         </div>
         <div align="right" style="height: 32px;">
             <img (click)="addNewInvoice();" [src]="this.addImagePath" *ngIf="isFieldDisabled">
@@ -78,13 +79,20 @@
                             </mat-form-field>
                         </th>
                         <th>
-                            <mat-form-field class="table-form-field">
-                                <input matInput [(ngModel)]="vehicleNo" [disabled]="true" maxlength="10" required />
+                            <mat-form-field class="table-form-field" *ngIf="!isChallanNotCreated">
+                                <input matInput [(ngModel)]=" vehicleNo" [disabled]="true" maxlength="10" required />
+                            </mat-form-field>
+                            <mat-form-field class="table-form-field" *ngIf="isChallanNotCreated">
+                                <mat-select [(ngModel)]="vehicleNo" name="vehicleNo" [disabled]="!isChallanNotCreated">
+                                    <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle.veh_number" (click)="setVehicleDetail(vehicle) ">
+                                        {{vehicle.veh_number}}
+                                    </mat-option>
+                                </mat-select>
                             </mat-form-field>
                         </th>
                         <th>
                             <mat-form-field class="table-form-wide-field">
-                                <mat-select [(ngModel)]="productName" name="productName" [disabled]="true">
+                                <mat-select [(ngModel)]="productName" name="productName" [disabled]="!isChallanNotCreated">
                                     <mat-option *ngFor="let product of products" [value]="product.prod_name" (click)="setProductDetail(product)">
                                         {{product.prod_name}}
                                     </mat-option>
@@ -107,17 +115,17 @@
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="productQuantity" (ngModelChange)="productName == 'JCB' ? calculateForJCB() : calculateSubTotal()" maxlength="6" required>
+                                <input matInput type="number" [(ngModel)]="productQuantity" (ngModelChange)="productName=='JCB' ? calculateForJCB() : calculateSubTotal()" maxlength="6" required>
                             </mat-form-field>
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="productRate" (ngModelChange)="productName == 'JCB' ? calculateForJCB() : calculateSubTotal()" maxlength="8" required>
+                                <input matInput type="number" [(ngModel)]="productRate" (ngModelChange)="productName=='JCB' ? calculateForJCB() : calculateSubTotal()" maxlength="8" required>
                             </mat-form-field>
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="productSubTotalAmount" maxlength="8" (ngModelChange)="calculateTaxAmount()" [disabled]="true" required>
+                                <input matInput type="number" [(ngModel)]="productSubTotalAmount" maxlength="8" (ngModelChange)="calculateTaxAmount() " [disabled]="true " required>
                             </mat-form-field>
                         </th>
                         <th *ngIf="!isWithoutTax">
@@ -127,7 +135,7 @@
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="productTotalAmount" maxlength="8" [disabled]="true" required>
+                                <input matInput type="number" [(ngModel)]="productTotalAmount" maxlength="8 " [disabled]="true " required>
                             </mat-form-field>
                         </th>
                         <th>
@@ -136,22 +144,43 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let product of localProductList;let i=index">
-                        <td class="input-text">{{i+1}}</td>
-                        <td class="input-text">{{product.chal_no}}</td>
-                        <td class="input-text">{{product.chal_date}}</td>
-                        <td class="input-text">{{product.veh_number}}</td>
-                        <td class="input-text">{{product.prod_name}}</td>
-                        <td class="input-text">{{product.prod_hsn}}</td>
-                        <td class="input-text">{{product.prod_unit}}</td>
-                        <td class="input-text">{{product.prod_qty}}</td>
-                        <td class="input-text">{{product.prod_rate}}</td>
-                        <td class="input-text">{{(product.prod_sub_total).toFixed(2)}}</td>
-                        <td class="input-text" *ngIf="!isWithoutTax">{{(product.prod_tax).toFixed(2)}}</td>
-                        <td class="input-text">{{(product.prod_total_amount).toFixed(2)}}</td>
+                    <tr *ngFor="let product of localProductList;let i=index ">
+                        <td class="input-text ">{{i+1}}</td>
+                        <td class="input-text ">{{product.chal_no}}</td>
+                        <td class="input-text ">{{product.chal_date}}</td>
+                        <td class="input-text ">{{product.veh_number}}</td>
+                        <td class="input-text ">{{product.prod_name}}</td>
+                        <td class="input-text ">{{product.prod_hsn}}</td>
+                        <td class="input-text ">{{product.prod_unit}}</td>
+                        <td class="input-text ">{{product.prod_qty}}</td>
+                        <td class="input-text ">{{product.prod_rate}}</td>
+                        <td class="input-text ">{{(product.prod_sub_total).toFixed(2)}}</td>
+                        <td class="input-text " *ngIf="!isWithoutTax ">{{(product.prod_tax).toFixed(2)}}</td>
+                        <td class="input-text ">{{(product.prod_total_amount).toFixed(2)}}</td>
                         <td *ngIf="!isFieldDisabled">
                             <img (click)="removeProduct(product)" [src]="this.removeImagePath">
                         </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <hr>
+                        </td>
+                        <td *ngIf="!isWithoutTax">
+                            <hr>
+                        </td>
+                        <td>
+                            <hr>
+                        </td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td></td>
@@ -187,13 +216,13 @@
                         <td></td>
                         <td style="text-align:center">
                             Round off</td>
-                        <td></td>
-                        <td style="text-align:center" *ngIf="!isFieldDisabled">
-                            <mat-form-field class="table-form-field" style="text-align:right">
-                                <input matInput type="number" [(ngModel)]="roundOffAmount" maxlength="3" (blur)="calculateNetTotal()" step="0.10" required>
-                            </mat-form-field>
+                        <td *ngIf="!isWithoutTax"></td>
+                        <td style="text-align:center">
+                            <span *ngIf="isFieldDisabled">{{roundOffAmount}}</span>
+                            <span *ngIf="!isFieldDisabled"><mat-form-field class="table-form-field" style="text-align:right">
+                                <input matInput type="number" [(ngModel)]="roundOffAmount" maxlength="3" (change)="calculateNetTotal()" step="0.10" required>
+                            </mat-form-field></span>
                         </td>
-                        <td style="text-align:center" *ngIf="isFieldDisabled">{{roundOffAmount}}</td>
                         <td></td>
                     </tr>
                     <tr>
@@ -208,7 +237,7 @@
                         <td></td>
                         <td style="text-align:center">
                             <b>Net Total</b></td>
-                        <td></td>
+                        <td *ngIf="!isWithoutTax"></td>
                         <td style="text-align:center">
                             <b>{{(netTotalAmount).toFixed(2)}}</b>
                         </td>
@@ -222,6 +251,6 @@
         <button mat-raised-button color="primary" (click)="createInvoice()">{{buttonLabel}}</button>
         <button mat-raised-button color="primary" (click)="cancelClicked()" [disabled]="isCancelDisabled">CANCEL</button>
         <button mat-raised-button color="primary" (click)="printInvoiceDetail()">PRINT</button>
-        <button mat-raised-button color="primary" (click)="printChallanStatement()" *ngIf="localProductList.length > 5">CHALLAN STATEMENT</button>
+        <button mat-raised-button color="primary" (click)="printChallanStatement()" *ngIf="localProductList.length> 5">CHALLAN STATEMENT</button>
     </mat-card-actions>
 </mat-card>

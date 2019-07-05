@@ -50,6 +50,10 @@
         </mat-form-field>
 
         <mat-form-field>
+            <input matInput type="number" [(ngModel)]="productRate" placeholder="Rate" [disabled]="isFieldDisabled" maxlength="6" required>
+        </mat-form-field>
+
+        <mat-form-field>
             <mat-select [(ngModel)]="vehicleNumber" name="vehicleNumber" placeholder="Vehicle Number" [disabled]="isFieldDisabled" maxlength="10" required>
                 <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle.veh_number" (click)="setVehicleDetail(vehicle);">
                     {{vehicle.veh_number}}

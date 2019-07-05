@@ -1,6 +1,7 @@
 <div>
     <label>Invoice Details</label>
     <button (click)="showInvoiceDetails();">ADD NEW</button>
+    <input type="checkbox" [checked]="isWithoutTax" (change)="showInvoices(true);" style="padding-left: 12px;">Without Tax
 </div>
 
 <div class="example-container mat-elevation-z8">

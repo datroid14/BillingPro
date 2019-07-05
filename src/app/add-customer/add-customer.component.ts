@@ -165,7 +165,6 @@ export class AddCustomerComponent implements OnInit {
     const deletePayload = { "data": { "cust_id": this.customerId } };
     this.customerService.deleteCustomer(deletePayload).subscribe(response => {
       if (response.status == 200) {
-        console.log("Delete customer " + response.message);
         this.location.back();
       } else if (response.status == 501) {
         console.log(response.message);

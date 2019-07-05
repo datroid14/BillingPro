@@ -3,6 +3,7 @@ import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { CustomerService } from "../add-customer/customer.service";
 import { ChallanService } from "../create-challan/challan.service";
 import { ProductService } from "../add-product/product.service";
+import { VehicleService } from "../add-vehicle/vehicle.service";
 import { InvoiceService } from "../create-invoice/invoice.service";
 import { InvoiceProduct } from "../create-invoice/invoice.product";
 import { Location } from '@angular/common';
@@ -22,6 +23,7 @@ export class CreateInvoiceComponent implements OnInit {
   customers;
   challans;
   products;
+  vehicles;
   invoiceProducts;
   gstDetails;
   localProductList: InvoiceProduct[];
@@ -30,6 +32,7 @@ export class CreateInvoiceComponent implements OnInit {
   buttonLabel: string;
   isFieldDisabled: boolean;
   isCancelDisabled: boolean;
+  isEditClicked: boolean;
   challanId: number;
   challanNo: number;
   challanDate: string;
@@ -64,6 +67,8 @@ export class CreateInvoiceComponent implements OnInit {
   gstPercentage: number;
   isWithoutTax: boolean;
   isWithoutTaxCheckVisible: boolean;
+  isChallanNotCreated : boolean;
+  vehicleId : number;
 
   // Variables for image paths
   addImagePath: string;
@@ -71,7 +76,7 @@ export class CreateInvoiceComponent implements OnInit {
 
   constructor(private customerService: CustomerService, private productService: ProductService, private router: Router,
     private challanService: ChallanService, private invoiceService: InvoiceService, private route: ActivatedRoute,
-    private appService: AppService, private location: Location, private gstService: GSTService) {
+    private appService: AppService, private location: Location, private gstService: GSTService, private vehicleService : VehicleService) {
     this.route.queryParams.subscribe(params => {
       this.invoiceId = params["inv_id"];
     });
@@ -84,7 +89,7 @@ export class CreateInvoiceComponent implements OnInit {
     this.subTotalAmount = 0;
     this.totalInvoiceAmount = 0;
     this.isWithoutTax = false;
-    this.isWithoutTaxCheckVisible = false;
+    // this.isWithoutTaxCheckVisible = false;
     this.localProductList = [];
 
     this.appService.showDrawer(true);
@@ -111,6 +116,13 @@ export class CreateInvoiceComponent implements OnInit {
       error => {
         console.log(error)
       });
+
+      this.vehicleService.getVehicles().subscribe(response => {
+        this.vehicles = response.vehicles;
+      },
+        error => {
+          console.log(error)
+        });
   }
 
   showUIChanges() {
@@ -139,7 +151,7 @@ export class CreateInvoiceComponent implements OnInit {
   addNewInvoice() {
     this.isFieldDisabled = !this.isFieldDisabled;
     this.isCancelDisabled = !this.isCancelDisabled;
-    this.isWithoutTaxCheckVisible = true;
+    // this.isWithoutTaxCheckVisible = true;
     this.changeButtonLabel(this.isFieldDisabled);
     this.clearInvoiceFields();
     this.clearProductFields();
@@ -156,7 +168,7 @@ export class CreateInvoiceComponent implements OnInit {
   cancelClicked() {
     this.isFieldDisabled = !this.isFieldDisabled;
     this.isCancelDisabled = !this.isCancelDisabled;
-    this.isWithoutTaxCheckVisible = false;
+    // this.isWithoutTaxCheckVisible = false;
     if (this.buttonLabel == "SAVE") {
       this.buttonLabel = "EDIT";
       // Show last shown record
@@ -170,8 +182,7 @@ export class CreateInvoiceComponent implements OnInit {
     this.tempChallanList = [];
 
     // Add product to invoice products list
-    if (this.challanDate != undefined && this.productName != undefined && this.productHSN != undefined && this.productUnit != undefined
-      && this.productQuantity != undefined && this.productRate != undefined && this.productSubTotalAmount != undefined && this.productTotalAmount != undefined) {
+    if (this.productName != undefined && this.productHSN != undefined && this.productQuantity != undefined && this.productRate != undefined && this.productSubTotalAmount != undefined && this.productTotalAmount != undefined) {
       if (this.isWithoutTax || this.productTaxAmount == undefined) {
         this.productTaxAmount = 0;
       }
@@ -200,20 +211,63 @@ export class CreateInvoiceComponent implements OnInit {
         if (this.isWithoutTax) {
           isTax = 1;
         }
-        const invoicePayload = { "data": { "inv_date": formattedInvoiceDate, "inv_cust_id": this.customerId, "inv_product_total": this.subTotalAmount, "inv_total_tax": this.taxTotalAmount, "inv_total_amount": this.totalInvoiceAmount, "inv_round_off": 0, "inv_without_tax": isTax, "gst_id": this.localProductList[0].prod_gst_id, "inv_products": this.localProductList } };
-        this.invoiceService.addInvoice(invoicePayload).subscribe(response => {
-          if (response.status == 200) {
-            this.buttonLabel = "EDIT";
-            this.location.back();
+        if (this.isEditClicked) {
+          this.isEditClicked = false;
+          if (this.isWithoutTax) {
+            const updateWithoutTaxPayload = { "data": { "inv_id": this.invoiceId, "inv_date": formattedInvoiceDate, "inv_cust_id": this.customerId, "inv_product_total": this.subTotalAmount, "inv_total_amount": this.totalInvoiceAmount, "inv_round_off": this.roundOffAmount, "inv_without_tax": isTax, "inv_products": this.localProductList } };
+            // Update invoice without tax service
+            this.invoiceService.updateInvoiceWithoutTax(updateWithoutTaxPayload).subscribe(response => {
+              if (response.status == 200) {
+                this.location.back();
+              }
+            },
+              error => {
+                console.log(error)
+              });
+          } else {
+            const updatePayload = { "data": { "inv_id": this.invoiceId, "inv_date": formattedInvoiceDate, "inv_cust_id": this.customerId, "inv_product_total": this.subTotalAmount, "inv_total_tax": this.taxTotalAmount, "inv_total_amount": this.totalInvoiceAmount, "inv_round_off": this.roundOffAmount, "inv_without_tax": isTax, "inv_products": this.localProductList } };
+            // Update invoice with tax service
+            this.invoiceService.updateInvoice(updatePayload).subscribe(response => {
+              if (response.status == 200) {
+                this.location.back();
+              }
+            },
+              error => {
+                console.log(error)
+              });
           }
-        },
-          error => {
-            console.log(error)
-          });
+        } else {
+          if (this.isWithoutTax) {
+            const invoiceWithoutTaxPayload = { "data": { "inv_date": formattedInvoiceDate, "inv_cust_id": this.customerId, "inv_product_total": this.subTotalAmount, "inv_total_amount": this.totalInvoiceAmount, "inv_round_off": this.roundOffAmount, "inv_without_tax": isTax, "inv_products": this.localProductList } };
+            // Create invoice without tax service
+            this.invoiceService.addInvoiceWithoutTax(invoiceWithoutTaxPayload).subscribe(response => {
+              if (response.status == 200) {
+                this.buttonLabel = "EDIT";
+                this.location.back();
+              }
+            },
+              error => {
+                console.log(error)
+              });
+          } else {
+            const invoicePayload = { "data": { "inv_date": formattedInvoiceDate, "inv_cust_id": this.customerId, "inv_product_total": this.subTotalAmount, "inv_total_tax": this.taxTotalAmount, "inv_total_amount": this.totalInvoiceAmount, "inv_round_off": this.roundOffAmount, "inv_without_tax": isTax, "inv_products": this.localProductList } };
+            // Create invoice with tax service
+            this.invoiceService.addInvoice(invoicePayload).subscribe(response => {
+              if (response.status == 200) {
+                this.buttonLabel = "EDIT";
+                this.location.back();
+              }
+            },
+              error => {
+                console.log(error)
+              });
+          }
+        }
       } else {
         alert('Please fill all mandatory fields');
       }
     } else {
+      this.isEditClicked = true;
       this.buttonLabel = "SAVE";
       this.isFieldDisabled = false;
       this.isCancelDisabled = false;
@@ -255,7 +309,6 @@ export class CreateInvoiceComponent implements OnInit {
       this.productSubTotalAmount = this.productQuantity * this.productRate;
 
       this.calculateTaxAmount();
-
       this.calculateTotal();
     }
   }
@@ -330,6 +383,13 @@ export class CreateInvoiceComponent implements OnInit {
     this.contactPerson = customer.cust_contact_person;
     this.contactNo = customer.cust_contact;
     this.clearProductFields();
+    this.subTotalAmount = 0;
+    this.taxTotalAmount = 0;
+    this.totalInvoiceAmount = 0;
+    this.roundOffAmount = 0;
+    this.netTotalAmount = 0;
+
+    this.localProductList = [];
     this.getChallansByCustomerId();
   }
 
@@ -352,24 +412,32 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   setChallanDetail(challan) {
-    this.challanId = challan.chal_id;
-    this.challanNo = challan.chal_no;
-    var formattedChallanDate = moment(challan.chal_date).format('YYYY-MM-DD');
-    this.challanDate = formattedChallanDate;
-    this.vehicleNo = challan.veh_number;
-    this.productQuantity = challan.chal_quantity;
-    this.productId = challan.chal_prod_id;
-    this.productName = challan.prod_name;
-    this.productGSTId = challan.chal_gst_id;
-    this.productHSN = challan.gst_hsn;
-    this.gstPercentage = challan.gst_percentage;
-    this.productUnit = challan.prod_unit;
-    this.productRate = challan.prod_rate;
-    challan.isChallanInUse = true;
-    this.productSubTotalAmount = this.productQuantity * this.productRate;
-    this.productTaxAmount = this.productSubTotalAmount * (this.gstPercentage / 100);
+    if (challan.chal_no != 0) {
+      this.isChallanNotCreated = false;
+      this.challanId = challan.chal_id;
+      this.challanNo = challan.chal_no;
+      var formattedChallanDate = moment(challan.chal_date).format('YYYY-MM-DD');
+      this.challanDate = formattedChallanDate;
+      this.vehicleNo = challan.veh_number;
+      this.productQuantity = challan.chal_quantity;
+      this.productId = challan.chal_prod_id;
+      this.productName = challan.prod_name;
+      this.productGSTId = challan.chal_gst_id;
+      this.productHSN = challan.gst_hsn;
+      this.gstPercentage = challan.gst_percentage;
+      this.productUnit = challan.prod_unit;
+      this.productRate = challan.prod_rate;
+      challan.isChallanInUse = true;
+      this.productSubTotalAmount = this.productQuantity * this.productRate;
+      this.productTaxAmount = this.productSubTotalAmount * (this.gstPercentage / 100);
 
-    this.calculateTotal();
+      this.calculateTotal();
+    } else {
+      this.isChallanNotCreated = true;
+      this.challanId = challan.chal_id;
+      this.challanNo = challan.chal_no;
+      this.challanDate = challan.chal_date;
+    }
   }
 
   printInvoiceDetail() {
@@ -397,7 +465,7 @@ export class CreateInvoiceComponent implements OnInit {
       this.isWithoutTax = false;
     } else {
       this.isWithoutTax = true;
-      this.isWithoutTaxCheckVisible = true;
+      // this.isWithoutTaxCheckVisible = true;
     }
 
     // Get Invoice products for selected invoice id
@@ -449,11 +517,19 @@ export class CreateInvoiceComponent implements OnInit {
 
   getChallansByCustomerId() {
     this.tempChallanList = [];
+    this.tempChallanList.push({ "chal_id": 0, "chal_no": 0, "chal_date": null, "isChallanInUse": false });
     const challanPayload = { "data": { "chal_cust_id": this.customerId } };
 
     this.challanService.getChallansByCustomerId(challanPayload).subscribe(response => {
       this.challans = response.challans;
-      this.tempChallanList = this.challans;
+
+      for (var i = 0; i < this.challans.length; i++) {
+        var formattedChallanDate = moment(this.challans[i].chal_date).format('DD MMM YYYY');
+        const product = new InvoiceProduct(this.challans[i].chal_prod_id, this.challans[i].chal_id, this.challans[i].chal_no, formattedChallanDate, this.challans[i].veh_number, this.challans[i].prod_name, this.challans[i].chal_gst_id, this.challans[i].gst_hsn, this.challans[i].prod_unit, this.challans[i].chal_prod_rate, this.challans[i].chal_quantity, 0, 0, 0);
+        this.localProductList.push(product);
+        this.challans[i].isChallanInUse = true;
+      }
+      this.calculateProductTotals();
     },
       error => {
         console.log(error)
@@ -477,6 +553,7 @@ export class CreateInvoiceComponent implements OnInit {
     this.calculateTaxAmount();
     this.calculateTotal();
     this.calculateInvoiceTotal();
+    this.calculateNetTotal();
   }
 
   removeProduct(product) {
@@ -503,5 +580,36 @@ export class CreateInvoiceComponent implements OnInit {
     };
     // Redirect it to View Product screen
     this.router.navigate(['/view-challan-statement'], navigationExtras);
+  }
+
+  calculateProductTotals() {
+    this.subTotalAmount = 0;
+    this.taxTotalAmount = 0;
+    this.totalInvoiceAmount = 0;
+
+    if (this.localProductList != undefined && this.localProductList.length > 0) {
+      if (!this.isWithoutTax) {
+        for (var i = 0; i < this.localProductList.length; i++) {
+          this.localProductList[i].prod_sub_total = this.localProductList[i].prod_rate * this.localProductList[i].prod_qty;
+          this.localProductList[i].prod_tax = this.localProductList[i].prod_sub_total * (5 / 100);
+          this.localProductList[i].prod_total_amount = this.localProductList[i].prod_sub_total + this.localProductList[i].prod_tax;
+          this.subTotalAmount += this.localProductList[i].prod_sub_total;
+          this.taxTotalAmount += this.localProductList[i].prod_tax;
+        }
+        this.totalInvoiceAmount = this.subTotalAmount + this.taxTotalAmount;
+      } else {
+        for (var i = 0; i < this.localProductList.length; i++) {
+          this.localProductList[i].prod_sub_total = this.localProductList[i].prod_rate * this.localProductList[i].prod_qty;
+          this.localProductList[i].prod_total_amount = this.localProductList[i].prod_sub_total;
+          this.subTotalAmount += this.localProductList[i].prod_total_amount;
+        }
+        this.totalInvoiceAmount = this.subTotalAmount;
+      }
+      this.netTotalAmount = this.totalInvoiceAmount;
+    }
+  }
+
+  setVehicleDetail(vehicle){
+    this.vehicleId = vehicle.veh_id;
   }
 }
