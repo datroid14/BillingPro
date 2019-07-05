@@ -15,7 +15,7 @@ export class ViewVendorComponent implements OnInit {
   vendors;
   isLogin = false;
 
-  displayedColumns = ['name', 'contact_person', 'contact', 'email', 'gst'];
+  displayedColumns = ['name', 'contact_person', 'contact', 'address', 'gst'];
   dataSource;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -58,6 +58,10 @@ export class ViewVendorComponent implements OnInit {
       this.router.navigate(['/add-vendor']);
     }
   }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 }
 
 export interface VENDOR {
@@ -65,6 +69,6 @@ export interface VENDOR {
   vend_name: string;
   vend_contact_person: string;
   vend_contact: string;
-  vend_email: string;
+  vend_address: string;
   vend_gst_no: string;
 }

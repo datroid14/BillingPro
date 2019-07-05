@@ -9,33 +9,39 @@
         <mat-table #table [dataSource]="dataSource">
 
             <!-- Position Column -->
+            <ng-container matColumnDef="chal_no">
+                    <mat-header-cell *matHeaderCellDef> Challan No </mat-header-cell>
+                    <mat-cell *matCellDef="let challan"> {{challan.chal_no}} </mat-cell>
+            </ng-container>
+
+            <!-- Position Column -->
             <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef> Customer Name </mat-header-cell>
-                <mat-cell *matCellDef="let chalan"> {{chalan.chal_cust_name}} </mat-cell>
+                <mat-cell *matCellDef="let challan"> {{challan.chal_cust_name}} </mat-cell>
             </ng-container>
 
             <!-- Name Column -->
             <ng-container matColumnDef="address">
                 <mat-header-cell *matHeaderCellDef> Address </mat-header-cell>
-                <mat-cell *matCellDef="let chalan"> {{chalan.chal_cust_address}} </mat-cell>
+                <mat-cell *matCellDef="let challan"> {{challan.chal_cust_address}} </mat-cell>
             </ng-container>
 
             <!-- Symbol Column -->
             <ng-container matColumnDef="material">
                 <mat-header-cell *matHeaderCellDef> Material Type </mat-header-cell>
-                <mat-cell *matCellDef="let chalan"> {{chalan.chal_prod_name}} </mat-cell>
+                <mat-cell *matCellDef="let challan"> {{challan.chal_prod_name}} </mat-cell>
             </ng-container>
 
             <!-- Weight Column -->
             <ng-container matColumnDef="unit">
                 <mat-header-cell *matHeaderCellDef> Unit </mat-header-cell>
-                <mat-cell *matCellDef="let chalan"> {{chalan.chal_prod_unit}} </mat-cell>
+                <mat-cell *matCellDef="let challan"> {{challan.chal_prod_unit}} </mat-cell>
             </ng-container>
 
             <!-- Weight Column -->
             <ng-container matColumnDef="quantity">
                 <mat-header-cell *matHeaderCellDef> Quantity </mat-header-cell>
-                <mat-cell *matCellDef="let chalan"> {{chalan.chal_quantity}} </mat-cell>
+                <mat-cell *matCellDef="let challan"> {{challan.chal_quantity}} </mat-cell>
             </ng-container>
 
             <!-- Symbol Column -->

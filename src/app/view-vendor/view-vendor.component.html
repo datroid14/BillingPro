@@ -6,6 +6,11 @@
 <div class="example-container mat-elevation-z8">
 
     <mat-card style="padding:5px">
+
+        <mat-form-field style="width:40%">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+        </mat-form-field> 
+        
         <mat-table #table [dataSource]="dataSource">
 
             <!-- Name Column -->
@@ -26,10 +31,10 @@
                 <mat-cell *matCellDef="let vendor"> {{vendor.vend_contact}} </mat-cell>
             </ng-container>
 
-            <!-- Email Column -->
-            <ng-container matColumnDef="email">
-                <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
-                <mat-cell *matCellDef="let vendor"> {{vendor.vend_email}} </mat-cell>
+            <!-- Address Column -->
+            <ng-container matColumnDef="address">
+                <mat-header-cell *matHeaderCellDef> Address </mat-header-cell>
+                <mat-cell *matCellDef="let vendor"> {{vendor.vend_address}} </mat-cell>
             </ng-container>
 
             <!-- GST Number Column -->

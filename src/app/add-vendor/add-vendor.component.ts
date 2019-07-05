@@ -26,6 +26,7 @@ export class AddVendorComponent implements OnInit {
   vendorAddress: string;
   contactNo: string;
   emailAddress: string;
+  gstNumber:number;
   errorMessage: String;
 
   // Variables for image paths
@@ -117,7 +118,7 @@ export class AddVendorComponent implements OnInit {
     if (this.buttonLabel == "SAVE") {
       if (this.vendorName != undefined && this.vendorAddress != undefined && this.contactNo != undefined) {
         if (this.isEditClicked) {
-          const updatePayload = { "data": { "vend_id": this.vendorId, "vend_name": this.vendorName, "vend_contact_person": this.contactPerson, "vend_contact": this.contactNo, "vend_email": this.emailAddress, "vend_address": this.vendorAddress } };
+          const updatePayload = { "data": { "vend_id": this.vendorId, "vend_name": this.vendorName, "vend_contact_person": this.contactPerson, "vend_contact": this.contactNo, "vend_email": this.emailAddress, "vend_address": this.vendorAddress, "vend_gst_no": this.gstNumber } };
           this.vendorService.updateVendor(updatePayload).subscribe(response => {
             if (response.status == 200) {
               this.location.back();
@@ -127,7 +128,7 @@ export class AddVendorComponent implements OnInit {
               console.log(error)
             });
         } else {
-          const addPayload = { "data": { "vend_name": this.vendorName, "vend_contact_person": this.contactPerson, "vend_contact": this.contactNo, "vend_email": this.emailAddress, "vend_address": this.vendorAddress } };
+          const addPayload = { "data": { "vend_name": this.vendorName, "vend_contact_person": this.contactPerson, "vend_contact": this.contactNo, "vend_email": this.emailAddress, "vend_address": this.vendorAddress, "vend_gst_no": this.gstNumber } };
           this.vendorService.addVendor(addPayload).subscribe(response => {
             if (response.status == 200) {
               this.location.back();
@@ -178,6 +179,7 @@ export class AddVendorComponent implements OnInit {
     this.contactNo = vendor.vend_contact;
     this.contactPerson = vendor.vend_contact_person;
     this.emailAddress = vendor.vend_email;
+    this.gstNumber = vendor.vend_gst_no;
   }
 
   getVendorById() {

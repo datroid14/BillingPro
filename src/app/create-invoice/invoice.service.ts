@@ -50,6 +50,7 @@ export class InvoiceService {
                   .pipe(tap(res => null));
       }
 
+      // Services for invoices without tax
       getInvoicesWithoutTax(): Observable<InvoiceResponse> {
             return this.http
                   .post<InvoiceResponse>(constants.serverUrl + 'getInvoicesWithoutTax', null)
@@ -77,6 +78,12 @@ export class InvoiceService {
       updateInvoiceWithoutTax(payload:Object): Observable<AddResponse> {
             return this.http
                   .post<AddResponse>(constants.serverUrl + 'updateInvoiceWithoutTax', payload, httpOptions)
+                  .pipe(tap(res => null));
+      }
+
+      getInvoiceProductsQuantityById(payload:Object): Observable<InvoiceProductResponse> {
+            return this.http
+                  .post<InvoiceProductResponse>(constants.serverUrl + 'getInvoiceProductsQuantityById', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 }

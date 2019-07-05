@@ -165,7 +165,8 @@ export class CreateChallanComponent implements OnInit {
           const updatePayload = { "data": { "chal_id": this.challanId, "chal_no": this.challanNumber, "chal_date": formattedChallanDate, "chal_cust_id": this.customerId, "chal_prod_id": this.productId, "chal_prod_rate":this.productRate, "chal_veh_id": this.vehicleId, "chal_quantity": this.productQuantity } };
           this.challanService.updateChallan(updatePayload).subscribe(response => {
             if (response.status == 200) {
-              this.location.back();
+              // this.location.back();
+              this.clearChallanFields();
             }
           },
             error => {
@@ -175,7 +176,8 @@ export class CreateChallanComponent implements OnInit {
           const payload = { "data": { "chal_no": this.challanNumber, "chal_date": formattedChallanDate, "chal_quantity": this.productQuantity, "chal_cust_id": this.customerId, "chal_prod_id": this.productId, "chal_prod_rate":this.productRate, "chal_veh_id": this.vehicleId, "chal_is_invoice_created": 0 } };
           this.challanService.addChallan(payload).subscribe(response => {
             if (response.status == 200) {
-              this.location.back();
+              // this.location.back();
+              this.clearChallanFields();
             }
           },
             error => {

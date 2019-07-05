@@ -25,6 +25,7 @@ export class CreateInvoiceComponent implements OnInit {
   products;
   vehicles;
   invoiceProducts;
+  invoiceProductsQuantity: InvoiceProduct[];
   gstDetails;
   localProductList: InvoiceProduct[];
   tempChallanList;
@@ -186,7 +187,7 @@ export class CreateInvoiceComponent implements OnInit {
       if (this.isWithoutTax || this.productTaxAmount == undefined) {
         this.productTaxAmount = 0;
       }
-      const product = new InvoiceProduct(this.productId, this.challanId, this.challanNo, this.challanDate, this.vehicleNo, this.productName, this.productGSTId, this.productHSN, this.productUnit, this.productRate, this.productQuantity, this.productSubTotalAmount, this.productTaxAmount, this.productTotalAmount);
+      const product = new InvoiceProduct(this.productId, this.challanId, this.challanNo, this.challanDate, this.vehicleNo, this.productName, this.productGSTId, this.productHSN, this.productUnit, this.productRate, this.productQuantity, this.productSubTotalAmount, this.productTaxAmount, this.productTotalAmount, 0);
       this.localProductList.push(product);
       this.calculateInvoiceTotal();
       this.clearProductFields();
@@ -481,7 +482,8 @@ export class CreateInvoiceComponent implements OnInit {
       // Format date for displaying in desire format
       if (this.localProductList != undefined && this.localProductList.length > 0) {
         for (var i = 0; i < this.localProductList.length; i++) {
-          this.localProductList[i].chal_date = moment(this.localProductList[i].chal_date).format('DD MMM YYYY');
+          var formattedChallanDate = moment(this.localProductList[i].chal_date).format('MM/DD/YYYY');
+          this.localProductList[i].chal_date = moment(this.localProductList[i].chal_date).format('DD/MM/YYYY');
         }
       }
     },
@@ -525,7 +527,7 @@ export class CreateInvoiceComponent implements OnInit {
 
       for (var i = 0; i < this.challans.length; i++) {
         var formattedChallanDate = moment(this.challans[i].chal_date).format('DD MMM YYYY');
-        const product = new InvoiceProduct(this.challans[i].chal_prod_id, this.challans[i].chal_id, this.challans[i].chal_no, formattedChallanDate, this.challans[i].veh_number, this.challans[i].prod_name, this.challans[i].chal_gst_id, this.challans[i].gst_hsn, this.challans[i].prod_unit, this.challans[i].chal_prod_rate, this.challans[i].chal_quantity, 0, 0, 0);
+        const product = new InvoiceProduct(this.challans[i].chal_prod_id, this.challans[i].chal_id, this.challans[i].chal_no, formattedChallanDate, this.challans[i].veh_number, this.challans[i].prod_name, this.challans[i].chal_gst_id, this.challans[i].gst_hsn, this.challans[i].prod_unit, this.challans[i].chal_prod_rate, this.challans[i].chal_quantity, 0, 0, 0, 0);
         this.localProductList.push(product);
         this.challans[i].isChallanInUse = true;
       }
@@ -558,6 +560,13 @@ export class CreateInvoiceComponent implements OnInit {
 
   removeProduct(product) {
     const index = this.localProductList.indexOf(product);
+    for (var i = 0; i < this.challans.length; i++) {
+      if (this.challans[i].chal_id == this.localProductList[index].chal_id) {
+        this.challans[i].isChallanInUse = false;
+        this.tempChallanList.push(this.challans[i]);
+        break;
+      }
+    }
     this.localProductList.splice(index, 1);
 
     this.calculateInvoiceTotal();

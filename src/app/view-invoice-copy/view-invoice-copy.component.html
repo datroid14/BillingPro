@@ -37,12 +37,12 @@
                     <label>
                 <b>M/S: {{this.customerName}}</b></label>
                     <label>{{this.customerAddress}}</label>
-                    <label><b>GST No: </b>27ABNFS5898QIZQ</label>
+                    <label><b>GST No: </b>{{this.customerGSTNumber}}</label>
                 </div>
 
                 <div class="container-vertical-css" align="right" style="width:50%">
                     <label><b>Date:</b> {{this.invoiceDate}}</label>
-                    <label><b>Invoice Number:</b> {{this.invoiceNo}}</label>
+                    <label><b>Invoice Number:</b> SE/19-20/{{this.invoiceNo}}</label>
                 </div>
             </div>
             <div style="height:400px">
@@ -62,17 +62,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let product of invoiceProducts;let i=index">
+                        <tr *ngFor="let product of invoiceProductsQuantity;let i=index">
                             <td class="input-css">{{i+1}}</td>
-                            <td class="input-css">{{product.chal_date}}</td>
-                            <td class="input-css">{{product.chal_no}}</td>
-                            <td class="input-css">{{product.veh_number}}</td>
+                            <td class="input-css"><span *ngIf="invoiceProducts.length < 7">{{product.chal_date}}</span></td>
+                            <td class="input-css"><span *ngIf="invoiceProducts.length < 7">{{product.chal_no}}</span></td>
+                            <td class="input-css"><span *ngIf="invoiceProducts.length < 7">{{product.veh_number}}</span></td>
                             <td class="input-css">{{product.prod_name}}</td>
                             <td class="input-css">{{product.prod_hsn}}</td>
                             <td class="input-css">{{product.prod_unit}}</td>
-                            <td class="input-css">{{product.prod_qty}}</td>
+                            <td class="input-css">{{product.prod_total_qty}}</td>
                             <td class="input-css">{{product.prod_rate}}</td>
-                            <td class="input-css">{{product.prod_sub_total}}</td>
+                            <td class="input-css"><span *ngIf="invoiceProducts.length < 7">{{product.prod_sub_total}}</span>
+                                <span *ngIf="invoiceProducts.length > 7">{{product.prod_total_qty * product.prod_rate}} </span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -116,9 +117,9 @@
                         <label>
             <b>SGST({{invoiceGSTPercentage}}%): </b>{{(taxAmount/2).toFixed(2)}}</label>
                         <label>
-            <b>Net Total: </b>{{(this.invoiceTotalAmount + taxAmount).toFixed(2)}}</label>
+            <b>Net Total: </b>{{(invoiceTotalAmount + taxAmount + roundOffAmount).toFixed(2)}}</label>
                         <label>
-            <b>Round-Off Amount:</b>0.00</label>
+            <b>Round-Off Amount:</b>{{roundOffAmount}}</label>
                     </div>
                 </div>
 
@@ -142,7 +143,7 @@
 
             <p>We declare that this invoice shows the actual price of the goods described and all particulars are true and correct.
             </p>
-            <table style="width: 100%;height:80px">
+            <table style="width: 100%;height:80px;border: 0">
                 <tr>
                     <th valign="bottom">
                         Received By

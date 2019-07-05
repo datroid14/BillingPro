@@ -17,6 +17,7 @@ export class ViewInvoiceCopyComponent implements OnInit {
   invoiceDate: string;
   customerName: string;
   customerAddress: string;
+  customerGSTNumber: string;
   contactNo: number;
   contactPerson: string;
   invoiceSubTotal: number;
@@ -24,6 +25,7 @@ export class ViewInvoiceCopyComponent implements OnInit {
   invoiceTotalAmount: number;
   invoiceGSTId: number;
   invoiceGSTPercentage: number;
+  roundOffAmount : number;
   isWithoutTax: boolean;
   amountInWords: string;
   minChallanDate: string;
@@ -31,6 +33,7 @@ export class ViewInvoiceCopyComponent implements OnInit {
   logoImagePath: string;
   saiLogoImagePath: string;
   invoiceProducts = [];
+  invoiceProductsQuantity = [];
 
   public constructor(private route: ActivatedRoute, private appService: AppService, private invoiceService: InvoiceService, private location: Location) {
     this.taxAmount = 0;
@@ -109,10 +112,12 @@ export class ViewInvoiceCopyComponent implements OnInit {
     this.customerAddress = invoice.inv_address;
     this.contactNo = invoice.inv_contact;
     this.contactPerson = invoice.inv_contact_person;
+    this.customerGSTNumber = invoice.cust_gst_no;
     this.invoiceTotalAmount = invoice.inv_product_total;
     this.invoiceGSTId = invoice.inv_gst_id;
     this.isWithoutTax = invoice.inv_without_tax;
     this.invoiceGSTPercentage = invoice.gst_percentage;
+    this.roundOffAmount = invoice.inv_round_off;
     this.taxAmount = this.invoiceTotalAmount * (this.invoiceGSTPercentage / 100);
     this.amountInWords = this.convertNumberToWords(this.invoiceTotalAmount + this.taxAmount);
 
@@ -121,23 +126,45 @@ export class ViewInvoiceCopyComponent implements OnInit {
   }
 
   getInvoiceProducts() {
-    var challanDates = [];
     const productPayload = { "data": { "inv_id": this.invoiceNo } };
 
     this.invoiceService.getInvoiceProductsById(productPayload).subscribe(response => {
       this.invoiceProducts = response.products;
 
+      this.getInvoiceProductsQuantity(productPayload);
+    },
+      error => {
+        console.log(error)
+      });
+  }
+
+  getInvoiceProductsQuantity(payload) {
+
+    var challanDates = [];
+
+    this.invoiceService.getInvoiceProductsQuantityById(payload).subscribe(response => {
+      this.invoiceProductsQuantity = response.products;
+
       // Format date for displaying in desire format
       if (this.invoiceProducts != undefined && this.invoiceProducts.length > 0) {
         for (var i = 0; i < this.invoiceProducts.length; i++) {
-          var formattedChallanDate = moment(this.invoiceProducts[i].chal_date).format('MM/DD/YYYY');
-          this.invoiceProducts[i].chal_date = moment(this.invoiceProducts[i].chal_date).format('DD/MM/YYYY');
-          challanDates.push(new Date(formattedChallanDate));
+            var formattedChallanDate = moment(this.invoiceProducts[i].chal_date).format('MM/DD/YYYY');
+            this.invoiceProducts[i].chal_date = moment(this.invoiceProducts[i].chal_date).format('DD/MM/YYYY');
+            challanDates.push(new Date(formattedChallanDate));
+  
+          for (var j = 0; j < this.invoiceProductsQuantity.length; j++) {
+            if (this.invoiceProductsQuantity[j].prod_id == this.invoiceProducts[i].prod_id) {
+              this.invoiceProductsQuantity[j].prod_name = this.invoiceProducts[i].prod_name;
+              this.invoiceProductsQuantity[j].prod_hsn = this.invoiceProducts[i].prod_hsn;
+              this.invoiceProductsQuantity[j].prod_rate = this.invoiceProducts[i].prod_rate;
+              this.invoiceProductsQuantity[j].prod_unit = this.invoiceProducts[i].prod_unit;
+              break;
+            }
+          }
         }
-
         var sorted = challanDates.sort(this.sortDates);
-        this.minChallanDate = moment(sorted[0]).format('DD/MM/YYYY');
-        this.maxChallanDate = moment(sorted[sorted.length - 1]).format('DD/MM/YYYY');
+          this.minChallanDate = moment(sorted[0]).format('DD/MM/YYYY');
+          this.maxChallanDate = moment(sorted[sorted.length - 1]).format('DD/MM/YYYY');    
       }
     },
       error => {
