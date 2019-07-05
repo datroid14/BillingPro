@@ -64,16 +64,16 @@
                     <tbody>
                         <tr *ngFor="let product of invoiceProductsQuantity;let i=index">
                             <td class="input-css">{{i+1}}</td>
-                            <td class="input-css"><span *ngIf="invoiceProducts.length < 5">{{product.chal_date}}</span></td>
-                            <td class="input-css"><span *ngIf="invoiceProducts.length < 5">{{product.chal_no}}</span></td>
-                            <td class="input-css"><span *ngIf="invoiceProducts.length < 5">{{product.veh_number}}</span></td>
+                            <td class="input-css"><span *ngIf="invoiceProducts.length < 7">{{product.chal_date}}</span></td>
+                            <td class="input-css"><span *ngIf="invoiceProducts.length < 7">{{product.chal_no}}</span></td>
+                            <td class="input-css"><span *ngIf="invoiceProducts.length < 7">{{product.veh_number}}</span></td>
                             <td class="input-css">{{product.prod_name}}</td>
                             <td class="input-css">{{product.prod_hsn}}</td>
                             <td class="input-css">{{product.prod_unit}}</td>
                             <td class="input-css">{{product.prod_total_qty}}</td>
                             <td class="input-css">{{product.prod_rate}}</td>
-                            <td class="input-css"><span *ngIf="invoiceProducts.length < 5">{{product.prod_sub_total}}</span>
-                                <span *ngIf="invoiceProducts.length > 5">{{product.prod_total_qty * product.prod_rate}} </span></td>
+                            <td class="input-css"><span *ngIf="invoiceProducts.length < 7">{{product.prod_sub_total}}</span>
+                                <span *ngIf="invoiceProducts.length > 7">{{product.prod_total_qty * product.prod_rate}} </span></td>
                         </tr>
                     </tbody>
                 </table>
