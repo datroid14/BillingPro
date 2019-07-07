@@ -116,10 +116,7 @@ export class ViewInvoiceCopyComponent implements OnInit {
     this.invoiceTotalAmount = invoice.inv_product_total;
     this.invoiceGSTId = invoice.inv_gst_id;
     this.isWithoutTax = invoice.inv_without_tax;
-    this.invoiceGSTPercentage = invoice.gst_percentage;
     this.roundOffAmount = invoice.inv_round_off;
-    this.taxAmount = this.invoiceTotalAmount * (this.invoiceGSTPercentage / 100);
-    this.amountInWords = this.convertNumberToWords(this.invoiceTotalAmount + this.taxAmount);
 
     // Get Invoice products for selected invoice id
     this.getInvoiceProducts();
@@ -130,6 +127,9 @@ export class ViewInvoiceCopyComponent implements OnInit {
 
     this.invoiceService.getInvoiceProductsById(productPayload).subscribe(response => {
       this.invoiceProducts = response.products;
+      this.invoiceGSTPercentage = this.invoiceProducts[0].prod_percentage;
+      this.taxAmount = this.invoiceTotalAmount * (this.invoiceGSTPercentage / 100);
+      this.amountInWords = this.convertNumberToWords(this.invoiceTotalAmount + this.taxAmount);
 
       this.getInvoiceProductsQuantity(productPayload);
     },

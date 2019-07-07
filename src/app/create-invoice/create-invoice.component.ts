@@ -68,8 +68,8 @@ export class CreateInvoiceComponent implements OnInit {
   gstPercentage: number;
   isWithoutTax: boolean;
   isWithoutTaxCheckVisible: boolean;
-  isChallanNotCreated : boolean;
-  vehicleId : number;
+  isChallanNotCreated: boolean;
+  vehicleId: number;
 
   // Variables for image paths
   addImagePath: string;
@@ -77,7 +77,7 @@ export class CreateInvoiceComponent implements OnInit {
 
   constructor(private customerService: CustomerService, private productService: ProductService, private router: Router,
     private challanService: ChallanService, private invoiceService: InvoiceService, private route: ActivatedRoute,
-    private appService: AppService, private location: Location, private gstService: GSTService, private vehicleService : VehicleService) {
+    private appService: AppService, private location: Location, private gstService: GSTService, private vehicleService: VehicleService) {
     this.route.queryParams.subscribe(params => {
       this.invoiceId = params["inv_id"];
     });
@@ -118,12 +118,12 @@ export class CreateInvoiceComponent implements OnInit {
         console.log(error)
       });
 
-      this.vehicleService.getVehicles().subscribe(response => {
-        this.vehicles = response.vehicles;
-      },
-        error => {
-          console.log(error)
-        });
+    this.vehicleService.getVehicles().subscribe(response => {
+      this.vehicles = response.vehicles;
+    },
+      error => {
+        console.log(error)
+      });
   }
 
   showUIChanges() {
@@ -187,7 +187,7 @@ export class CreateInvoiceComponent implements OnInit {
       if (this.isWithoutTax || this.productTaxAmount == undefined) {
         this.productTaxAmount = 0;
       }
-      const product = new InvoiceProduct(this.productId, this.challanId, this.challanNo, this.challanDate, this.vehicleNo, this.productName, this.productGSTId, this.productHSN, this.productUnit, this.productRate, this.productQuantity, this.productSubTotalAmount, this.productTaxAmount, this.productTotalAmount, 0);
+      const product = new InvoiceProduct(this.productId, this.challanId, this.challanNo, this.challanDate, this.vehicleNo, this.productName, this.productGSTId, this.productHSN, this.gstPercentage, this.productUnit, this.productRate, this.productQuantity, this.productSubTotalAmount, this.productTaxAmount, this.productTotalAmount, 0);
       this.localProductList.push(product);
       this.calculateInvoiceTotal();
       this.clearProductFields();
@@ -337,17 +337,8 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   calculateForJCB() {
-    let hours = 0;
-    let timeArr = this.productQuantity.toString().split('.');
-    if (timeArr.length == 2) {
-      let minuteStr = timeArr[1];
-      if (minuteStr.length == 1) {
-        hours = parseInt(minuteStr) * 10 / 60;
-      } else {
-        hours = parseInt(minuteStr) / 60;
-      }
-    }
-    let totalHours = parseInt(timeArr[0]) + hours;
+
+    let totalHours = this.getJCBHours(this.productQuantity);
     this.productSubTotalAmount = totalHours * this.productRate;
 
     this.calculateTaxAmount();
@@ -526,10 +517,12 @@ export class CreateInvoiceComponent implements OnInit {
       this.challans = response.challans;
 
       for (var i = 0; i < this.challans.length; i++) {
-        var formattedChallanDate = moment(this.challans[i].chal_date).format('DD MMM YYYY');
-        const product = new InvoiceProduct(this.challans[i].chal_prod_id, this.challans[i].chal_id, this.challans[i].chal_no, formattedChallanDate, this.challans[i].veh_number, this.challans[i].prod_name, this.challans[i].chal_gst_id, this.challans[i].gst_hsn, this.challans[i].prod_unit, this.challans[i].chal_prod_rate, this.challans[i].chal_quantity, 0, 0, 0, 0);
-        this.localProductList.push(product);
-        this.challans[i].isChallanInUse = true;
+        if (!this.challans[i].chal_is_invoice_created) {
+          var formattedChallanDate = moment(this.challans[i].chal_date).format('DD MMM YYYY');
+          const product = new InvoiceProduct(this.challans[i].chal_prod_id, this.challans[i].chal_id, this.challans[i].chal_no, formattedChallanDate, this.challans[i].veh_number, this.challans[i].prod_name, this.challans[i].chal_gst_id, this.challans[i].gst_hsn, this.challans[i].gst_percentage, this.challans[i].prod_unit, this.challans[i].chal_prod_rate, this.challans[i].chal_quantity, 0, 0, 0, 0);
+          this.localProductList.push(product);
+          this.challans[i].isChallanInUse = true;
+        }
       }
       this.calculateProductTotals();
     },
@@ -599,8 +592,14 @@ export class CreateInvoiceComponent implements OnInit {
     if (this.localProductList != undefined && this.localProductList.length > 0) {
       if (!this.isWithoutTax) {
         for (var i = 0; i < this.localProductList.length; i++) {
-          this.localProductList[i].prod_sub_total = this.localProductList[i].prod_rate * this.localProductList[i].prod_qty;
-          this.localProductList[i].prod_tax = this.localProductList[i].prod_sub_total * (5 / 100);
+          if (this.localProductList[i].prod_name == 'JCB') {
+            // Calculation for JCB
+            let totalHours = this.getJCBHours(this.localProductList[i].prod_qty);
+            this.localProductList[i].prod_sub_total = this.localProductList[i].prod_rate * totalHours;
+          } else {
+            this.localProductList[i].prod_sub_total = this.localProductList[i].prod_rate * this.localProductList[i].prod_qty;
+          }
+          this.localProductList[i].prod_tax = this.localProductList[i].prod_sub_total * (this.localProductList[i].prod_percentage / 100);
           this.localProductList[i].prod_total_amount = this.localProductList[i].prod_sub_total + this.localProductList[i].prod_tax;
           this.subTotalAmount += this.localProductList[i].prod_sub_total;
           this.taxTotalAmount += this.localProductList[i].prod_tax;
@@ -608,7 +607,13 @@ export class CreateInvoiceComponent implements OnInit {
         this.totalInvoiceAmount = this.subTotalAmount + this.taxTotalAmount;
       } else {
         for (var i = 0; i < this.localProductList.length; i++) {
-          this.localProductList[i].prod_sub_total = this.localProductList[i].prod_rate * this.localProductList[i].prod_qty;
+          if (this.localProductList[i].prod_name == 'JCB') {
+            // Calculation for JCB
+            let totalHours = this.getJCBHours(this.localProductList[i].prod_qty);
+            this.localProductList[i].prod_sub_total = this.localProductList[i].prod_rate * totalHours;
+          } else {
+            this.localProductList[i].prod_sub_total = this.localProductList[i].prod_rate * this.localProductList[i].prod_qty;
+          }
           this.localProductList[i].prod_total_amount = this.localProductList[i].prod_sub_total;
           this.subTotalAmount += this.localProductList[i].prod_total_amount;
         }
@@ -618,7 +623,21 @@ export class CreateInvoiceComponent implements OnInit {
     }
   }
 
-  setVehicleDetail(vehicle){
+  setVehicleDetail(vehicle) {
     this.vehicleId = vehicle.veh_id;
+  }
+
+  getJCBHours(workingTime) {
+    let hours = 0;
+    let timeArr = workingTime.toString().split('.');
+    if (timeArr.length == 2) {
+      let minuteStr = timeArr[1];
+      if (minuteStr.length == 1) {
+        hours = parseInt(minuteStr) * 10 / 60;
+      } else {
+        hours = parseInt(minuteStr) / 60;
+      }
+    }
+    return parseInt(timeArr[0]) + hours;
   }
 }

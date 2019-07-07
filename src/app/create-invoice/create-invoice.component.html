@@ -130,7 +130,7 @@
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="productSubTotalAmount" maxlength="8" (ngModelChange)="calculateTaxAmount()" [disabled]="true" required> >>>>>>> f1f06df04db0cb388ea993b751a8e84c1f522d0e
+                                <input matInput type="number" [(ngModel)]="productSubTotalAmount" maxlength="8" (ngModelChange)="calculateTaxAmount()" [disabled]="true" required>
                             </mat-form-field>
                         </th>
                         <th *ngIf="!isWithoutTax">
@@ -255,7 +255,7 @@
     <mat-card-actions>
         <button mat-raised-button color="primary" (click)="createInvoice()">{{buttonLabel}}</button>
         <button mat-raised-button color="primary" (click)="cancelClicked()" [disabled]="isCancelDisabled">CANCEL</button>
-        <button mat-raised-button color="primary" (click)="printInvoiceDetail()">PRINT</button>
-        <button mat-raised-button color="primary" (click)="printChallanStatement()" *ngIf="localProductList.length> 7">CHALLAN STATEMENT</button>
+        <button mat-raised-button color="primary" (click)="printInvoiceDetail()" [disabled]="!isFieldDisabled">PRINT</button>
+        <button mat-raised-button color="primary" (click)="printChallanStatement()" *ngIf="isFieldDisabled && localProductList.length> 7">CHALLAN STATEMENT</button>
     </mat-card-actions>
 </mat-card>
