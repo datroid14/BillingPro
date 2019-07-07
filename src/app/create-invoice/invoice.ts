@@ -1,4 +1,5 @@
 import { InvoiceProduct } from "../create-invoice/invoice.product";
+import { e } from "@angular/core/src/render3";
 
 export class Invoice {
     inv_id: number;
@@ -7,17 +8,19 @@ export class Invoice {
     inv_address: string;
     inv_contact_person: string;
     inv_contact: string;
+    inv_email: string;
     inv_total_amount: number;
     inv_gst_id: number;
     inv_products: InvoiceProduct[];
 
-    constructor(id, date, customer, address, contact_person, contact, amount, gst_id, products){
+    constructor(id, date, customer, address, contact_person, contact, email, amount, gst_id, products){
         this.inv_id = id;
         this.inv_date = date;
         this.inv_customer = customer;
         this.inv_address = address;
         this.inv_contact_person = contact_person;
         this.inv_contact = contact;
+        this.inv_email = email;
         this.inv_total_amount = amount;
         this.inv_gst_id = gst_id;
         this.inv_products = products;

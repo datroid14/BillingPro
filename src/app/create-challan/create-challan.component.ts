@@ -204,6 +204,7 @@ export class CreateChallanComponent implements OnInit {
   setProductDetail(product) {
     this.productId = product.prod_id;
     this.productUnit = product.prod_unit;
+    this.productRate = product.prod_rate;
   }
 
   setVehicleDetail(vehicle) {
@@ -251,6 +252,7 @@ export class CreateChallanComponent implements OnInit {
     this.productName = undefined;
     this.productUnit = undefined;
     this.productQuantity = undefined;
+    this.productRate = undefined;
     this.vehicleNumber = undefined;
   }
 

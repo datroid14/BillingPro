@@ -16,21 +16,27 @@
             </ng-container>
 
             <!-- Customer Column -->
+            <ng-container matColumnDef="invoice_no">
+                <mat-header-cell *matHeaderCellDef> Invoice No. </mat-header-cell>
+                <mat-cell *matCellDef="let invoice"> SE/19-20/{{invoice.inv_id}} </mat-cell>
+            </ng-container>
+
+            <!-- Customer Column -->
             <ng-container matColumnDef="customer">
                 <mat-header-cell *matHeaderCellDef> Customer </mat-header-cell>
                 <mat-cell *matCellDef="let invoice"> {{invoice.inv_customer}} </mat-cell>
             </ng-container>
 
             <!-- Contact Person Column -->
-            <ng-container matColumnDef="contact_person">
-                <mat-header-cell *matHeaderCellDef> Contact Person </mat-header-cell>
-                <mat-cell *matCellDef="let invoice"> {{invoice.inv_contact_person}} </mat-cell>
+            <ng-container matColumnDef="contact_detail">
+                <mat-header-cell *matHeaderCellDef> Contact Detail </mat-header-cell>
+                <mat-cell *matCellDef="let invoice"> {{invoice.inv_contact_person}} - {{invoice.inv_contact}} </mat-cell>
             </ng-container>
 
             <!-- Contact Column -->
-            <ng-container matColumnDef="contact">
-                <mat-header-cell *matHeaderCellDef> Contact No. </mat-header-cell>
-                <mat-cell *matCellDef="let invoice"> {{invoice.inv_contact}} </mat-cell>
+            <ng-container matColumnDef="email">
+                <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+                <mat-cell *matCellDef="let invoice"> {{invoice.inv_email}} </mat-cell>
             </ng-container>
 
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

@@ -14,7 +14,7 @@ export class ViewInvoiceComponent {
 
   invoices;
 
-  displayedColumns = ['date', 'customer', 'contact_person', 'contact'];
+  displayedColumns = ['date', 'invoice_no', 'customer', 'contact_detail', 'email'];
   dataSource;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -77,4 +77,5 @@ export interface INVOICE {
   inv_address: string;
   inv_contact_person: string;
   inv_contact: string;
+  inv_email: string;
 }
