@@ -25,7 +25,7 @@ export class ViewInvoiceCopyComponent implements OnInit {
   invoiceTotalAmount: number;
   invoiceGSTId: number;
   invoiceGSTPercentage: number;
-  roundOffAmount : number;
+  roundOffAmount: number;
   isWithoutTax: boolean;
   amountInWords: string;
   minChallanDate: string;
@@ -46,7 +46,7 @@ export class ViewInvoiceCopyComponent implements OnInit {
   ngOnInit() {
 
     // Image paths
-    this.logoImagePath = "assets/images/ic_logo.png"; 
+    this.logoImagePath = "assets/images/ic_logo.png";
     this.saiLogoImagePath = "assets/images/sai_logo.png";
 
     this.appService.showDrawer(true);
@@ -148,10 +148,10 @@ export class ViewInvoiceCopyComponent implements OnInit {
       // Format date for displaying in desire format
       if (this.invoiceProducts != undefined && this.invoiceProducts.length > 0) {
         for (var i = 0; i < this.invoiceProducts.length; i++) {
-            var formattedChallanDate = moment(this.invoiceProducts[i].chal_date).format('MM/DD/YYYY');
-            this.invoiceProducts[i].chal_date = moment(this.invoiceProducts[i].chal_date).format('DD/MM/YYYY');
-            challanDates.push(new Date(formattedChallanDate));
-  
+          var formattedChallanDate = moment(this.invoiceProducts[i].chal_date).format('MM/DD/YYYY');
+          this.invoiceProducts[i].chal_date = moment(this.invoiceProducts[i].chal_date).format('DD/MM/YYYY');
+          challanDates.push(new Date(formattedChallanDate));
+
           for (var j = 0; j < this.invoiceProductsQuantity.length; j++) {
             if (this.invoiceProductsQuantity[j].prod_id == this.invoiceProducts[i].prod_id) {
               this.invoiceProductsQuantity[j].prod_name = this.invoiceProducts[i].prod_name;
@@ -161,10 +161,18 @@ export class ViewInvoiceCopyComponent implements OnInit {
               break;
             }
           }
+
+          if (this.invoiceProductsQuantity[0].prod_name == 'JCB') {
+            // Calculation for JCB
+            let totalHours = this.getJCBHours(this.invoiceProductsQuantity[0].prod_total_qty);
+            this.invoiceProductsQuantity[0].prod_sub_total = this.invoiceProductsQuantity[0].prod_rate * totalHours;
+          } else {
+            this.invoiceProductsQuantity[0].prod_sub_total = this.invoiceProductsQuantity[0].prod_rate * this.invoiceProductsQuantity[0].prod_total_qty;
+          }
         }
         var sorted = challanDates.sort(this.sortDates);
-          this.minChallanDate = moment(sorted[0]).format('DD/MM/YYYY');
-          this.maxChallanDate = moment(sorted[sorted.length - 1]).format('DD/MM/YYYY');    
+        this.minChallanDate = moment(sorted[0]).format('DD/MM/YYYY');
+        this.maxChallanDate = moment(sorted[sorted.length - 1]).format('DD/MM/YYYY');
       }
     },
       error => {
@@ -256,5 +264,19 @@ export class ViewInvoiceCopyComponent implements OnInit {
       words_string = words_string.split("  ").join(" ");
     }
     return words_string;
+  }
+
+  getJCBHours(workingTime) {
+    let hours = 0;
+    let timeArr = workingTime.toString().split('.');
+    if (timeArr.length == 2) {
+      let minuteStr = timeArr[1];
+      if (minuteStr.length == 1) {
+        hours = parseInt(minuteStr) * 10 / 60;
+      } else {
+        hours = parseInt(minuteStr) / 60;
+      }
+    }
+    return parseInt(timeArr[0]) + hours;
   }
 }

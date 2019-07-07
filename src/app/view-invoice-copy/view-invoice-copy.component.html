@@ -61,19 +61,32 @@
                             <th class="input-css">Amount In Rs.</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody *ngIf="invoiceProducts.length < 7">
+                        <tr *ngFor="let product of invoiceProducts;let i=index">
+                            <td class="input-css">{{i+1}}</td>
+                            <td class="input-css">{{product.chal_date}}</td>
+                            <td class="input-css">{{product.chal_no}}</td>
+                            <td class="input-css">{{product.veh_number}}</td>
+                            <td class="input-css">{{product.prod_name}}</td>
+                            <td class="input-css">{{product.prod_hsn}}</td>
+                            <td class="input-css">{{product.prod_unit}}</td>
+                            <td class="input-css">{{product.prod_qty}}</td>
+                            <td class="input-css">{{product.prod_rate}}</td>
+                            <td class="input-css">{{product.prod_sub_total}}</td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="invoiceProducts.length > 7">
                         <tr *ngFor="let product of invoiceProductsQuantity;let i=index">
                             <td class="input-css">{{i+1}}</td>
-                            <td class="input-css"><span *ngIf="invoiceProducts.length < 7">{{product.chal_date}}</span></td>
-                            <td class="input-css"><span *ngIf="invoiceProducts.length < 7">{{product.chal_no}}</span></td>
-                            <td class="input-css"><span *ngIf="invoiceProducts.length < 7">{{product.veh_number}}</span></td>
+                            <td class="input-css"></td>
+                            <td class="input-css"></td>
+                            <td class="input-css">{{product.veh_number}}</td>
                             <td class="input-css">{{product.prod_name}}</td>
                             <td class="input-css">{{product.prod_hsn}}</td>
                             <td class="input-css">{{product.prod_unit}}</td>
                             <td class="input-css">{{product.prod_total_qty}}</td>
                             <td class="input-css">{{product.prod_rate}}</td>
-                            <td class="input-css"><span *ngIf="invoiceProducts.length < 7">{{product.prod_sub_total}}</span>
-                                <span *ngIf="invoiceProducts.length > 7">{{product.prod_total_qty * product.prod_rate}} </span></td>
+                            <td class="input-css">{{product.prod_total_qty * product.prod_rate}} </td>
                         </tr>
                     </tbody>
                 </table>
@@ -105,17 +118,17 @@
                         </tr>
                         <tr>
                             <td>{{this.invoiceTotalAmount}}</td>
-                            <td>{{this.invoiceGSTPercentage}}%</td>
+                            <td>{{this.invoiceGSTPercentage/2}}%</td>
                             <td>{{(taxAmount/2).toFixed(2)}}</td>
-                            <td>{{this.invoiceGSTPercentage}}%</td>
+                            <td>{{this.invoiceGSTPercentage/2}}%</td>
                             <td>{{(taxAmount/2).toFixed(2)}}</td>
                         </tr>
                     </table>
                     <div class="container-vertical-css" align="right" style="width:40%">
                         <label>
-            <b>CGST({{invoiceGSTPercentage}}%): </b>{{(taxAmount/2).toFixed(2)}}</label>
+            <b>CGST({{invoiceGSTPercentage/2}}%): </b>{{(taxAmount/2).toFixed(2)}}</label>
                         <label>
-            <b>SGST({{invoiceGSTPercentage}}%): </b>{{(taxAmount/2).toFixed(2)}}</label>
+            <b>SGST({{invoiceGSTPercentage/2}}%): </b>{{(taxAmount/2).toFixed(2)}}</label>
                         <label>
             <b>Net Total: </b>{{(invoiceTotalAmount + taxAmount + roundOffAmount).toFixed(2)}}</label>
                         <label>

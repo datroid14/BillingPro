@@ -272,6 +272,7 @@ export class CreateInvoiceComponent implements OnInit {
       this.buttonLabel = "SAVE";
       this.isFieldDisabled = false;
       this.isCancelDisabled = false;
+      this.getChallansByCustomerId();
     }
   }
 
@@ -351,6 +352,8 @@ export class CreateInvoiceComponent implements OnInit {
     this.subTotalAmount = 0;
     this.taxTotalAmount = 0;
     this.totalInvoiceAmount = 0;
+    this.roundOffAmount = 0;
+    this.netTotalAmount = 0;
 
     if (!this.isWithoutTax) {
       this.productTotalAmount = this.productSubTotalAmount + this.productTaxAmount;
@@ -418,7 +421,7 @@ export class CreateInvoiceComponent implements OnInit {
       this.productHSN = challan.gst_hsn;
       this.gstPercentage = challan.gst_percentage;
       this.productUnit = challan.prod_unit;
-      this.productRate = challan.prod_rate;
+      this.productRate = challan.chal_prod_rate;
       challan.isChallanInUse = true;
       this.productSubTotalAmount = this.productQuantity * this.productRate;
       this.productTaxAmount = this.productSubTotalAmount * (this.gstPercentage / 100);
@@ -516,15 +519,19 @@ export class CreateInvoiceComponent implements OnInit {
     this.challanService.getChallansByCustomerId(challanPayload).subscribe(response => {
       this.challans = response.challans;
 
-      for (var i = 0; i < this.challans.length; i++) {
-        if (!this.challans[i].chal_is_invoice_created) {
-          var formattedChallanDate = moment(this.challans[i].chal_date).format('DD MMM YYYY');
-          const product = new InvoiceProduct(this.challans[i].chal_prod_id, this.challans[i].chal_id, this.challans[i].chal_no, formattedChallanDate, this.challans[i].veh_number, this.challans[i].prod_name, this.challans[i].chal_gst_id, this.challans[i].gst_hsn, this.challans[i].gst_percentage, this.challans[i].prod_unit, this.challans[i].chal_prod_rate, this.challans[i].chal_quantity, 0, 0, 0, 0);
-          this.localProductList.push(product);
-          this.challans[i].isChallanInUse = true;
+      if (this.isEditClicked) {
+        this.tempChallanList = this.challans;
+      } else {
+        for (var i = 0; i < this.challans.length; i++) {
+          if (!this.challans[i].chal_is_invoice_created) {
+            var formattedChallanDate = moment(this.challans[i].chal_date).format('DD MMM YYYY');
+            const product = new InvoiceProduct(this.challans[i].chal_prod_id, this.challans[i].chal_id, this.challans[i].chal_no, formattedChallanDate, this.challans[i].veh_number, this.challans[i].prod_name, this.challans[i].chal_gst_id, this.challans[i].gst_hsn, this.challans[i].gst_percentage, this.challans[i].prod_unit, this.challans[i].chal_prod_rate, this.challans[i].chal_quantity, 0, 0, 0, 0);
+            this.localProductList.push(product);
+            this.challans[i].isChallanInUse = true;
+          }
         }
+        this.calculateProductTotals();
       }
-      this.calculateProductTotals();
     },
       error => {
         console.log(error)
