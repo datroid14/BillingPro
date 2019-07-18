@@ -257,7 +257,7 @@ export class CreateChallanComponent implements OnInit {
   }
 
   printChallanDetail() {
-    const challanObj = new Challan(this.challanId, "2018-08-05", this.customerName, this.customerAddress, this.productName, this.productUnit, this.productQuantity, this.productRate, this.vehicleNumber);
+    const challanObj = new Challan(this.challanId, this.challanDate, this.customerName, this.customerAddress, this.productName, this.productUnit, this.productQuantity, this.productRate, this.vehicleNumber);
     if (challanObj != undefined) {
       let navigationExtras: NavigationExtras = {
         queryParams: challanObj

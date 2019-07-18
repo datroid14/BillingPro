@@ -6,6 +6,7 @@ import { ProductService } from "../add-product/product.service";
 import { VehicleService } from "../add-vehicle/vehicle.service";
 import { InvoiceService } from "../create-invoice/invoice.service";
 import { InvoiceProduct } from "../create-invoice/invoice.product";
+import { Challan } from "../create-challan/challan";
 import { Location } from '@angular/common';
 import { AppService } from '../app.service';
 import { GSTService } from "../add-gst/gst.service";
@@ -187,7 +188,9 @@ export class CreateInvoiceComponent implements OnInit {
       if (this.isWithoutTax || this.productTaxAmount == undefined) {
         this.productTaxAmount = 0;
       }
-      const product = new InvoiceProduct(this.productId, this.challanId, this.challanNo, this.challanDate, this.vehicleNo, this.productName, this.productGSTId, this.productHSN, this.gstPercentage, this.productUnit, this.productRate, this.productQuantity, this.productSubTotalAmount, this.productTaxAmount, this.productTotalAmount, 0);
+      var formattedChallanDate = moment(this.challanDate).format('DD/MM/YYYY');
+
+      const product = new InvoiceProduct(this.productId, this.challanId, this.challanNo, formattedChallanDate, this.vehicleNo, this.productName, this.productGSTId, this.productHSN, this.gstPercentage, this.productUnit, this.productRate, this.productQuantity, this.productSubTotalAmount, this.productTaxAmount, this.productTotalAmount, 0);
       this.localProductList.push(product);
       this.calculateInvoiceTotal();
       this.clearProductFields();
@@ -413,17 +416,22 @@ export class CreateInvoiceComponent implements OnInit {
       this.challanNo = challan.chal_no;
       var formattedChallanDate = moment(challan.chal_date).format('YYYY-MM-DD');
       this.challanDate = formattedChallanDate;
-      this.vehicleNo = challan.veh_number;
+      this.vehicleNo = challan.chal_veh_no;
       this.productQuantity = challan.chal_quantity;
       this.productId = challan.chal_prod_id;
-      this.productName = challan.prod_name;
+      this.productName = challan.chal_prod_name;
       this.productGSTId = challan.chal_gst_id;
       this.productHSN = challan.gst_hsn;
       this.gstPercentage = challan.gst_percentage;
-      this.productUnit = challan.prod_unit;
+      this.productUnit = challan.chal_prod_unit;
       this.productRate = challan.chal_prod_rate;
       challan.isChallanInUse = true;
-      this.productSubTotalAmount = this.productQuantity * this.productRate;
+      if(this.productId == 18){
+        let totalHours = this.getJCBHours(this.productQuantity);
+        this.productSubTotalAmount = totalHours * this.productRate;
+      } else {
+        this.productSubTotalAmount = this.productQuantity * this.productRate;
+      }
       this.productTaxAmount = this.productSubTotalAmount * (this.gstPercentage / 100);
 
       this.calculateTotal();
@@ -513,7 +521,7 @@ export class CreateInvoiceComponent implements OnInit {
 
   getChallansByCustomerId() {
     this.tempChallanList = [];
-    this.tempChallanList.push({ "chal_id": 0, "chal_no": 0, "chal_date": null, "isChallanInUse": false });
+    // this.tempChallanList.push({ "chal_id": 0, "chal_no": 0, "chal_date": null, "isChallanInUse": false });
     const challanPayload = { "data": { "chal_cust_id": this.customerId } };
 
     this.challanService.getChallansByCustomerId(challanPayload).subscribe(response => {
@@ -559,17 +567,25 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   removeProduct(product) {
+    this.tempChallanList = [];
     const index = this.localProductList.indexOf(product);
-    for (var i = 0; i < this.challans.length; i++) {
-      if (this.challans[i].chal_id == this.localProductList[index].chal_id) {
-        this.challans[i].isChallanInUse = false;
-        this.tempChallanList.push(this.challans[i]);
-        break;
-      }
-    }
-    this.localProductList.splice(index, 1);
 
-    this.calculateInvoiceTotal();
+    const payload = { "data": { "chal_id": this.localProductList[index].chal_id } };
+    this.challanService.getChallanById(payload).subscribe(response => {
+      if (response.status == 200) {
+        if (response.challans != undefined && response.challans.length > 0) {
+          var challan = response.challans[0];
+          challan.isChallanInUse = false;
+          this.tempChallanList.push(challan);
+          this.localProductList.splice(index, 1);
+
+          this.calculateInvoiceTotal();
+        }
+      }
+    },
+      error => {
+        console.log(error)
+      });
   }
 
   calculateNetTotal() {

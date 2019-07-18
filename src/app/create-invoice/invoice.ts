@@ -4,6 +4,7 @@ import { e } from "@angular/core/src/render3";
 export class Invoice {
     inv_id: number;
     inv_date: Date;
+    inv_number: string;
     inv_customer: string;
     inv_address: string;
     inv_contact_person: string;
@@ -13,9 +14,10 @@ export class Invoice {
     inv_gst_id: number;
     inv_products: InvoiceProduct[];
 
-    constructor(id, date, customer, address, contact_person, contact, email, amount, gst_id, products){
+    constructor(id, date, inv_no, customer, address, contact_person, contact, email, amount, gst_id, products){
         this.inv_id = id;
         this.inv_date = date;
+        this.inv_number = inv_no;
         this.inv_customer = customer;
         this.inv_address = address;
         this.inv_contact_person = contact_person;

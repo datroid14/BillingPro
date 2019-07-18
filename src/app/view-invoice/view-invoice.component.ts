@@ -71,6 +71,7 @@ export class ViewInvoiceComponent {
 
 export interface INVOICE {
   inv_id: number;
+  inv_number: string;
   inv_date: Date;
   inv_cust_id: number;
   inv_cust_name: string;

@@ -8,6 +8,7 @@ export class Challan {
     chal_prod_qty: number;
     chal_prod_rate: number;
     chal_veh_no: string;
+    isChallanInUse: boolean;
 
     constructor(id, date, customer, address, prod_name, prod_unit, prod_qty, prod_rate, veh_no){
         this.chal_id = id;
