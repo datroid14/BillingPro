@@ -55,6 +55,7 @@ export class CreateInvoiceComponent implements OnInit {
   // Variables used for invoice
   invoices = [];
   invoiceId: number;
+  invoiceNumber: string;
   invoiceDate: Date;
   picker: Date;
   customerId: number;
@@ -208,7 +209,7 @@ export class CreateInvoiceComponent implements OnInit {
 
   createInvoice() {
     if (this.buttonLabel == "SAVE") {
-      if (this.invoiceDate != undefined && this.customerName != undefined && this.customerAddress != undefined
+      if (this.invoiceDate != undefined && this.invoiceNumber != undefined && this.customerName != undefined && this.customerAddress != undefined
         && this.contactNo != undefined && (this.localProductList != undefined && this.localProductList.length > 0)) {
         var formattedInvoiceDate = moment(this.invoiceDate).format('YYYY-MM-DD');
         var isTax = 0
@@ -218,7 +219,7 @@ export class CreateInvoiceComponent implements OnInit {
         if (this.isEditClicked) {
           this.isEditClicked = false;
           if (this.isWithoutTax) {
-            const updateWithoutTaxPayload = { "data": { "inv_id": this.invoiceId, "inv_date": formattedInvoiceDate, "inv_cust_id": this.customerId, "inv_product_total": this.subTotalAmount, "inv_total_amount": this.totalInvoiceAmount, "inv_round_off": this.roundOffAmount, "inv_without_tax": isTax, "inv_products": this.localProductList } };
+            const updateWithoutTaxPayload = { "data": { "inv_id": this.invoiceId, "inv_date": formattedInvoiceDate, "inv_number":this.invoiceNumber, "inv_cust_id": this.customerId, "inv_product_total": this.subTotalAmount, "inv_total_amount": this.totalInvoiceAmount, "inv_round_off": this.roundOffAmount, "inv_without_tax": isTax, "inv_products": this.localProductList } };
             // Update invoice without tax service
             this.invoiceService.updateInvoiceWithoutTax(updateWithoutTaxPayload).subscribe(response => {
               if (response.status == 200) {
@@ -229,7 +230,7 @@ export class CreateInvoiceComponent implements OnInit {
                 console.log(error)
               });
           } else {
-            const updatePayload = { "data": { "inv_id": this.invoiceId, "inv_date": formattedInvoiceDate, "inv_cust_id": this.customerId, "inv_product_total": this.subTotalAmount, "inv_total_tax": this.taxTotalAmount, "inv_total_amount": this.totalInvoiceAmount, "inv_round_off": this.roundOffAmount, "inv_without_tax": isTax, "inv_products": this.localProductList } };
+            const updatePayload = { "data": { "inv_id": this.invoiceId, "inv_date": formattedInvoiceDate, "inv_number":this.invoiceNumber, "inv_cust_id": this.customerId, "inv_product_total": this.subTotalAmount, "inv_total_tax": this.taxTotalAmount, "inv_total_amount": this.totalInvoiceAmount, "inv_round_off": this.roundOffAmount, "inv_without_tax": isTax, "inv_products": this.localProductList } };
             // Update invoice with tax service
             this.invoiceService.updateInvoice(updatePayload).subscribe(response => {
               if (response.status == 200) {
@@ -242,7 +243,7 @@ export class CreateInvoiceComponent implements OnInit {
           }
         } else {
           if (this.isWithoutTax) {
-            const invoiceWithoutTaxPayload = { "data": { "inv_date": formattedInvoiceDate, "inv_cust_id": this.customerId, "inv_product_total": this.subTotalAmount, "inv_total_amount": this.totalInvoiceAmount, "inv_round_off": this.roundOffAmount, "inv_without_tax": isTax, "inv_products": this.localProductList } };
+            const invoiceWithoutTaxPayload = { "data": { "inv_date": formattedInvoiceDate, "inv_number":this.invoiceNumber, "inv_cust_id": this.customerId, "inv_product_total": this.subTotalAmount, "inv_total_amount": this.totalInvoiceAmount, "inv_round_off": this.roundOffAmount, "inv_without_tax": isTax, "inv_products": this.localProductList } };
             // Create invoice without tax service
             this.invoiceService.addInvoiceWithoutTax(invoiceWithoutTaxPayload).subscribe(response => {
               if (response.status == 200) {
@@ -254,7 +255,7 @@ export class CreateInvoiceComponent implements OnInit {
                 console.log(error)
               });
           } else {
-            const invoicePayload = { "data": { "inv_date": formattedInvoiceDate, "inv_cust_id": this.customerId, "inv_product_total": this.subTotalAmount, "inv_total_tax": this.taxTotalAmount, "inv_total_amount": this.totalInvoiceAmount, "inv_round_off": this.roundOffAmount, "inv_without_tax": isTax, "inv_products": this.localProductList } };
+            const invoicePayload = { "data": { "inv_date": formattedInvoiceDate, "inv_number":this.invoiceNumber, "inv_cust_id": this.customerId, "inv_product_total": this.subTotalAmount, "inv_total_tax": this.taxTotalAmount, "inv_total_amount": this.totalInvoiceAmount, "inv_round_off": this.roundOffAmount, "inv_without_tax": isTax, "inv_products": this.localProductList } };
             // Create invoice with tax service
             this.invoiceService.addInvoice(invoicePayload).subscribe(response => {
               if (response.status == 200) {
@@ -296,6 +297,7 @@ export class CreateInvoiceComponent implements OnInit {
 
   clearInvoiceFields() {
     this.invoiceDate = undefined;
+    this.invoiceNumber = undefined;
     this.customerName = undefined;
     this.customerAddress = undefined;
     this.contactNo = undefined;
@@ -453,6 +455,7 @@ export class CreateInvoiceComponent implements OnInit {
 
   setInvoiceDetail(invoice) {
     this.invoiceDate = invoice.inv_date;
+    this.invoiceNumber = invoice.inv_number;
     this.customerId = invoice.inv_cust_id;
     this.customerName = invoice.inv_customer;
     this.customerAddress = invoice.inv_address;
@@ -468,7 +471,6 @@ export class CreateInvoiceComponent implements OnInit {
       this.isWithoutTax = false;
     } else {
       this.isWithoutTax = true;
-      // this.isWithoutTaxCheckVisible = true;
     }
 
     // Get Invoice products for selected invoice id

@@ -20,6 +20,10 @@
         </mat-form-field>
 
         <mat-form-field>
+            <input matInput [(ngModel)]="invoiceNumber" placeholder="Invoice Number" [disabled]="isFieldDisabled" required>
+        </mat-form-field>
+
+        <mat-form-field>
             <mat-select [(ngModel)]="customerName" name="customerName" placeholder="Customer Name" [disabled]="isFieldDisabled" required>
                 <mat-option *ngFor="let customer of customers" [value]="customer.cust_name" (click)="setCustomerDetail(customer)">
                     {{customer.cust_name}}

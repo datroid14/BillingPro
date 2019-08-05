@@ -158,9 +158,14 @@ export class AddPurchaseComponent implements OnInit {
   }
 
   addProduct() {
-    if (this.challanNumber != undefined && this.challanDate != undefined && this.vehicleNo != undefined && this.productName != undefined && this.productHSN != undefined && this.productUnit != undefined
+    if (this.productName != undefined && this.productHSN != undefined && this.productUnit != undefined
       && this.productQuantity != undefined && this.productRate != undefined && this.productTotalAmount != undefined) {
-      var formattedChallanDate = moment(this.challanDate).format('YYYY-MM-DD');
+      var formattedChallanDate;
+      if (this.challanDate != undefined) {
+        formattedChallanDate = moment(this.challanDate).format('YYYY-MM-DD');
+      } else {
+        formattedChallanDate = null;
+      }
       const product = new PurchaseProduct(this.challanNumber, formattedChallanDate, this.vehicleNo, this.productId, this.productName, this.productHSN, this.productUnit, this.productQuantity,
         this.productRate, this.productSubTotalAmount, this.productTaxAmount, this.productTotalAmount);
       this.localProductList.push(product);
@@ -299,7 +304,7 @@ export class AddPurchaseComponent implements OnInit {
     this.contactNo = purchase.pur_contact;
     this.subTotalAmount = purchase.pur_product_total;
     this.taxTotalAmount = purchase.pur_total_tax;
-    this.totalPurchaseAmount = purchase.pur_total_amount;    
+    this.totalPurchaseAmount = purchase.pur_total_amount;
     var isTax = purchase.inv_without_tax;
     if (isTax == 0) {
       this.isWithoutTax = false;
@@ -346,7 +351,7 @@ export class AddPurchaseComponent implements OnInit {
   }
 
   printPurchaseDetail() {
-    const purchaseObj = new Purchase(this.purchaseId, this.purchaseDate, this.vendorName,  this.vendorAddress, this.contactPerson, this.contactNo, JSON.stringify(this.localProductList));
+    const purchaseObj = new Purchase(this.purchaseId, this.purchaseDate, this.vendorName, this.vendorAddress, this.contactPerson, this.contactNo, JSON.stringify(this.localProductList));
     if (purchaseObj != undefined) {
       let navigationExtras: NavigationExtras = {
         queryParams: purchaseObj

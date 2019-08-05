@@ -9,172 +9,179 @@
 </style>
 
 <mat-card class="card-css">
-    <div id="print-section">
-        <div class="container-css">
-            <div align="left" style="width:22%">
-                <img [src]="this.logoImagePath">
-            </div>
-            <div class="container-vertical-css" style="width:56%">
-                <label style="font: 1.2em sans-serif;">SHUBHAM ENTERPRISES</label>
-                <label style="font: 0.8em sans-serif;">BUILDING MATERIAL SUPPLIERS, JCB AVAILABLE ON RENT</label>
-                <label><b>Office Address - </b>Bodkewadi, Dehugaon, Pune 412109</label>
-                <label><b>Contact No - </b>9922991310/9604039293</label>
-                <label><b>Email - </b>shubham.enterprise1616@gmail.com</label>
-                <label><b>GST No - </b>27CDYPB0443D1ZP</label>
-            </div>
-            <div align="right" style="width:22%">
-                <img [src]="this.saiLogoImagePath">
-            </div>
-        </div>
-        <mat-divider></mat-divider>
-        <mat-divider></mat-divider>
-        <mat-card-content>
-            <div align="center">
-                <label><b>TAX INVOICE</b></label>
-            </div>
+    <kendo-pdf-export #pdf paperSize="A4" margin="1cm">
+        <div id="print-section">
             <div class="container-css">
-                <div class="container-vertical-css" align="left" style="width:50%">
-                    <label>
-                <b>M/S: {{this.customerName}}</b></label>
-                    <label>{{this.customerAddress}}</label>
-                    <label><b>GST No: </b>{{this.customerGSTNumber}}</label>
+                <div align="left" style="width:22%">
+                    <img [src]="this.logoImagePath">
                 </div>
-
-                <div class="container-vertical-css" align="right" style="width:50%">
-                    <label><b>Date:</b> {{this.invoiceDate}}</label>
-                    <label><b>Invoice Number:</b> SE/19-20/{{this.invoiceNo}}</label>
+                <div class="container-vertical-css" style="width:56%">
+                    <label style="font: 1.2em sans-serif;">SHUBHAM ENTERPRISES</label>
+                    <label style="font: 0.8em sans-serif;">BUILDING MATERIAL SUPPLIERS, JCB AVAILABLE ON RENT</label>
+                    <label><b>Office Address - </b>Bodkewadi, Dehugaon, Pune 412109</label>
+                    <label><b>Contact No - </b>9922991310/9604039293</label>
+                    <label><b>Email - </b>shubham.enterprise1616@gmail.com</label>
+                    <label><b>GST No - </b>27CDYPB0443D1ZP</label>
                 </div>
-            </div>
-            <div style="height:400px">
-                <table style="width:100%;">
-                    <thead>
-                        <tr>
-                            <th class="input-css">Sr. No.</th>
-                            <th class="input-css">Challan Date</th>
-                            <th class="input-css">Challan No</th>
-                            <th class="input-css">Vehicle No</th>
-                            <th class="input-css">Material</th>
-                            <th class="input-css">HSN Code</th>
-                            <th class="input-css">Unit</th>
-                            <th class="input-css">Msr. Total</th>
-                            <th class="input-css">Rate</th>
-                            <th class="input-css">Amount In Rs.</th>
-                        </tr>
-                    </thead>
-                    <tbody *ngIf="invoiceProducts.length < 7">
-                        <tr *ngFor="let product of invoiceProducts;let i=index">
-                            <td class="input-css">{{i+1}}</td>
-                            <td class="input-css">{{product.chal_date}}</td>
-                            <td class="input-css">{{product.chal_no}}</td>
-                            <td class="input-css">{{product.veh_number}}</td>
-                            <td class="input-css">{{product.prod_name}}</td>
-                            <td class="input-css">{{product.prod_hsn}}</td>
-                            <td class="input-css">{{product.prod_unit}}</td>
-                            <td class="input-css">{{product.prod_qty}}</td>
-                            <td class="input-css">{{product.prod_rate}}</td>
-                            <td class="input-css">{{product.prod_sub_total}}</td>
-                        </tr>
-                    </tbody>
-                    <tbody *ngIf="invoiceProducts.length > 7">
-                        <tr *ngFor="let product of invoiceProductsQuantity;let i=index">
-                            <td class="input-css">{{i+1}}</td>
-                            <td class="input-css"></td>
-                            <td class="input-css"></td>
-                            <td class="input-css">{{product.veh_number}}</td>
-                            <td class="input-css">{{product.prod_name}}</td>
-                            <td class="input-css">{{product.prod_hsn}}</td>
-                            <td class="input-css">{{product.prod_unit}}</td>
-                            <td class="input-css">{{product.prod_total_qty}}</td>
-                            <td class="input-css">{{product.prod_rate}}</td>
-                            <td class="input-css">{{product.prod_total_qty * product.prod_rate}} </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div align="right" style="width:22%">
+                    <img [src]="this.saiLogoImagePath">
+                </div>
             </div>
             <mat-divider></mat-divider>
-            <div class="container-css">
-                <p align="left" style="width:60%">
-                    <b>Bill Period From:</b> {{this.minChallanDate}} To: {{this.maxChallanDate}}</p>
-
-                <label align="right" style="width:40%;padding: 14px 0">
-            <b>Total: </b>{{this.invoiceTotalAmount}}</label>
-
-            </div>
-            <div class="container-vertical-css">
+            <mat-divider></mat-divider>
+            <mat-card-content>
+                <div align="center">
+                    <label><b>TAX INVOICE</b></label>
+                </div>
                 <div class="container-css">
-                    <p>
-                        <b>Amount In Words: </b>Rupees {{this.amountInWords}} only</p>
-                    <table style="width:60%" *ngIf="false">
-                        <tr>
-                            <th rowspan="2">Taxable Amount</th>
-                            <th colspan="2">Central Tax</th>
-                            <th colspan="2">State Tax</th>
-                        </tr>
-                        <tr>
-                            <td>Rate</td>
-                            <td>Amount</td>
-                            <td>Rate</td>
-                            <td>Amount</td>
-                        </tr>
-                        <tr>
-                            <td>{{this.invoiceTotalAmount}}</td>
-                            <td>{{this.invoiceGSTPercentage/2}}%</td>
-                            <td>{{(taxAmount/2).toFixed(2)}}</td>
-                            <td>{{this.invoiceGSTPercentage/2}}%</td>
-                            <td>{{(taxAmount/2).toFixed(2)}}</td>
-                        </tr>
-                    </table>
-                    <div class="container-vertical-css" align="right" style="width:40%">
+                    <div class="container-vertical-css" align="left" style="width:50%">
                         <label>
-            <b>CGST({{invoiceGSTPercentage/2}}%): </b>{{(taxAmount/2).toFixed(2)}}</label>
-                        <label>
-            <b>SGST({{invoiceGSTPercentage/2}}%): </b>{{(taxAmount/2).toFixed(2)}}</label>
-                        <label>
-            <b>Net Total: </b>{{(invoiceTotalAmount + taxAmount + roundOffAmount).toFixed(2)}}</label>
-                        <label>
-            <b>Round-Off Amount:</b>{{roundOffAmount}}</label>
+                            <b>M/S: {{this.customerName}}</b></label>
+                        <label>{{this.customerAddress}}</label>
+                        <label><b>GST No: </b>{{this.customerGSTNumber}}</label>
+                    </div>
+
+                    <div class="container-vertical-css" align="right" style="width:50%">
+                        <label><b>Date:</b> {{this.invoiceDate}}</label>
+                        <label><b>Invoice Number:</b> SE/19-20/{{this.invoiceNo}}</label>
                     </div>
                 </div>
+                <div style="height:400px">
+                    <table style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th class="input-css">Sr. No.</th>
+                                <th class="input-css">Challan Date</th>
+                                <th class="input-css">Challan No</th>
+                                <th class="input-css">Vehicle No</th>
+                                <th class="input-css">Material</th>
+                                <th class="input-css">HSN Code</th>
+                                <th class="input-css">Unit</th>
+                                <th class="input-css">Msr. Total</th>
+                                <th class="input-css">Rate</th>
+                                <th class="input-css">Amount In Rs.</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="invoiceProducts.length < 7">
+                            <tr *ngFor="let product of invoiceProducts;let i=index">
+                                <td class="input-css">{{i+1}}</td>
+                                <td class="input-css">{{product.chal_date}}</td>
+                                <td class="input-css">{{product.chal_no}}</td>
+                                <td class="input-css">{{product.veh_number}}</td>
+                                <td class="input-css">{{product.prod_name}}</td>
+                                <td class="input-css">{{product.prod_hsn}}</td>
+                                <td class="input-css">{{product.prod_unit}}</td>
+                                <td class="input-css">{{product.prod_qty}}</td>
+                                <td class="input-css">{{product.prod_rate}}</td>
+                                <td class="input-css">{{product.prod_sub_total}}</td>
+                            </tr>
+                        </tbody>
+                        <tbody *ngIf="invoiceProducts.length > 7">
+                            <tr *ngFor="let product of invoiceProductsQuantity;let i=index">
+                                <td class="input-css">{{i+1}}</td>
+                                <td class="input-css"></td>
+                                <td class="input-css"></td>
+                                <td class="input-css">{{product.veh_number}}</td>
+                                <td class="input-css">{{product.prod_name}}</td>
+                                <td class="input-css">{{product.prod_hsn}}</td>
+                                <td class="input-css">{{product.prod_unit}}</td>
+                                <td class="input-css">{{product.prod_total_qty}}</td>
+                                <td class="input-css">{{product.prod_rate}}</td>
+                                <td class="input-css">{{product.prod_total_qty * product.prod_rate}} </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <mat-divider></mat-divider>
+                <div class="container-css">
+                    <p align="left" style="width:60%">
+                        <b>Bill Period From:</b> {{this.minChallanDate}} To: {{this.maxChallanDate}}</p>
 
-            </div>
+                    <label align="right" style="width:40%;padding: 14px 0">
+                        <b>Total: </b>{{this.invoiceTotalAmount}}</label>
 
-            <table style="width: 100%;">
-                <tr>
-                    <th>Bank Details for NEFT/RTGS: </th>
-                    <th>Terms & Conditions:</th>
-                </tr>
-                <tr>
-                    <td>
-                        <b>Account Name - </b>Shubham Enterprises<br>
-                        <b>Bank Name - </b>HDFC Bank<br>
-                        <b>Branch - </b>Thermax Chowk, Sambhaji Nagar, Pune 411019<br>
-                        <b>A/C No - </b>50200037466011<br>
-                        <b>IFSC Code - </b>HDFC0001795</td>
-                    <td>1. Payment must be made by Account Payee Cheque/DD only. <br>2. Interest @24% will be charge after credit limit. <br>3. Measurement and Rate cannot be changed.</td>
-                </tr>
-            </table>
+                </div>
+                <div class="container-vertical-css">
+                    <div class="container-css">
+                        <p>
+                            <b>Amount In Words: </b>Rupees {{this.amountInWords}} only</p>
+                        <table style="width:60%" *ngIf="false">
+                            <tr>
+                                <th rowspan="2">Taxable Amount</th>
+                                <th colspan="2">Central Tax</th>
+                                <th colspan="2">State Tax</th>
+                            </tr>
+                            <tr>
+                                <td>Rate</td>
+                                <td>Amount</td>
+                                <td>Rate</td>
+                                <td>Amount</td>
+                            </tr>
+                            <tr>
+                                <td>{{this.invoiceTotalAmount}}</td>
+                                <td>{{this.invoiceGSTPercentage/2}}%</td>
+                                <td>{{(taxAmount/2).toFixed(2)}}</td>
+                                <td>{{this.invoiceGSTPercentage/2}}%</td>
+                                <td>{{(taxAmount/2).toFixed(2)}}</td>
+                            </tr>
+                        </table>
+                        <div class="container-vertical-css" align="right" style="width:40%">
+                            <label>
+                                <b>CGST({{invoiceGSTPercentage/2}}%): </b>{{(taxAmount/2).toFixed(2)}}</label>
+                            <label>
+                                <b>SGST({{invoiceGSTPercentage/2}}%): </b>{{(taxAmount/2).toFixed(2)}}</label>
+                            <label>
+                                <b>Net Total:
+                                </b>{{(invoiceTotalAmount + taxAmount + roundOffAmount).toFixed(2)}}</label>
+                            <label>
+                                <b>Round-Off Amount:</b>{{roundOffAmount}}</label>
+                        </div>
+                    </div>
 
-            <p>We declare that this invoice shows the actual price of the goods described and all particulars are true and correct.
-            </p>
-            <table style="width: 100%;height:80px;border: 0">
-                <tr>
-                    <th valign="bottom">
-                        Received By
-                    </th>
+                </div>
 
-                    <th valign="bottom">
-                        Checked By
-                    </th>
+                <table style="width: 100%;">
+                    <tr>
+                        <th>Bank Details for NEFT/RTGS: </th>
+                        <th>Terms & Conditions:</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Account Name - </b>Shubham Enterprises<br>
+                            <b>Bank Name - </b>HDFC Bank<br>
+                            <b>Branch - </b>Thermax Chowk, Sambhaji Nagar, Pune 411019<br>
+                            <b>A/C No - </b>50200037466011<br>
+                            <b>IFSC Code - </b>HDFC0001795</td>
+                        <td>1. Payment must be made by Account Payee Cheque/DD only. <br>2. Interest @24% will be charge
+                            after credit limit. <br>3. Measurement and Rate cannot be changed.</td>
+                    </tr>
+                </table>
 
-                    <th valign="bottom">
-                        Shubham Enterprises
-                    </th>
-                </tr>
-            </table>
-        </mat-card-content>
-    </div>
+                <p>We declare that this invoice shows the actual price of the goods described and all particulars are
+                    true and correct.
+                </p>
+                <table style="width: 100%;height:80px;border: 0">
+                    <tr>
+                        <th valign="bottom">
+                            Received By
+                        </th>
+
+                        <th valign="bottom">
+                            Checked By
+                        </th>
+
+                        <th valign="bottom">
+                            Shubham Enterprises
+                        </th>
+                    </tr>
+                </table>
+            </mat-card-content>
+        </div>
+    </kendo-pdf-export>
     <mat-card-actions>
         <button mat-raised-button color="primary" (click)="back()">BACK</button>
         <button mat-raised-button color="primary" (click)="printInvoice()">PRINT</button>
+        <!-- <button mat-raised-button color="primary" (click)="sendMail()">MAIL</button>
+        <button mat-raised-button color="primary" (click)="pdf.saveAs('invoice.pdf')">SAVE AS PDF</button> -->
     </mat-card-actions>
 </mat-card>

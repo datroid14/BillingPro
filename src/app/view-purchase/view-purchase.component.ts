@@ -29,12 +29,14 @@ export class ViewPurchaseComponent implements OnInit {
 
     this.purchaseService.getPurchases().subscribe(response => {
       this.purchases = response.purchases;
-      for (let i = 0; i < this.purchases.length; i++) {
-        this.purchases[i].pur_date = moment(this.purchases[i].pur_date).format('DD MMM YYYY');
+      if (this.purchases == undefined) {
+        for (let i = 0; i < this.purchases.length; i++) {
+          this.purchases[i].pur_date = moment(this.purchases[i].pur_date).format('DD MMM YYYY');
+        }
+        this.dataSource = new MatTableDataSource<PURCHASE>(this.purchases);
+        this.dataSource.paginator = this.paginator;
+        console.log("Purchase " + JSON.stringify(this.purchases));
       }
-      this.dataSource = new MatTableDataSource<PURCHASE>(this.purchases);
-      this.dataSource.paginator = this.paginator;
-      console.log("Purchase "+JSON.stringify(this.purchases));
     },
       error => {
         console.log(error)
@@ -52,7 +54,7 @@ export class ViewPurchaseComponent implements OnInit {
   showPurchaseDetails(purchase) {
     if (purchase != undefined) {
       let navigationExtras: NavigationExtras = {
-        queryParams: { pur_id : purchase.pur_id }
+        queryParams: { pur_id: purchase.pur_id }
       };
       // Redirect it to View Product screen
       this.router.navigate(['/add-purchase'], navigationExtras);

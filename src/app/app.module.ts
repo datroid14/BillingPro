@@ -21,6 +21,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
 
 import { AppComponent } from './app.component';
 import { TableViewComponent } from './table-view/table-view.component';
@@ -208,7 +209,8 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     FlexLayoutModule,
     HttpModule,
-    HttpClientModule
+    HttpClientModule,
+    PDFExportModule
   ],
   providers: [AppService, CustomerService, VendorService, ProductService, QuatationService, ChallanService, 
     PurchaseService, VehicleService, InvoiceService, GSTService, ChequeEntryService, EmployeeService, 

@@ -160,6 +160,7 @@ export class CreateChallanComponent implements OnInit {
             formattedChallanDate = moment(this.challanDate).format('YYYY-MM-DD');
           } else {
             formattedChallanDate = null;
+            
           }
         if (this.isEditClicked) {
           const updatePayload = { "data": { "chal_id": this.challanId, "chal_no": this.challanNumber, "chal_date": formattedChallanDate, "chal_cust_id": this.customerId, "chal_prod_id": this.productId, "chal_prod_rate":this.productRate, "chal_veh_id": this.vehicleId, "chal_quantity": this.productQuantity } };

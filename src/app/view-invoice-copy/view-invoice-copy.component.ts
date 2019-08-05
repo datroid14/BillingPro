@@ -279,4 +279,14 @@ export class ViewInvoiceCopyComponent implements OnInit {
     }
     return parseInt(timeArr[0]) + hours;
   }
+
+  sendMail(){
+    const mailPayload = {"data": {"invoice_no": this.invoiceNo, "mail_to": "nutankhedekar7@gmail.com"}};
+
+    this.invoiceService.sendMail(mailPayload).subscribe(response => {
+      if(response.status == 200){
+        console.log("Status" + response.message);
+      }
+    });
+  }
 }
