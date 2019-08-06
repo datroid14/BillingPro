@@ -29,26 +29,17 @@ export class ViewPurchaseComponent implements OnInit {
 
     this.purchaseService.getPurchases().subscribe(response => {
       this.purchases = response.purchases;
-      if (this.purchases == undefined) {
+      if (this.purchases != undefined) {
         for (let i = 0; i < this.purchases.length; i++) {
           this.purchases[i].pur_date = moment(this.purchases[i].pur_date).format('DD MMM YYYY');
         }
         this.dataSource = new MatTableDataSource<PURCHASE>(this.purchases);
         this.dataSource.paginator = this.paginator;
-        console.log("Purchase " + JSON.stringify(this.purchases));
       }
     },
       error => {
         console.log(error)
       });
-  }
-
-  /**
-  * Set the paginator after the view init since this component will
-  * be able to query its view for the initialized paginator.
-  */
-  ngAfterViewInit() {
-
   }
 
   showPurchaseDetails(purchase) {
