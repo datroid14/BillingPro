@@ -404,7 +404,7 @@ export class CreateInvoiceComponent implements OnInit {
     this.productSubTotalAmount = product.prod_sub_total_amount;
     this.productTaxAmount = product.prod_tax_amount;
 
-    if (this.productName == 'JCB') {
+    if (this.productId == 18 || this.productId == 19 || this.productId == 21 || this.productId == 22){
       this.calculateForJCB();
     } else {
       this.calculateSubTotal();
@@ -428,7 +428,7 @@ export class CreateInvoiceComponent implements OnInit {
       this.productUnit = challan.chal_prod_unit;
       this.productRate = challan.chal_prod_rate;
       challan.isChallanInUse = true;
-      if(this.productId == 18){
+      if(this.productId == 18 || this.productId == 19 || this.productId == 21 || this.productId == 22){
         let totalHours = this.getJCBHours(this.productQuantity);
         this.productSubTotalAmount = totalHours * this.productRate;
       } else {
@@ -617,7 +617,7 @@ export class CreateInvoiceComponent implements OnInit {
     if (this.localProductList != undefined && this.localProductList.length > 0) {
       if (!this.isWithoutTax) {
         for (var i = 0; i < this.localProductList.length; i++) {
-          if (this.localProductList[i].prod_name == 'JCB') {
+          if (this.localProductList[i].prod_id == 18 || this.localProductList[i].prod_id == 19 || this.localProductList[i].prod_id == 21 || this.localProductList[i].prod_id == 22) {
             // Calculation for JCB
             let totalHours = this.getJCBHours(this.localProductList[i].prod_qty);
             this.localProductList[i].prod_sub_total = this.localProductList[i].prod_rate * totalHours;
@@ -632,7 +632,7 @@ export class CreateInvoiceComponent implements OnInit {
         this.totalInvoiceAmount = this.subTotalAmount + this.taxTotalAmount;
       } else {
         for (var i = 0; i < this.localProductList.length; i++) {
-          if (this.localProductList[i].prod_name == 'JCB') {
+          if (this.localProductList[i].prod_id == 18 || this.localProductList[i].prod_id == 19 || this.localProductList[i].prod_id == 21 || this.localProductList[i].prod_id == 22  || this.localProductList[i].prod_id == 24) {
             // Calculation for JCB
             let totalHours = this.getJCBHours(this.localProductList[i].prod_qty);
             this.localProductList[i].prod_sub_total = this.localProductList[i].prod_rate * totalHours;
