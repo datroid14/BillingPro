@@ -27,8 +27,7 @@
                     <img [src]="this.saiLogoImagePath">
                 </div>
             </div>
-            <mat-divider></mat-divider>
-            <mat-divider></mat-divider>
+            <hr>
             <mat-card-content>
                 <div align="center">
                     <label><b>TAX INVOICE</b></label>
@@ -43,10 +42,10 @@
 
                     <div class="container-vertical-css" align="right" style="width:50%">
                         <label><b>Date:</b> {{this.invoiceDate}}</label>
-                        <label><b>Invoice Number:</b> SE/19-20/{{this.invoiceNo}}</label>
+                        <label><b>Invoice Number:</b> {{this.invoiceNo}}</label>
                     </div>
                 </div>
-                <div style="height:400px">
+                <div style="height:390px">
                     <table style="width:100%;">
                         <thead>
                             <tr>
@@ -92,7 +91,7 @@
                         </tbody>
                     </table>
                 </div>
-                <mat-divider></mat-divider>
+                <hr>
                 <div class="container-css">
                     <p align="left" style="width:60%">
                         <b>Bill Period From:</b> {{this.minChallanDate}} To: {{this.maxChallanDate}}</p>
@@ -105,7 +104,7 @@
                     <div class="container-css">
                         <p>
                             <b>Amount In Words: </b>Rupees {{this.amountInWords}} only</p>
-                        <table style="width:60%" *ngIf="false">
+                        <!-- <table style="width:60%" *ngIf="false">
                             <tr>
                                 <th rowspan="2">Taxable Amount</th>
                                 <th colspan="2">Central Tax</th>
@@ -124,7 +123,7 @@
                                 <td>{{this.invoiceGSTPercentage/2}}%</td>
                                 <td>{{(taxAmount/2).toFixed(2)}}</td>
                             </tr>
-                        </table>
+                        </table> -->
                         <div class="container-vertical-css" align="right" style="width:40%">
                             <label>
                                 <b>CGST({{invoiceGSTPercentage/2}}%): </b>{{(taxAmount/2).toFixed(2)}}</label>
@@ -134,7 +133,7 @@
                                 <b>Net Total:
                                 </b>{{(invoiceTotalAmount + taxAmount + roundOffAmount).toFixed(2)}}</label>
                             <label>
-                                <b>Round-Off Amount:</b>{{roundOffAmount}}</label>
+                                <b>Round-Off: </b>{{roundOffAmount}}</label>
                         </div>
                     </div>
 
@@ -149,7 +148,7 @@
                         <td>
                             <b>Account Name - </b>Shubham Enterprises<br>
                             <b>Bank Name - </b>HDFC Bank<br>
-                            <b>Branch - </b>Thermax Chowk, Sambhaji Nagar, Pune 411019<br>
+                            <b>Branch - </b>Thermax Chowk, Chinchwad<br>
                             <b>A/C No - </b>50200037466011<br>
                             <b>IFSC Code - </b>HDFC0001795</td>
                         <td>1. Payment must be made by Account Payee Cheque/DD only. <br>2. Interest @24% will be charge
@@ -160,21 +159,22 @@
                 <p>We declare that this invoice shows the actual price of the goods described and all particulars are
                     true and correct.
                 </p>
-                <table style="width: 100%;height:80px;border: 0">
-                    <tr>
-                        <th valign="bottom">
-                            Received By
-                        </th>
+                <!-- <table style="width: 100%;height:60px;border: 0"> -->
+                <div class="container-css" style="margin-top: 24px">
 
-                        <th valign="bottom">
-                            Checked By
-                        </th>
+                    <label>
+                        <b>Received By</b>
+                    </label>
 
-                        <th valign="bottom">
-                            Shubham Enterprises
-                        </th>
-                    </tr>
-                </table>
+                    <label>
+                        <b>Checked By</b>
+                    </label>
+
+                    <label>
+                        <b>Shubham Enterprises</b>
+                    </label>
+                </div>
+                <!-- </table> -->
             </mat-card-content>
         </div>
     </kendo-pdf-export>

@@ -13,7 +13,8 @@ import { InvoiceService } from "../create-invoice/invoice.service";
 
 export class ViewInvoiceCopyComponent implements OnInit {
 
-  invoiceNo: number;
+  invoiceId: number
+  invoiceNo: string;
   invoiceDate: string;
   customerName: string;
   customerAddress: string;
@@ -39,7 +40,7 @@ export class ViewInvoiceCopyComponent implements OnInit {
     this.taxAmount = 0;
     this.invoiceTotalAmount = 0;
     this.route.queryParams.subscribe(params => {
-      this.invoiceNo = params["inv_id"];
+      this.invoiceId = params["inv_id"];
     });
   }
 
@@ -73,13 +74,24 @@ export class ViewInvoiceCopyComponent implements OnInit {
               .container-css {
                 display: flex;
                 flex-direction: row;
-            }
-            
-            .container-vertical-css {
+              }
+              .container-vertical-css {
                 display: flex;
                 flex-direction: column;
-            }
-        </style>
+              }
+              .container-css>* {
+                width: 100%;
+              }
+              .card-css {
+                max-width: 70%;
+              }
+              .inner-card-css {
+                max-width: 96%;
+              }
+              .input-css {
+                padding: 8px;
+              }
+          </style>
         </head>
         <body onload="window.print();window.close()">${printContents}</body>
       </html>`
@@ -92,7 +104,7 @@ export class ViewInvoiceCopyComponent implements OnInit {
   }
 
   getInvoiceDetailById() {
-    const payload = { "data": { "inv_id": this.invoiceNo } };
+    const payload = { "data": { "inv_id": this.invoiceId } };
     this.invoiceService.getInvoiceById(payload).subscribe(response => {
       if (response.status == 200) {
         if (response.invoices != undefined && response.invoices.length > 0) {
@@ -108,6 +120,7 @@ export class ViewInvoiceCopyComponent implements OnInit {
 
   setInvoiceDetail(invoice) {
     this.invoiceDate = moment(invoice.inv_date).format('DD MMM YYYY');
+    this.invoiceNo = invoice.inv_number;
     this.customerName = invoice.inv_customer;
     this.customerAddress = invoice.inv_address;
     this.contactNo = invoice.inv_contact;
@@ -123,7 +136,7 @@ export class ViewInvoiceCopyComponent implements OnInit {
   }
 
   getInvoiceProducts() {
-    const productPayload = { "data": { "inv_id": this.invoiceNo } };
+    const productPayload = { "data": { "inv_id": this.invoiceId } };
 
     this.invoiceService.getInvoiceProductsById(productPayload).subscribe(response => {
       this.invoiceProducts = response.products;
@@ -162,7 +175,7 @@ export class ViewInvoiceCopyComponent implements OnInit {
             }
           }
 
-          if (this.invoiceProductsQuantity[0].prod_name == 'JCB') {
+          if (this.invoiceProductsQuantity[0].prod_id == 18 || this.invoiceProductsQuantity[0].prod_id == 19 || this.invoiceProductsQuantity[0].prod_id == 21 || this.invoiceProductsQuantity[0].prod_id == 22 || this.invoiceProductsQuantity[0].prod_id == 24) {
             // Calculation for JCB
             let totalHours = this.getJCBHours(this.invoiceProductsQuantity[0].prod_total_qty);
             this.invoiceProductsQuantity[0].prod_sub_total = this.invoiceProductsQuantity[0].prod_rate * totalHours;
@@ -280,11 +293,11 @@ export class ViewInvoiceCopyComponent implements OnInit {
     return parseInt(timeArr[0]) + hours;
   }
 
-  sendMail(){
-    const mailPayload = {"data": {"invoice_no": this.invoiceNo, "mail_to": "nutankhedekar7@gmail.com"}};
+  sendMail() {
+    const mailPayload = { "data": { "invoice_no": this.invoiceNo, "mail_to": "nutankhedekar7@gmail.com" } };
 
     this.invoiceService.sendMail(mailPayload).subscribe(response => {
-      if(response.status == 200){
+      if (response.status == 200) {
         console.log("Status" + response.message);
       }
     });
