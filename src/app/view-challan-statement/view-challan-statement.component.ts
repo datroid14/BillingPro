@@ -18,7 +18,7 @@ export class ViewChallanStatementComponent implements OnInit {
   invoiceProductsQuantity: InvoiceProduct[];
 
   constructor(private invoiceService: InvoiceService, private route: ActivatedRoute,
-    private appService: AppService, private location : Location) {
+    private appService: AppService, private location: Location) {
     this.route.queryParams.subscribe(params => {
       this.invoiceId = params["inv_id"];
     });
@@ -51,7 +51,7 @@ export class ViewChallanStatementComponent implements OnInit {
           this.invoiceProducts[i].chal_date = moment(this.invoiceProducts[i].chal_date).format('DD MMM YYYY');
           for (var j = 0; j < this.invoiceProductsQuantity.length; j++) {
             if (this.invoiceProducts[i].prod_id == this.invoiceProductsQuantity[j].prod_id) {
-                this.invoiceProducts[i].prod_total_qty = this.invoiceProductsQuantity[j].prod_total_qty;
+              this.invoiceProducts[i].prod_total_qty = this.invoiceProductsQuantity[j].prod_total_qty;
             }
           }
         }
@@ -71,14 +71,7 @@ export class ViewChallanStatementComponent implements OnInit {
       <html>
         <head>
           <style>
-            table,
-            th,
-            td {
-                border: 1px solid grey;
-                border-collapse: collapse;
-                padding: 2px;
-              }
-              .container-css {
+            .container-css {
                 display: flex;
                 flex-direction: row;
             }
@@ -87,6 +80,11 @@ export class ViewChallanStatementComponent implements OnInit {
                 display: flex;
                 flex-direction: column;
             }
+
+            .input-text {
+              padding: 8px;
+              text-align: center;
+          }
         </style>
         </head>
         <body onload="window.print();window.close()">${printContents}</body>

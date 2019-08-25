@@ -159,33 +159,36 @@ export class ViewInvoiceCopyComponent implements OnInit {
       this.invoiceProductsQuantity = response.products;
 
       // Format date for displaying in desire format
-      if (this.invoiceProducts != undefined && this.invoiceProducts.length > 0) {
+      if (this.invoiceProductsQuantity != undefined && this.invoiceProductsQuantity.length > 0) {
         for (var i = 0; i < this.invoiceProducts.length; i++) {
           var formattedChallanDate = moment(this.invoiceProducts[i].chal_date).format('MM/DD/YYYY');
           this.invoiceProducts[i].chal_date = moment(this.invoiceProducts[i].chal_date).format('DD/MM/YYYY');
           challanDates.push(new Date(formattedChallanDate));
-
-          for (var j = 0; j < this.invoiceProductsQuantity.length; j++) {
-            if (this.invoiceProductsQuantity[j].prod_id == this.invoiceProducts[i].prod_id) {
-              this.invoiceProductsQuantity[j].prod_name = this.invoiceProducts[i].prod_name;
-              this.invoiceProductsQuantity[j].prod_hsn = this.invoiceProducts[i].prod_hsn;
-              this.invoiceProductsQuantity[j].prod_rate = this.invoiceProducts[i].prod_rate;
-              this.invoiceProductsQuantity[j].prod_unit = this.invoiceProducts[i].prod_unit;
-              break;
-            }
-          }
-
-          if (this.invoiceProductsQuantity[0].prod_id == 18 || this.invoiceProductsQuantity[0].prod_id == 19 || this.invoiceProductsQuantity[0].prod_id == 21 || this.invoiceProductsQuantity[0].prod_id == 22 || this.invoiceProductsQuantity[0].prod_id == 24) {
-            // Calculation for JCB
-            let totalHours = this.getJCBHours(this.invoiceProductsQuantity[0].prod_total_qty);
-            this.invoiceProductsQuantity[0].prod_sub_total = this.invoiceProductsQuantity[0].prod_rate * totalHours;
-          } else {
-            this.invoiceProductsQuantity[0].prod_sub_total = this.invoiceProductsQuantity[0].prod_rate * this.invoiceProductsQuantity[0].prod_total_qty;
-          }
         }
         var sorted = challanDates.sort(this.sortDates);
         this.minChallanDate = moment(sorted[0]).format('DD/MM/YYYY');
         this.maxChallanDate = moment(sorted[sorted.length - 1]).format('DD/MM/YYYY');
+
+        for (var j = 0; j < this.invoiceProductsQuantity.length; j++) {
+          for (var k = 0; k < this.invoiceProducts.length; k++) {
+            if (this.invoiceProductsQuantity[j].prod_id == this.invoiceProducts[k].prod_id) {
+
+              this.invoiceProductsQuantity[j].prod_name = this.invoiceProducts[k].prod_name;
+              this.invoiceProductsQuantity[j].prod_hsn = this.invoiceProducts[k].prod_hsn;
+              this.invoiceProductsQuantity[j].prod_rate = this.invoiceProducts[k].prod_rate;
+              this.invoiceProductsQuantity[j].prod_unit = this.invoiceProducts[k].prod_unit;
+
+              if (this.invoiceProductsQuantity[j].prod_id == 18 || this.invoiceProductsQuantity[j].prod_id == 19 || this.invoiceProductsQuantity[j].prod_id == 21 || this.invoiceProductsQuantity[j].prod_id == 22 || this.invoiceProductsQuantity[j].prod_id == 24) {
+                // Calculation for JCB
+                let totalHours = this.getJCBHours(this.invoiceProductsQuantity[j].prod_total_qty);
+                this.invoiceProductsQuantity[j].prod_sub_total = this.invoiceProductsQuantity[j].prod_rate * totalHours;
+              } else {
+                this.invoiceProductsQuantity[j].prod_sub_total = this.invoiceProductsQuantity[j].prod_rate * this.invoiceProductsQuantity[j].prod_total_qty;
+              }
+              break;
+            }
+          }
+        }
       }
     },
       error => {
@@ -294,7 +297,7 @@ export class ViewInvoiceCopyComponent implements OnInit {
   }
 
   sendMail() {
-    const mailPayload = { "data": { "invoice_no": this.invoiceNo, "mail_to": "nutankhedekar7@gmail.com" } };
+    const mailPayload = { "data": { "invoice_no": this.invoiceNo, "mail_to": "kiranbodake3001@gmail.com" } };
 
     this.invoiceService.sendMail(mailPayload).subscribe(response => {
       if (response.status == 200) {

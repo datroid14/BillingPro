@@ -72,6 +72,7 @@ export class CreateInvoiceComponent implements OnInit {
   isWithoutTaxCheckVisible: boolean;
   isChallanNotCreated: boolean;
   vehicleId: number;
+  isTimeBased: boolean;
 
   // Variables for image paths
   addImagePath: string;
@@ -405,8 +406,10 @@ export class CreateInvoiceComponent implements OnInit {
     this.productTaxAmount = product.prod_tax_amount;
 
     if (this.productId == 18 || this.productId == 19 || this.productId == 21 || this.productId == 22){
+      this.isTimeBased = true;
       this.calculateForJCB();
     } else {
+      this.isTimeBased = false;
       this.calculateSubTotal();
     }
   }
@@ -429,9 +432,11 @@ export class CreateInvoiceComponent implements OnInit {
       this.productRate = challan.chal_prod_rate;
       challan.isChallanInUse = true;
       if(this.productId == 18 || this.productId == 19 || this.productId == 21 || this.productId == 22){
+        this.isTimeBased = true;
         let totalHours = this.getJCBHours(this.productQuantity);
         this.productSubTotalAmount = totalHours * this.productRate;
       } else {
+        this.isTimeBased = false;
         this.productSubTotalAmount = this.productQuantity * this.productRate;
       }
       this.productTaxAmount = this.productSubTotalAmount * (this.gstPercentage / 100);
@@ -619,9 +624,11 @@ export class CreateInvoiceComponent implements OnInit {
         for (var i = 0; i < this.localProductList.length; i++) {
           if (this.localProductList[i].prod_id == 18 || this.localProductList[i].prod_id == 19 || this.localProductList[i].prod_id == 21 || this.localProductList[i].prod_id == 22) {
             // Calculation for JCB
+            this.isTimeBased = true;
             let totalHours = this.getJCBHours(this.localProductList[i].prod_qty);
             this.localProductList[i].prod_sub_total = this.localProductList[i].prod_rate * totalHours;
           } else {
+            this.isTimeBased = false;
             this.localProductList[i].prod_sub_total = this.localProductList[i].prod_rate * this.localProductList[i].prod_qty;
           }
           this.localProductList[i].prod_tax = this.localProductList[i].prod_sub_total * (this.localProductList[i].prod_percentage / 100);
@@ -634,9 +641,11 @@ export class CreateInvoiceComponent implements OnInit {
         for (var i = 0; i < this.localProductList.length; i++) {
           if (this.localProductList[i].prod_id == 18 || this.localProductList[i].prod_id == 19 || this.localProductList[i].prod_id == 21 || this.localProductList[i].prod_id == 22  || this.localProductList[i].prod_id == 24) {
             // Calculation for JCB
+            this.isTimeBased = true;
             let totalHours = this.getJCBHours(this.localProductList[i].prod_qty);
             this.localProductList[i].prod_sub_total = this.localProductList[i].prod_rate * totalHours;
           } else {
+            this.isTimeBased = false;
             this.localProductList[i].prod_sub_total = this.localProductList[i].prod_rate * this.localProductList[i].prod_qty;
           }
           this.localProductList[i].prod_total_amount = this.localProductList[i].prod_sub_total;

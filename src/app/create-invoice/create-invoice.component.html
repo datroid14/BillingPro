@@ -121,14 +121,14 @@
                         <th>
                             <form (keydown)="keyDownFunction($event)">
                                 <mat-form-field class="table-form-field">
-                                    <input matInput type="number" [(ngModel)]="productQuantity" name="productQuantity" (ngModelChange)="(productId == 18 || productId == 19 || productId == 21 || productId == 22 || productId == 24) ? calculateForJCB() : calculateSubTotal()" maxlength="6" required>
+                                    <input matInput type="number" [(ngModel)]="productQuantity" name="productQuantity" (ngModelChange)=" isTimeBased ? calculateForJCB() : calculateSubTotal()" maxlength="6" required>
                                 </mat-form-field>
                             </form>
                         </th>
                         <th>
                             <form (keydown)="keyDownFunction($event)">
                                 <mat-form-field class="table-form-field">
-                                    <input matInput type="number" [(ngModel)]="productRate" name="productRate" (ngModelChange)="(productId == 18 || productId == 19 || productId == 21 || productId == 22 || productId == 24) ? calculateForJCB() : calculateSubTotal()" maxlength="8" required>
+                                    <input matInput type="number" [(ngModel)]="productRate" name="productRate" (ngModelChange)="isTimeBased ? calculateForJCB() : calculateSubTotal()" maxlength="8" required>
                                 </mat-form-field>
                             </form>
                         </th>
@@ -260,6 +260,6 @@
         <button mat-raised-button color="primary" (click)="createInvoice()">{{buttonLabel}}</button>
         <button mat-raised-button color="primary" (click)="cancelClicked()" [disabled]="isCancelDisabled">CANCEL</button>
         <button mat-raised-button color="primary" (click)="printInvoiceDetail()" [disabled]="!isFieldDisabled">PRINT</button>
-        <button mat-raised-button color="primary" (click)="printChallanStatement()" *ngIf="isFieldDisabled && localProductList.length> 7">CHALLAN STATEMENT</button>
+        <button mat-raised-button color="primary" (click)="printChallanStatement()" *ngIf="isFieldDisabled && localProductList.length>= 6">CHALLAN STATEMENT</button>
     </mat-card-actions>
 </mat-card>
