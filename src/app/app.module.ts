@@ -87,10 +87,13 @@ import { TripDetailService } from './add-trip-detail/trip-detail.service';
 import { CardDetailService } from './add-card-detail/card-detail.service';
 import { DashboardService } from './dashboard/dashboard.service';
 import { InsuranceService } from './add-insurance-detail/insurance.service';
+import { MaintenanceService } from './add-maintenance-detail/maintenance.service';
 import { ExcelService } from './common/excel.service';
 import { ViewInsuranceDetailComponent } from './view-insurance-detail/view-insurance-detail.component';
 import { AddInsuranceDetailComponent } from './add-insurance-detail/add-insurance-detail.component';
 import { ViewChallanStatementComponent } from './view-challan-statement/view-challan-statement.component';
+import { ViewMaintenanceDetailComponent } from './view-maintenance-detail/view-maintenance-detail.component';
+import { AddMaintenanceDetailComponent } from './add-maintenance-detail/add-maintenance-detail.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -137,6 +140,8 @@ const appRoutes: Routes = [
   { path: 'view-emi-detail', component: ViewEmiDetailComponent },
   { path: 'view-insurance-detail', component: ViewInsuranceDetailComponent },
   { path: 'view-challan-statement', component: ViewChallanStatementComponent },
+  { path: 'view-maintenance-detail', component: ViewMaintenanceDetailComponent },
+  { path: 'add-maintenance-detail', component: AddMaintenanceDetailComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 
@@ -186,7 +191,9 @@ const appRoutes: Routes = [
     AddTripDetailComponent,
     ViewInsuranceDetailComponent,
     AddInsuranceDetailComponent,
-    ViewChallanStatementComponent
+    ViewChallanStatementComponent,
+    ViewMaintenanceDetailComponent,
+    AddMaintenanceDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -215,7 +222,7 @@ const appRoutes: Routes = [
   providers: [AppService, CustomerService, VendorService, ProductService, QuatationService, ChallanService, 
     PurchaseService, VehicleService, InvoiceService, GSTService, ChequeEntryService, EmployeeService, 
     DieselEntryService, PaymentService, AccountService, CardDetailService, EmiDetailService, TripDetailService,
-    DashboardService, ExcelService, InsuranceService],
+    DashboardService, ExcelService, InsuranceService, MaintenanceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

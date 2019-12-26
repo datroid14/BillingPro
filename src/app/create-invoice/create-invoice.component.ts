@@ -674,4 +674,15 @@ export class CreateInvoiceComponent implements OnInit {
     }
     return parseInt(timeArr[0]) + hours;
   }
+
+  cancelInvoice(){
+    const cancelInvoicePayload = { "data": { "inv_id": this.invoiceId } };
+
+    this.invoiceService.cancelInvoiceById(cancelInvoicePayload).subscribe(response => {
+      console.log(response.message);
+    },
+      error => {
+        console.log(error)
+      });
+  }
 }

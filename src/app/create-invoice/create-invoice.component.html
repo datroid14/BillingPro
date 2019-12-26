@@ -259,6 +259,7 @@
     <mat-card-actions>
         <button mat-raised-button color="primary" (click)="createInvoice()">{{buttonLabel}}</button>
         <button mat-raised-button color="primary" (click)="cancelClicked()" [disabled]="isCancelDisabled">CANCEL</button>
+        <button mat-raised-button color="primary" (click)="cancelInvoice()" [disabled]="isCancelDisabled">CANCEL INVOICE</button>
         <button mat-raised-button color="primary" (click)="printInvoiceDetail()" [disabled]="!isFieldDisabled">PRINT</button>
         <button mat-raised-button color="primary" (click)="printChallanStatement()" *ngIf="isFieldDisabled && localProductList.length>= 6">CHALLAN STATEMENT</button>
     </mat-card-actions>

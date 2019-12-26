@@ -26,6 +26,7 @@ export class AddPurchaseComponent implements OnInit {
   buttonLabel: string;
   isFieldDisabled: boolean;
   isCancelDisabled: boolean;
+  isEditClicked: boolean;
   isWithoutTax: boolean = false;
 
   challanNumber: number;
@@ -187,6 +188,8 @@ export class AddPurchaseComponent implements OnInit {
     if (this.buttonLabel == "SAVE") {
       if (this.purchaseDate != undefined && this.purchaseInvoiceNo != undefined && this.vendorName != undefined && this.vendorAddress != undefined && this.contactNo != undefined && (this.localProductList != undefined && this.localProductList.length > 0)) {
         var formattedPurchaseDate = moment(this.purchaseDate).format('YYYY-MM-DD');
+        if (this.isEditClicked) {
+          this.isEditClicked = false;
         const payload = { "data": { "pur_date": formattedPurchaseDate, "pur_invoice_no": this.purchaseInvoiceNo, "pur_product_total": this.subTotalAmount, "pur_total_tax": this.taxTotalAmount, "pur_total_amount": this.totalPurchaseAmount, "pur_round_off": this.roundOffAmount, "pur_without_tax": 0, "pur_vendor_id": this.vendorId, "pur_products": this.localProductList } };
         this.purchaseService.addPurchase(payload).subscribe(response => {
           if (response.status == 200) {
@@ -196,11 +199,23 @@ export class AddPurchaseComponent implements OnInit {
           error => {
             console.log(error)
           });
+        } else {
+          const payload = { "data": { "pur_date": formattedPurchaseDate, "pur_invoice_no": this.purchaseInvoiceNo, "pur_product_total": this.subTotalAmount, "pur_total_tax": this.taxTotalAmount, "pur_total_amount": this.totalPurchaseAmount, "pur_round_off": this.roundOffAmount, "pur_without_tax": 0, "pur_vendor_id": this.vendorId, "pur_products": this.localProductList } };
+        this.purchaseService.addPurchase(payload).subscribe(response => {
+          if (response.status == 200) {
+            this.location.back();
+          }
+        },
+          error => {
+            console.log(error)
+          });
+        }
       } else {
         alert('Please fill all mandatory Invoice fields');
       }
     } else {
       this.buttonLabel = "SAVE";
+      this.isEditClicked = true;
       this.isFieldDisabled = false;
       this.isCancelDisabled = false;
     }

@@ -34,6 +34,14 @@
         </mat-form-field>
 
         <mat-form-field>
+            <mat-select [(ngModel)]="payeeInvoiceNo" name="payeeInvoiceNo" placeholder="Payee Invoice No" [disabled]="isFieldDisabled" required>
+                <mat-option *ngFor="let payeeInvoice of payeeInvoices" [value]="payeeInvoice.pur_invoice_no">
+                    {{payeeInvoice.pur_invoice_no}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
             <input matInput type="number" [(ngModel)]="paymentAmount" placeholder="Amount" [disabled]="isFieldDisabled" maxlength="8" required>
         </mat-form-field>
 

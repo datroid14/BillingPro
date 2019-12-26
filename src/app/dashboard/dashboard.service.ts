@@ -2,6 +2,7 @@ import { Observable } from 'rxjs/Observable';
 import { tap } from 'rxjs/operators';
 import { DashboardResponse } from './dashboard.response';
 import { InvoiceResponse } from '../create-invoice/invoice.response';
+import { InventoryResponse } from '../dashboard/inventory.response';
 
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -42,6 +43,11 @@ export class DashboardService {
 
     getSelectedMonthInvoices(payload): Observable<InvoiceResponse> {
         return this.http.post<InvoiceResponse>(constants.serverUrl + 'getSelectedMonthInvoices',  payload, httpOptions)
+            .pipe(tap(res => null));
+    }
+
+    getInventoryDetails(payload): Observable<InventoryResponse> {
+        return this.http.post<InventoryResponse>(constants.serverUrl + 'getInventoryDetails',  payload, httpOptions)
             .pipe(tap(res => null));
     }
 }

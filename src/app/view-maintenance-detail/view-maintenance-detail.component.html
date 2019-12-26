@@ -1,0 +1,48 @@
+<div>
+    <label>Maintenance Details</label>
+    <button (click)="showMaintenanceDetail();">ADD NEW</button>
+</div>
+
+<div class="example-container mat-elevation-z8">
+
+    <mat-card style="padding:5px">
+        <mat-table #table [dataSource]="dataSource">
+
+            <!-- Policy No Column -->
+            <ng-container matColumnDef="invoice_date">
+                <mat-header-cell *matHeaderCellDef> Invoice Date </mat-header-cell>
+                <mat-cell *matCellDef="let maintenance"> {{maintenance.maint_invoice_date}} </mat-cell>
+            </ng-container>
+
+            <!-- Policy Issued Date Column -->
+            <ng-container matColumnDef="invoice_no">
+                <mat-header-cell *matHeaderCellDef> Invoice Number </mat-header-cell>
+                <mat-cell *matCellDef="let maintenance"> {{maintenance.maint_invoice_no}} </mat-cell>
+            </ng-container>
+
+            <!-- Email Column -->
+            <ng-container matColumnDef="supplier">
+                <mat-header-cell *matHeaderCellDef> Supplier </mat-header-cell>
+                <mat-cell *matCellDef="let maintenance"> {{maintenance.maint_supplier}} </mat-cell>
+            </ng-container>
+
+            <!-- Vehicle No Column -->
+            <ng-container matColumnDef="vehicle_no">
+                <mat-header-cell *matHeaderCellDef> Vehicle Number </mat-header-cell>
+                <mat-cell *matCellDef="let maintenance"> {{maintenance.maint_vehicle_no}} </mat-cell>
+            </ng-container>
+
+            <!-- Email Column -->
+            <ng-container matColumnDef="amount">
+                <mat-header-cell *matHeaderCellDef> Invoice Amount </mat-header-cell>
+                <mat-cell *matCellDef="let maintenance"> {{maintenance.maint_invoice_amount}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showMaintenanceDetail(row)"></mat-row>
+        </mat-table>
+
+        <mat-paginator #paginator [pageSize]="15" [pageSizeOptions]="[15,20]" [showFirstLastButtons]="true">
+        </mat-paginator>
+    </mat-card>
+</div>

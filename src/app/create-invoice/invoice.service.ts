@@ -91,4 +91,10 @@ export class InvoiceService {
             return this.http.post<AddResponse>(constants.serverUrl + 'sendMail', payload, httpOptions)
             .pipe(tap(res => null));
       }
+
+      cancelInvoiceById(payload:Object): Observable<AddResponse> {
+            return this.http
+                  .post<AddResponse>(constants.serverUrl + 'cancelInvoiceById', payload, httpOptions)
+                  .pipe(tap(res => null));
+      }
 }
