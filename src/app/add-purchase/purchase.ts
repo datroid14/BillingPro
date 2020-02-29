@@ -8,6 +8,7 @@ export class Purchase {
     pur_vend_address: string;
     pur_contact_person: string;
     pur_contact_no: string;
+    pur_total_amount: number;
     pur_products: PurchaseProduct[];
 
     constructor(id, date, vendor, address, contact_person, contact, products){

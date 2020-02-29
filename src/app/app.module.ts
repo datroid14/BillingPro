@@ -94,6 +94,7 @@ import { AddInsuranceDetailComponent } from './add-insurance-detail/add-insuranc
 import { ViewChallanStatementComponent } from './view-challan-statement/view-challan-statement.component';
 import { ViewMaintenanceDetailComponent } from './view-maintenance-detail/view-maintenance-detail.component';
 import { AddMaintenanceDetailComponent } from './add-maintenance-detail/add-maintenance-detail.component';
+import { ShowInventoryComponent } from './show-inventory/show-inventory.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -142,6 +143,7 @@ const appRoutes: Routes = [
   { path: 'view-challan-statement', component: ViewChallanStatementComponent },
   { path: 'view-maintenance-detail', component: ViewMaintenanceDetailComponent },
   { path: 'add-maintenance-detail', component: AddMaintenanceDetailComponent },
+  { path: 'show-inventory', component: ShowInventoryComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 
@@ -193,7 +195,8 @@ const appRoutes: Routes = [
     AddInsuranceDetailComponent,
     ViewChallanStatementComponent,
     ViewMaintenanceDetailComponent,
-    AddMaintenanceDetailComponent
+    AddMaintenanceDetailComponent,
+    ShowInventoryComponent
   ],
   imports: [
     BrowserModule,

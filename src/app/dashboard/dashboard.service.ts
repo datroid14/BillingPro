@@ -47,7 +47,7 @@ export class DashboardService {
     }
 
     getInventoryDetails(payload): Observable<InventoryResponse> {
-        return this.http.post<InventoryResponse>(constants.serverUrl + 'getInventoryDetails',  payload, httpOptions)
+        return this.http.post<InventoryResponse>(constants.serverUrl + 'getInventoryDetails', payload, httpOptions)
             .pipe(tap(res => null));
     }
 }

@@ -1,0 +1,92 @@
+<style>
+    table,
+    th,
+    td {
+        border: 1px solid grey;
+        border-collapse: collapse;
+        padding: 2px;
+    }
+</style>
+<label>Inventory Details</label>
+
+<div><label>Select month</label>
+    <mat-form-field>
+        <mat-select [(ngModel)]="monthName" name="monthName" required>
+            <mat-option *ngFor="let month of months" [value]="month.value" (click)="setMonthSelected(month.index)">
+                {{month.value}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <label>Select year</label>
+    <mat-form-field>
+        <mat-select [(ngModel)]="yearName" name="yearName" required>
+            <mat-option *ngFor="let year of years" [value]="year.value" (click)="setYearSelected(year.value)">
+                {{year.value}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+
+<table style="width:100%;">
+    <tr>
+        <th>Date</th>
+        <th>Particulars</th>
+        <th>Debit</th>
+        <th>Credit</th>
+    </tr>
+    <tr *ngFor=" let purchase of purchases " align="center ">
+        <td>{{ purchase.pur_date | date }} </td>
+        <td> Purchase from <b>{{ purchase.pur_vendor }} - {{ purchase.pur_invoice_no }} </b></td>
+        <td>{{ purchase.pur_total_amount }}/- </td>
+        <td> </td>
+    </tr>
+    <tr *ngFor="let invoice of invoices " align="center ">
+        <td> {{ invoice.inv_date | date }} </td>
+        <td> Sale to <b> {{ invoice.inv_customer }} - {{ invoice.inv_number }} </b></td>
+        <td> </td>
+        <td>{{ invoice.inv_total_amount }}/- </td>
+    </tr>
+    <tr *ngFor=" let maintenance of maintenanceDetails" align="center ">
+        <td> {{ maintenance.maint_invoice_date | date }} </td>
+        <td> Maintenance done by <b>{{ maintenance.maint_supplier }} - {{ maintenance.maint_vehicle_no }} </b></td>
+        <td> {{ maintenance.maint_invoice_amount }}/- </td>
+        <td> </td>
+    </tr>
+    <tr *ngFor=" let dieselEntry of dieselEntries" align="center ">
+        <td> {{ dieselEntry.diesel_filling_date | date }} </td>
+        <td> Diesel filled by <b>{{ dieselEntry.emp_name }} </b></td>
+        <td>{{ dieselEntry.diesel_amount }}/- </td>
+        <td> </td>
+    </tr>
+    <tr *ngFor=" let emi of emiDetails" align="center ">
+        <td> {{ emi.emi_date | date }} </td>
+        <td> EMI of <b>{{ emi.veh_number }}</b> </td>
+        <td>{{ emi.emi_amount }}/- </td>
+        <td> </td>
+    </tr>
+    <tr *ngFor=" let insurance of insuranceDetails" align="center ">
+        <td> {{ insurance.policy_issued_date | date }} </td>
+        <td> Insurance of <b>{{ insurance.veh_number }} </b></td>
+        <td>{{ insurance.premium_amount }}/- </td>
+        <td> </td>
+    </tr>
+    <tr *ngFor=" let trip of tripDetails" align="center ">
+        <td> {{ trip.trip_date | date }} </td>
+        <td> EMI of <b>{{ trip.veh_number }}</b> </td>
+        <td>{{ tripTotal }}/- </td>
+        <td> </td>
+    </tr>
+    <tr *ngFor=" let card of cardDetails" align="center ">
+        <td> {{ card.card_date | date }} </td>
+        <td> Card detail of <b>{{ card.veh_number }} </b></td>
+        <td>{{ cardTotal }}/- </td>
+        <td> </td>
+    </tr>
+    <tr>
+        <td> </td>
+        <th>Total</th>
+        <th> {{ this.debitTotal }}/-</th>
+        <th>{{ this.invoiceTotal }}/-</th>
+    </tr>
+</table>

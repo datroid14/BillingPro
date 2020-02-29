@@ -7,9 +7,9 @@ export class TripDetail {
     public material_qty: number;
     public driver_id: number;
     public driver_expenses_amount: number;
-    public diesel_expenses_amount: string;
+    public diesel_expenses_amount: number;
     public toll_charges: number;
     public worker_charges: number;
     public washing_charges: number;
-    public maintenance_charges: string;
+    public maintenance_charges: number;
 }

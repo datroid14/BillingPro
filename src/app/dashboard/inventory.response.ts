@@ -1,10 +1,8 @@
-import { Invoice } from '../create-invoice/invoice';
-import { Purchase } from '../add-purchase/purchase';
+import { Inventory } from '../dashboard/inventory';
 
-export class InvoiceResponse {
+export class InventoryResponse {
 
     public status: number;
     public message: string;
-    public invoices: Invoice[];
-    public purchases: Purchase[];
+    public inventory: Inventory;
 }
