@@ -1,4 +1,4 @@
-<div>
+<div class="margin_8">
     <label>Vendor Details</label>
     <button (click)="showVendorDetails();">ADD NEW</button>
 </div>
@@ -9,8 +9,8 @@
 
         <mat-form-field style="width:40%">
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
-        </mat-form-field> 
-        
+        </mat-form-field>
+
         <mat-table #table [dataSource]="dataSource">
 
             <!-- Name Column -->

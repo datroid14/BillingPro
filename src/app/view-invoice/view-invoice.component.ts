@@ -1,16 +1,16 @@
-import { Component, ViewChild } from '@angular/core';
-import { InvoiceService } from "../create-invoice/invoice.service";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { InvoiceService } from '../create-invoice/invoice.service';
 import { Router, NavigationExtras } from '@angular/router';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { AppService } from '../app.service';
 import * as moment from 'moment';
 
 @Component({
-  selector: 'view-invoice',
+  selector: 'app-view-invoice',
   templateUrl: './view-invoice.component.html',
   styleUrls: ['./view-invoice.component.css']
 })
-export class ViewInvoiceComponent {
+export class ViewInvoiceComponent implements OnInit {
 
   invoices;
 
@@ -29,8 +29,8 @@ export class ViewInvoiceComponent {
   }
 
   showInvoiceDetails(invoice) {
-    if (invoice != undefined) {
-      let navigationExtras: NavigationExtras = {
+    if (invoice !== undefined) {
+      const navigationExtras: NavigationExtras = {
         queryParams: { inv_id: invoice.inv_id }
       };
       // Redirect it to View Product screen
@@ -51,7 +51,7 @@ export class ViewInvoiceComponent {
         this.dataSource.paginator = this.paginator;
       },
         error => {
-          console.log(error)
+          console.log(error);
         });
     } else {
       this.invoiceService.getInvoices().subscribe(response => {
@@ -63,9 +63,13 @@ export class ViewInvoiceComponent {
         this.dataSource.paginator = this.paginator;
       },
         error => {
-          console.log(error)
+          console.log(error);
         });
     }
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 }
 

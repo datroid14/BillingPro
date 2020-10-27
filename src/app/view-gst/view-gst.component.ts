@@ -26,7 +26,6 @@ export class ViewGstComponent implements OnInit {
 
     this.gstService.getGSTDetails().subscribe(response => {
       this.gst_details = response.gst_details;
-      console.log("GST "+this.gst_details);
       this.dataSource = new MatTableDataSource<GST>(this.gst_details);
       this.dataSource.paginator = this.paginator;
     },
@@ -54,5 +53,4 @@ export interface GST {
   gst_name: string;
   gst_percentage: string;
   gst_desc: string;
-  
 }

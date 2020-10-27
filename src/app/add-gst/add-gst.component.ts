@@ -156,14 +156,14 @@ export class AddGstComponent implements OnInit {
     const deletePayload = { "data": { "gst_id": this.gstId } };
     this.gstService.deleteGSTDetails(deletePayload).subscribe(response => {
       if (response.status == 200) {
-        console.log("Delete vendor " + response);
+        console.log("Delete gst " + response);
         this.location.back();
       } else if (response.status == 501) {
         console.log(response.message);
       }
     },
       error => {
-        console.log(error)
+        console.log(error);
       });
   }
 

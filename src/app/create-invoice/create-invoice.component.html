@@ -20,8 +20,11 @@
         </mat-form-field>
 
         <mat-form-field>
-            <input matInput [(ngModel)]="invoiceNumber" placeholder="Invoice Number" [disabled]="isFieldDisabled" required>
+            <input matInput [(ngModel)]="invoiceNumber" placeholder="Invoice Number" [disabled]="isFieldDisabled" (change)="checkDuplicateInvoice()" required>
         </mat-form-field>
+        <label *ngIf="isInvoiceExist" style="color: red;">
+            Invoice number already exists.
+        </label>
 
         <mat-form-field>
             <mat-select [(ngModel)]="customerName" name="customerName" placeholder="Customer Name" [disabled]="isFieldDisabled" required>
@@ -257,9 +260,9 @@
         </mat-card>
     </mat-card-content>
     <mat-card-actions>
-        <button mat-raised-button color="primary" (click)="createInvoice()">{{buttonLabel}}</button>
+        <button mat-raised-button color="primary" (click)="createInvoice()" [disabled]="isInvoiceExist">{{buttonLabel}}</button>
         <button mat-raised-button color="primary" (click)="cancelClicked()" [disabled]="isCancelDisabled">CANCEL</button>
-        <button mat-raised-button color="primary" (click)="cancelInvoice()" [disabled]="isCancelDisabled">CANCEL INVOICE</button>
+        <button mat-raised-button color="primary" (click)="cancelInvoice()" [disabled]="!isCancelDisabled">CANCEL INVOICE</button>
         <button mat-raised-button color="primary" (click)="printInvoiceDetail()" [disabled]="!isFieldDisabled">PRINT</button>
         <button mat-raised-button color="primary" (click)="printChallanStatement()" *ngIf="isFieldDisabled && localProductList.length>= 6">CHALLAN STATEMENT</button>
     </mat-card-actions>

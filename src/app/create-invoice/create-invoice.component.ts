@@ -13,7 +13,7 @@ import { GSTService } from "../add-gst/gst.service";
 import * as moment from 'moment';
 
 @Component({
-  selector: 'create-invoice',
+  selector: 'app-create-invoice',
   templateUrl: './create-invoice.component.html',
   styleUrls: ['./create-invoice.component.css'],
 })
@@ -30,6 +30,7 @@ export class CreateInvoiceComponent implements OnInit {
   gstDetails;
   localProductList: InvoiceProduct[];
   tempChallanList;
+  isInvoiceExist: boolean;
 
   buttonLabel: string;
   isFieldDisabled: boolean;
@@ -104,33 +105,33 @@ export class CreateInvoiceComponent implements OnInit {
       this.customers = response.customers;
     },
       error => {
-        console.log(error)
+        console.log(error);
       });
 
     this.productService.getProducts().subscribe(response => {
       this.products = response.products;
     },
       error => {
-        console.log(error)
+        console.log(error);
       });
 
     this.gstService.getGSTDetails().subscribe(response => {
       this.gstDetails = response.gst_details;
     },
       error => {
-        console.log(error)
+        console.log(error);
       });
 
     this.vehicleService.getVehicles().subscribe(response => {
       this.vehicles = response.vehicles;
     },
       error => {
-        console.log(error)
+        console.log(error);
       });
   }
 
   showUIChanges() {
-    if (this.invoiceId != undefined) {
+    if (this.invoiceId !== undefined) {
 
       // Disable all fields for view mode
       this.isFieldDisabled = true;
@@ -173,7 +174,7 @@ export class CreateInvoiceComponent implements OnInit {
     this.isFieldDisabled = !this.isFieldDisabled;
     this.isCancelDisabled = !this.isCancelDisabled;
     // this.isWithoutTaxCheckVisible = false;
-    if (this.buttonLabel == "SAVE") {
+    if (this.buttonLabel === 'SAVE') {
       this.buttonLabel = "EDIT";
       // Show last shown record
       this.getInvoiceDetailById();
@@ -238,6 +239,7 @@ export class CreateInvoiceComponent implements OnInit {
                 this.location.back();
               }
             },
+            
               error => {
                 console.log(error)
               });
@@ -256,7 +258,7 @@ export class CreateInvoiceComponent implements OnInit {
                 console.log(error)
               });
           } else {
-            const invoicePayload = { "data": { "inv_date": formattedInvoiceDate, "inv_number":this.invoiceNumber, "inv_cust_id": this.customerId, "inv_product_total": this.subTotalAmount, "inv_total_tax": this.taxTotalAmount, "inv_total_amount": this.totalInvoiceAmount, "inv_round_off": this.roundOffAmount, "inv_without_tax": isTax, "inv_products": this.localProductList } };
+            const invoicePayload = { "data": { "inv_date": formattedInvoiceDate, "inv_number":this.invoiceNumber, "inv_cust_id": this.customerId, "inv_product_total": this.subTotalAmount, "inv_total_tax": this.taxTotalAmount, "inv_total_amount": this.totalInvoiceAmount, "inv_round_off": this.roundOffAmount, "inv_without_tax": isTax, "inv_is_cancelled":0, "inv_products": this.localProductList } };
             // Create invoice with tax service
             this.invoiceService.addInvoice(invoicePayload).subscribe(response => {
               if (response.status == 200) {
@@ -675,14 +677,26 @@ export class CreateInvoiceComponent implements OnInit {
     return parseInt(timeArr[0]) + hours;
   }
 
-  cancelInvoice(){
+  cancelInvoice() {
     const cancelInvoicePayload = { "data": { "inv_id": this.invoiceId } };
 
     this.invoiceService.cancelInvoiceById(cancelInvoicePayload).subscribe(response => {
       console.log(response.message);
     },
       error => {
-        console.log(error)
+        console.log(error);
+      });
+  }
+
+  checkDuplicateInvoice() {
+    const duplicateInvoicePayload = { "data": { "inv_number": this.invoiceNumber } };
+
+    this.invoiceService.checkDuplicateInvoice(duplicateInvoicePayload).subscribe(response => {
+      this.isInvoiceExist = response.duplicate;
+      console.log(response.message);
+    },
+      error => {
+        console.log(error);
       });
   }
 }

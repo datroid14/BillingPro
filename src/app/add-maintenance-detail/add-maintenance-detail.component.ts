@@ -7,6 +7,8 @@ import { AppService } from '../app.service';
 import { Maintenance } from './maintenance';
 import { Vehicle } from '../add-vehicle/vehicle';
 import * as moment from 'moment';
+import { AccountService } from '../add-account/account.service';
+import { Account } from '../add-account/account';
 
 @Component({
   selector: 'add-maintenance-detail',
@@ -17,6 +19,7 @@ import * as moment from 'moment';
 export class AddMaintenanceDetailComponent implements OnInit {
 
   vehicles: Vehicle[];
+  accounts: Account[];
   maintenance_details: Maintenance[];
   maintenanceId: number;
   invoiceDate: Date;
@@ -26,6 +29,10 @@ export class AddMaintenanceDetailComponent implements OnInit {
   vehicleNumber: string;
   invoiceAmount: number;
   paymentMethod: string;
+  accountNo: string;
+  bankDetails: string;
+
+  paymentModes = [{ payment_mode: "Cash" }, { payment_mode: "Cheque" }];
 
   // Flag for enabling/disabling all fields in view mode
   isFieldDisabled: boolean;
@@ -45,7 +52,7 @@ export class AddMaintenanceDetailComponent implements OnInit {
   removeImagePath: string;
 
   public constructor(private route: ActivatedRoute, private appService: AppService, private maintenanceService: MaintenanceService,
-    private vehicleService: VehicleService, private location: Location) {
+    private vehicleService: VehicleService, private location: Location, private accountService: AccountService) {
     this.route.queryParams.subscribe(params => {
       this.maintenanceId = params["maintenance_id"];
     });
@@ -64,6 +71,13 @@ export class AddMaintenanceDetailComponent implements OnInit {
       error => {
         console.log(error)
       });
+
+      this.accountService.getAccounts().subscribe(response => {
+        this.accounts = response.account_details;
+      },
+        error => {
+          console.log(error)
+        });
 
     // Make necessary changes based on selection from view payment details
     this.showUIChanges();
@@ -104,7 +118,7 @@ export class AddMaintenanceDetailComponent implements OnInit {
         var formattedInvoiceDate = moment(this.invoiceDate).format('YYYY-MM-DD');
         if (this.isEditClicked) {
           this.isEditClicked = false;
-          const updatePayload = { "data": { "maintenance_id": this.maintenanceId, "maint_invoice_date": formattedInvoiceDate, "maint_invoice_no": this.invoiceNumber, "maint_supplier":this.supplierName, "maint_vehicle_id": this.vehicleId, "maint_invoice_amount": this.invoiceAmount, "maint_payment_method": this.paymentMethod } };
+          const updatePayload = { "data": { "maintenance_id": this.maintenanceId, "maint_invoice_date": formattedInvoiceDate, "maint_invoice_no": this.invoiceNumber, "maint_supplier":this.supplierName, "maint_vehicle_id": this.vehicleId, "maint_invoice_amount": this.invoiceAmount, "maint_payment_method": this.paymentMethod, "maint_account_no": this.accountNo, "maint_bank_name": this.bankDetails } };
           this.maintenanceService.updateMaintenanceDetail(updatePayload).subscribe(response => {
             if (response.status == 200) {
               this.location.back();
@@ -114,7 +128,7 @@ export class AddMaintenanceDetailComponent implements OnInit {
               console.log(error)
             });
         } else {
-          const addPayload = { "data": { "maint_invoice_date": formattedInvoiceDate, "maint_invoice_no": this.invoiceNumber, "maint_supplier":this.supplierName, "maint_vehicle_id": this.vehicleId, "maint_invoice_amount": this.invoiceAmount, "maint_payment_method": this.paymentMethod } };
+          const addPayload = { "data": { "maint_invoice_date": formattedInvoiceDate, "maint_invoice_no": this.invoiceNumber, "maint_supplier":this.supplierName, "maint_vehicle_id": this.vehicleId, "maint_invoice_amount": this.invoiceAmount, "maint_payment_method": this.paymentMethod, "maint_account_no": this.accountNo, "maint_bank_name": this.bankDetails }};
           this.maintenanceService.addMaintenanceDetail(addPayload).subscribe(response => {
             if (response.status == 200) {
               this.location.back();

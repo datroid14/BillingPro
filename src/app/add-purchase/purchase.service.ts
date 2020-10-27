@@ -43,4 +43,16 @@ export class PurchaseService {
                   .post<AddResponse>(constants.serverUrl + 'addPurchase', payload, httpOptions)
                   .pipe(tap(res => null));
       }
+
+      updatePurchase(payload:Object): Observable<AddResponse> {
+            return this.http
+                  .post<AddResponse>(constants.serverUrl + 'updatePurchase', payload, httpOptions)
+                  .pipe(tap(res => null));
+      }
+
+
+      getPurchaseListByVendorId(payload: Object): Observable<PurchaseResponse> {
+            return this.http.post<PurchaseResponse>(constants.serverUrl + 'getPurchaseListByVendorId', payload, httpOptions)
+                  .pipe(tap(res => null));
+      }
 }

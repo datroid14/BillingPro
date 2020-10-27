@@ -124,7 +124,9 @@ export class AddProductComponent implements OnInit {
     if (this.buttonLabel == "SAVE") {
       if (this.productName != undefined && this.productUnit != undefined && this.productPrice != undefined) {
         this.isDeleteDisabled = false;
-
+        if(this.productDesc == undefined){
+          this.productDesc = "";
+        }
         if (this.isEditClicked) {
           const updatePayload = { "data": { "prod_id": this.productId, "prod_name": this.productName, "prod_desc": this.productDesc, "prod_unit": this.productUnit, "prod_rate": this.productPrice, "prod_gst_id": this.productHSNId } };
 

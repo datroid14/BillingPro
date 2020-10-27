@@ -6,6 +6,7 @@ import { AddResponse } from '../common/add.response';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { constants } from '../common/constants';
+import { DuplicateInvoiceResponse } from './duplicate-invoice.response';
 
 const httpOptions = {
       headers: new HttpHeaders({
@@ -81,7 +82,7 @@ export class InvoiceService {
                   .pipe(tap(res => null));
       }
 
-      getInvoiceProductsQuantityById(payload:Object): Observable<InvoiceProductResponse> {
+      getInvoiceProductsQuantityById(payload: Object): Observable<InvoiceProductResponse> {
             return this.http
                   .post<InvoiceProductResponse>(constants.serverUrl + 'getInvoiceProductsQuantityById', payload, httpOptions)
                   .pipe(tap(res => null));
@@ -92,9 +93,15 @@ export class InvoiceService {
             .pipe(tap(res => null));
       }
 
-      cancelInvoiceById(payload:Object): Observable<AddResponse> {
+      cancelInvoiceById(payload: Object): Observable<AddResponse> {
             return this.http
                   .post<AddResponse>(constants.serverUrl + 'cancelInvoiceById', payload, httpOptions)
+                  .pipe(tap(res => null));
+      }
+
+      checkDuplicateInvoice(payload: Object): Observable<DuplicateInvoiceResponse> {
+            return this.http
+                  .post<DuplicateInvoiceResponse>(constants.serverUrl + 'checkDuplicateInvoice', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 }

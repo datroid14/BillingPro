@@ -1,4 +1,4 @@
-<div>
+<div class="margin_8">
     <label>Purchase Details</label>
     <button (click)="showPurchaseDetails();">ADD NEW</button>
 </div>
@@ -6,8 +6,11 @@
 <div class="example-container mat-elevation-z8">
 
     <mat-card style="padding:5px">
-        <mat-table #table [dataSource]="dataSource">
+        <mat-form-field style="width:40%">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+        </mat-form-field>
 
+        <mat-table #table [dataSource]="dataSource">
             <!-- Date Column -->
             <ng-container matColumnDef="date">
                 <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>

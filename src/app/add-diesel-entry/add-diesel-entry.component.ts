@@ -133,7 +133,7 @@ export class AddDieselEntryComponent implements OnInit {
   addDieselEntry() {
     if (this.buttonLabel == "SAVE") {
       if (this.dieselFilledDate != undefined && this.employeeName != undefined && this.dieselQuantity != undefined && this.dieselAmount != undefined) {
-        var formattedDieselDate = moment(this.dieselFilledDate).format('DD-MM-YYYY');
+        var formattedDieselDate = moment(this.dieselFilledDate).format('YYYY-MM-DD');
         if (this.isEditClicked) {
           const updatePayload = { "data": { "diesel_entry_id": this.dieselEntryId, "diesel_filling_date": formattedDieselDate, "diesel_qty": this.dieselQuantity, "diesel_amount": this.dieselAmount, "emp_id": this.employeeId, "veh_id": this.vehicleId, "pump_address": this.pumpAddress } };
           this.dieselEntryService.updateDieselEntry(updatePayload).subscribe(response => {

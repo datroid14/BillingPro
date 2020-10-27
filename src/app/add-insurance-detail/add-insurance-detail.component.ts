@@ -102,6 +102,9 @@ export class AddInsuranceDetailComponent implements OnInit {
     if (this.buttonLabel == "SAVE") {
       if (this.policyNumber != undefined && this.policyIssuedDate != undefined && this.vehicleNumber != undefined && this.premiumAmount != undefined && this.insuranceCompany != undefined && this.nomineeName != undefined) {
         var formattedIssuedDate = moment(this.policyIssuedDate).format('YYYY-MM-DD');
+        if(this.additionalComments == undefined){
+          this.additionalComments = "";
+        }
         if (this.isEditClicked) {
           this.isEditClicked = false;
           const updatePayload = { "data": { "insurance_id": this.insuranceId, "policy_no": this.policyNumber, "policy_issued_date": formattedIssuedDate, "vehicle_id": this.vehicleId, "premium_amount": this.premiumAmount, "insurance_company": this.insuranceCompany, "nominee_name":this.nomineeName, "additional_comments": this.additionalComments } };
@@ -213,7 +216,7 @@ export class AddInsuranceDetailComponent implements OnInit {
 
     this.policyNumber = insurance.policy_no;
     this.policyIssuedDate = insurance.policy_issued_date;
-    this.vehicleId = insurance.veh_id;
+    this.vehicleId = insurance.vehicle_id;
     this.vehicleNumber = insurance.vehicle_no;
     this.premiumAmount = insurance.premium_amount;
     this.insuranceCompany = insurance.insurance_company;

@@ -38,8 +38,25 @@
         </mat-form-field>
 
         <mat-form-field>
-            <input matInput [(ngModel)]="paymentMethod" placeholder="Payment Method" [disabled]="isFieldDisabled" required>
+            <mat-select [(ngModel)]="paymentMode" name="paymentMode" placeholder="Payment Mode" [disabled]="isFieldDisabled" required>
+                <mat-option *ngFor="let mode of paymentModes" [value]="mode.payment_mode">
+                    {{mode.payment_mode}}
+                </mat-option>
+            </mat-select>
         </mat-form-field>
+
+        <mat-form-field *ngIf="paymentMode != 'Cash'">
+            <mat-select [(ngModel)]="accountNo" name="accountNo" placeholder="Account Number" [disabled]="isFieldDisabled" required>
+                <mat-option *ngFor="let account of accounts" [value]="account.account_number" (click)="setAccountDetail(account)">
+                    {{account.account_number}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="paymentMode != 'Cash'">
+            <input matInput [(ngModel)]="bankDetails" placeholder="Bank Details" [disabled]="true" required>
+        </mat-form-field>
+
     </mat-card-content>
     <mat-card-actions>
         <button mat-raised-button color="primary" (click)="addMaintenanceDetail();">{{buttonLabel}}</button>

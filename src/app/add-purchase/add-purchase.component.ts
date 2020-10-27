@@ -182,6 +182,8 @@ export class AddPurchaseComponent implements OnInit {
   removeProduct(product) {
     const index = this.localProductList.indexOf(product);
     this.localProductList.splice(index, 1);
+
+    this.calculatePurchaseTotal();
   }
 
   addPurchase() {
@@ -190,8 +192,8 @@ export class AddPurchaseComponent implements OnInit {
         var formattedPurchaseDate = moment(this.purchaseDate).format('YYYY-MM-DD');
         if (this.isEditClicked) {
           this.isEditClicked = false;
-        const payload = { "data": { "pur_date": formattedPurchaseDate, "pur_invoice_no": this.purchaseInvoiceNo, "pur_product_total": this.subTotalAmount, "pur_total_tax": this.taxTotalAmount, "pur_total_amount": this.totalPurchaseAmount, "pur_round_off": this.roundOffAmount, "pur_without_tax": 0, "pur_vendor_id": this.vendorId, "pur_products": this.localProductList } };
-        this.purchaseService.addPurchase(payload).subscribe(response => {
+        const payload = { "data": { "pur_id":this.purchaseId, "pur_date": formattedPurchaseDate, "pur_invoice_no": this.purchaseInvoiceNo, "pur_product_total": this.subTotalAmount, "pur_total_tax": this.taxTotalAmount, "pur_total_amount": this.totalPurchaseAmount, "pur_round_off": this.roundOffAmount, "pur_without_tax": 0, "pur_vendor_id": this.vendorId, "pur_products": this.localProductList } };
+        this.purchaseService.updatePurchase(payload).subscribe(response => {
           if (response.status == 200) {
             this.location.back();
           }
@@ -322,6 +324,7 @@ export class AddPurchaseComponent implements OnInit {
     this.purchaseDate = purchase.pur_date;
     this.purchaseInvoiceNo = purchase.pur_invoice_no;
     this.challanNumber = purchase.pur_chal_no;
+    this.vendorId = purchase.pur_vendor_id;
     this.vendorName = purchase.pur_vendor;
     this.contactPerson = purchase.pur_contact_person;
     this.vendorAddress = purchase.vend_address;
@@ -351,7 +354,7 @@ export class AddPurchaseComponent implements OnInit {
       this.localProductList = response.products;
       for (var i = 0; i < this.localProductList.length; i++) {
         if (this.localProductList[i].pur_chal_date != null) {
-          this.localProductList[i].pur_chal_date = moment(this.localProductList[i].pur_chal_date).format('DD MMM YYYY');
+          this.localProductList[i].pur_chal_date = moment(this.localProductList[i].pur_chal_date).format('YYYY/MM/DD');
         } else {
           this.localProductList[i].pur_chal_date = "";
         }

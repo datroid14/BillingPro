@@ -1,11 +1,11 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { CustomerService } from "../add-customer/customer.service";
+import { CustomerService } from '../add-customer/customer.service';
 import { Router, NavigationExtras } from '@angular/router';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { AppService } from '../app.service';
 
 @Component({
-  selector: 'view-customer',
+  selector: 'app-view-customer',
   templateUrl: './view-customer.component.html',
   styleUrls: ['./view-customer.component.css']
 })
@@ -24,21 +24,21 @@ export class ViewCustomerComponent implements OnInit {
   ngOnInit() {
     // Show drawer
     this.appService.showDrawer(true);
-    
+
     this.customerService.getCustomers().subscribe(response => {
       this.customers = response.customers;
       this.dataSource = new MatTableDataSource<CUSTOMER>(this.customers);
       this.dataSource.paginator = this.paginator;
     },
       error => {
-        console.log(error)
+        console.log(error);
       });
   }
 
   showCustomerDetails(customer) {
 
-    if (customer != undefined) {
-      let navigationExtras: NavigationExtras = {
+    if (customer !== undefined) {
+      const navigationExtras: NavigationExtras = {
         queryParams: { cust_id: customer.cust_id }
       };
       // Redirect it to View Product screen

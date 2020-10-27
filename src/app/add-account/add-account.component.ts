@@ -155,11 +155,11 @@ export class AddAccountComponent implements OnInit {
     }
   }
 
-  deleteCustomer() {
+  deleteAccount() {
     const deletePayload = { "data": { "account_id": this.accountId } };
     this.accountService.deleteAccount(deletePayload).subscribe(response => {
       if (response.status == 200) {
-        console.log("Delete customer " + response.message);
+        console.log("Delete account " + response.message);
         this.location.back();
       } else if (response.status == 501) {
         console.log(response.message);

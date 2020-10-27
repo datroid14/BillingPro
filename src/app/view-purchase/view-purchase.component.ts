@@ -1,12 +1,12 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { PurchaseService } from "../add-purchase/purchase.service";
+import { PurchaseService } from '../add-purchase/purchase.service';
 import { Router, NavigationExtras } from '@angular/router';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { AppService } from '../app.service';
 import * as moment from 'moment';
 
 @Component({
-  selector: 'view-purchase',
+  selector: 'app-view-purchase',
   templateUrl: './view-purchase.component.html',
   styleUrls: ['./view-purchase.component.css']
 })
@@ -29,7 +29,7 @@ export class ViewPurchaseComponent implements OnInit {
 
     this.purchaseService.getPurchases().subscribe(response => {
       this.purchases = response.purchases;
-      if (this.purchases != undefined) {
+      if (this.purchases !== undefined) {
         for (let i = 0; i < this.purchases.length; i++) {
           this.purchases[i].pur_date = moment(this.purchases[i].pur_date).format('DD MMM YYYY');
         }
@@ -38,13 +38,13 @@ export class ViewPurchaseComponent implements OnInit {
       }
     },
       error => {
-        console.log(error)
+        console.log(error);
       });
   }
 
   showPurchaseDetails(purchase) {
-    if (purchase != undefined) {
-      let navigationExtras: NavigationExtras = {
+    if (purchase !== undefined) {
+      const navigationExtras: NavigationExtras = {
         queryParams: { pur_id: purchase.pur_id }
       };
       // Redirect it to View Product screen
@@ -52,6 +52,10 @@ export class ViewPurchaseComponent implements OnInit {
     } else {
       this.router.navigate(['/add-purchase']);
     }
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 }
 

@@ -12,19 +12,17 @@
         </div>
 
         <mat-form-field>
-            <input matInput [matDatepicker]="picker" placeholder="Purchase Date" [(ngModel)]="purchaseDate"
-                [disabled]="isFieldDisabled">
+            <input matInput [matDatepicker]="picker" placeholder="Purchase Date" [(ngModel)]="purchaseDate" [disabled]="isFieldDisabled">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field>
-            <input matInput [(ngModel)]="purchaseInvoiceNo" placeholder="Invoice Number" [disabled]="isFieldDisabled" required>
+            <input matInput [(ngModel)]="purchaseInvoiceNo" placeholder="Purchase Invoice Number" [disabled]="isFieldDisabled" required>
         </mat-form-field>
 
         <mat-form-field>
-            <mat-select [(ngModel)]="vendorName" name="vendorName" placeholder="Supplier Name"
-                [disabled]="isFieldDisabled" required>
+            <mat-select [(ngModel)]="vendorName" name="vendorName" placeholder="Supplier Name" [disabled]="isFieldDisabled" required>
                 <mat-option *ngFor="let vendor of vendors" [value]="vendor.vend_name" (click)="setVendorDetail(vendor)">
                     {{vendor.vend_name}}
                 </mat-option>
@@ -40,8 +38,7 @@
         </mat-form-field>
 
         <mat-form-field>
-            <input matInput type="number" [(ngModel)]="contactNo" placeholder="Contact Number" [disabled]="true"
-                maxlength="10" required>
+            <input matInput type="number" [(ngModel)]="contactNo" placeholder="Contact Number" [disabled]="true" maxlength="10" required>
         </mat-form-field>
 
         <mat-card class="inner-card-css">
@@ -72,8 +69,7 @@
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput [matDatepicker]="picker" [(ngModel)]="challanDate"
-                                    [disabled]="isFieldDisabled">
+                                <input matInput [matDatepicker]="picker" [(ngModel)]="challanDate" [disabled]="isFieldDisabled">
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-datepicker #picker></mat-datepicker>
                             </mat-form-field>
@@ -86,8 +82,7 @@
                         <th>
                             <mat-form-field class="table-form-wide-field">
                                 <mat-select [(ngModel)]="productName" name="productName">
-                                    <mat-option *ngFor="let product of products" [value]="product.prod_name"
-                                        (click)="setProductDetail(product)">
+                                    <mat-option *ngFor="let product of products" [value]="product.prod_name" (click)="setProductDetail(product)">
                                         {{product.prod_name}}
                                     </mat-option>
                                 </mat-select>
@@ -105,32 +100,27 @@
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="productRate"
-                                    (ngModelChange)="calculateSubTotal($event)" maxlength="8" required>
+                                <input matInput type="number" [(ngModel)]="productRate" (ngModelChange)="calculateSubTotal($event)" maxlength="8" required>
                             </mat-form-field>
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="productQuantity" step="0.10"
-                                    (ngModelChange)="calculateSubTotal($event)" maxlength="8" required>
+                                <input matInput type="number" [(ngModel)]="productQuantity" step="0.10" (ngModelChange)="calculateSubTotal($event)" maxlength="8" required>
                             </mat-form-field>
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="productSubTotalAmount"
-                                    (ngModelChange)="calculateTaxAmount()" disabled="true" maxlength="8" required>
+                                <input matInput type="number" [(ngModel)]="productSubTotalAmount" (ngModelChange)="calculateTaxAmount()" disabled="true" maxlength="8" required>
                             </mat-form-field>
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="productTaxAmount" maxlength="8"
-                                    disabled="true" required>
+                                <input matInput type="number" [(ngModel)]="productTaxAmount" maxlength="8" disabled="true" required>
                             </mat-form-field>
                         </th>
                         <th>
                             <mat-form-field class="table-form-field">
-                                <input matInput type="number" [(ngModel)]="productTotalAmount" maxlength="8"
-                                    disabled="true" required>
+                                <input matInput type="number" [(ngModel)]="productTotalAmount" maxlength="8" disabled="true" required>
                             </mat-form-field>
                         </th>
                         <th>
@@ -192,10 +182,10 @@
                         </td>
                         <td style="text-align:center">
                             <b>{{(taxTotalAmount).toFixed(2)}}</b>
-                        <td style="text-align:center">
-                            <b>{{(totalPurchaseAmount).toFixed(2)}}</b>
-                        </td>
-                        <td></td>
+                            <td style="text-align:center">
+                                <b>{{(totalPurchaseAmount).toFixed(2)}}</b>
+                            </td>
+                            <td></td>
                     </tr>
 
                     <tr>
@@ -251,8 +241,7 @@
     </mat-card-content>
     <mat-card-actions>
         <button mat-raised-button color="primary" (click)="addPurchase()">{{buttonLabel}}</button>
-        <button mat-raised-button color="primary" (click)="cancelClicked()"
-            [disabled]="isCancelDisabled">CANCEL</button>
+        <button mat-raised-button color="primary" (click)="cancelClicked()" [disabled]="isCancelDisabled">CANCEL</button>
         <!-- <button mat-raised-button color="primary" (click)="printPurchaseDetail()" [disabled]="!isCancelDisabled">PRINT</button> -->
     </mat-card-actions>
 </mat-card>

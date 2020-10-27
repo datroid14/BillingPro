@@ -1,12 +1,12 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { ChallanService } from "../create-challan/challan.service";
+import { ChallanService } from '../create-challan/challan.service';
 import { Router, NavigationExtras } from '@angular/router';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { AppService } from '../app.service';
 import * as moment from 'moment';
 
 @Component({
-  selector: 'view-chalan',
+  selector: 'app-view-chalan',
   templateUrl: './view-challan.component.html',
   styleUrls: ['./view-challan.component.css']
 })
@@ -37,13 +37,13 @@ export class ViewChallanComponent implements OnInit {
 
     },
       error => {
-        console.log(error)
+        console.log(error);
       });
   }
 
   showChallanDetails(challan) {
-    if (challan != undefined) {
-      let navigationExtras: NavigationExtras = {
+    if (challan !== undefined) {
+      const navigationExtras: NavigationExtras = {
         queryParams: { chal_id: challan.chal_id }
       };
       // Redirect it to View Product screen
@@ -51,6 +51,10 @@ export class ViewChallanComponent implements OnInit {
     } else {
       this.router.navigate(['/create-challan']);
     }
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 }
 

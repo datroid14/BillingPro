@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
+import * as moment from 'moment';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-view-challan-copy',
@@ -9,7 +11,7 @@ import { ActivatedRoute } from "@angular/router";
 export class ViewChallanCopyComponent {
 
   challanNo: number;
-  challanDate: Date;
+  challanDate: string;
   customerName: string;
   customerAddress: string;
   contactPerson: string;
@@ -19,10 +21,10 @@ export class ViewChallanCopyComponent {
   productQty: number;
   vehicleNo: string;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private location: Location) {
     this.route.queryParams.subscribe(params => {
       this.challanNo = params["chal_id"];
-      this.challanDate = params["chal_date"];
+      this.challanDate = moment(params["chal_date"]).format('DD MMM YYYY');
       this.customerName = params["chal_cust_name"];
       this.customerAddress = params["chal_cust_address"];
       this.contactNo = params["chal_contact_no"];
@@ -51,6 +53,10 @@ export class ViewChallanCopyComponent {
       </html>`
     );
     popupWin.document.close();
+  }
+
+  back() {
+    this.location.back();
   }
 }
 

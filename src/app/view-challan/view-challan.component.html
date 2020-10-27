@@ -1,4 +1,4 @@
-<div>
+<div class="margin_8">
     <label>Delivery Challan Details</label>
     <button (click)="showChallanDetails();">ADD NEW</button>
 </div>
@@ -6,12 +6,15 @@
 <div class="example-container mat-elevation-z8">
 
     <mat-card style="padding:5px">
-        <mat-table #table [dataSource]="dataSource">
+        <mat-form-field style="width:40%">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+        </mat-form-field>
 
+        <mat-table #table [dataSource]="dataSource">
             <!-- Position Column -->
             <ng-container matColumnDef="chal_no">
-                    <mat-header-cell *matHeaderCellDef> Challan No </mat-header-cell>
-                    <mat-cell *matCellDef="let challan"> {{challan.chal_no}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef> Challan No </mat-header-cell>
+                <mat-cell *matCellDef="let challan"> {{challan.chal_no}} </mat-cell>
             </ng-container>
 
             <!-- Position Column -->

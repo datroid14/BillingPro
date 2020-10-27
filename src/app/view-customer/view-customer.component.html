@@ -1,18 +1,15 @@
-<div>
+<div class="margin_8">
     <label>Customer Details</label>
     <button (click)="showCustomerDetails();">ADD NEW</button>
 </div>
 
 <div>
-
     <mat-card style="padding:5px">
-
         <mat-form-field style="width:40%">
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
         </mat-form-field>
 
         <mat-table #table [dataSource]="dataSource">
-
             <!-- Name Column -->
             <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>

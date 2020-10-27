@@ -30,7 +30,7 @@ export class ViewMaintenanceDetailComponent implements OnInit {
       this.maintenance_details = response.maintenance_details;
       // Format the date in required format
       for (let i = 0; i < this.maintenance_details.length; i++) {
-        this.maintenance_details[i].maint_invoice_date = moment(this.maintenance_details[i].policy_issued_date).format('DD MMM YYYY');
+        this.maintenance_details[i].maint_invoice_date = moment(this.maintenance_details[i].maint_invoice_date).format('DD MMM YYYY');
       }
       this.dataSource = new MatTableDataSource<INSURANCE>(this.maintenance_details);
       this.dataSource.paginator = this.paginator;
