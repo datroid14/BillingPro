@@ -173,6 +173,8 @@ export class AddDieselEntryComponent implements OnInit {
     this.dieselFilledDate = undefined;
     this.dieselQuantity = undefined;
     this.dieselAmount = undefined;
+    this.vehicleNumber = undefined;
+    this.pumpAddress = undefined;
   }
 
   deleteDieselEntry() {

@@ -116,6 +116,10 @@ export class AddMaintenanceDetailComponent implements OnInit {
     if (this.buttonLabel == "SAVE") {
       if (this.invoiceDate != undefined && this.invoiceNumber != undefined && this.supplierName != undefined && this.vehicleNumber != undefined && this.invoiceAmount != undefined) {
         var formattedInvoiceDate = moment(this.invoiceDate).format('YYYY-MM-DD');
+        if(this.paymentMethod === 'Cash'){
+          this.accountNo = '';
+          this.bankDetails = '';
+        }
         if (this.isEditClicked) {
           this.isEditClicked = false;
           const updatePayload = { "data": { "maintenance_id": this.maintenanceId, "maint_invoice_date": formattedInvoiceDate, "maint_invoice_no": this.invoiceNumber, "maint_supplier":this.supplierName, "maint_vehicle_id": this.vehicleId, "maint_invoice_amount": this.invoiceAmount, "maint_payment_method": this.paymentMethod, "maint_account_no": this.accountNo, "maint_bank_name": this.bankDetails } };
@@ -158,6 +162,8 @@ export class AddMaintenanceDetailComponent implements OnInit {
     this.vehicleNumber = undefined;
     this.invoiceAmount = undefined;
     this.paymentMethod = undefined;
+    this.accountNo = undefined;
+    this.bankDetails = undefined;
   }
 
   changeButtonLabel(isDisabled) {
@@ -168,7 +174,7 @@ export class AddMaintenanceDetailComponent implements OnInit {
     }
   }
 
-  addNewInsuranceDetail() {
+  addNewMaintenanceDetail() {
 
     this.isFieldDisabled = !this.isFieldDisabled;
     this.isCancelDisabled = !this.isCancelDisabled;
