@@ -15,7 +15,7 @@ export class ViewPurchaseComponent implements OnInit {
 
   purchases;
 
-  displayedColumns = ['date', 'vendor', 'contact_person', 'contact'];
+  displayedColumns = ['date', 'number', 'vendor', 'contact_person', 'contact'];
   dataSource;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -62,6 +62,7 @@ export class ViewPurchaseComponent implements OnInit {
 export interface PURCHASE {
   pur_id: number;
   pur_date: Date;
+  pur_invoice_no: string;
   pur_cust_name: string;
   pur_cust_address: string;
   pur_contact_person: string;

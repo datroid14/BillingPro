@@ -28,7 +28,7 @@ export class AddMaintenanceDetailComponent implements OnInit {
   vehicleId: number;
   vehicleNumber: string;
   invoiceAmount: number;
-  paymentMethod: string;
+  paymentMode: string;
   accountNo: string;
   bankDetails: string;
 
@@ -116,13 +116,13 @@ export class AddMaintenanceDetailComponent implements OnInit {
     if (this.buttonLabel == "SAVE") {
       if (this.invoiceDate != undefined && this.invoiceNumber != undefined && this.supplierName != undefined && this.vehicleNumber != undefined && this.invoiceAmount != undefined) {
         var formattedInvoiceDate = moment(this.invoiceDate).format('YYYY-MM-DD');
-        if(this.paymentMethod === 'Cash'){
+        if(this.paymentMode === 'Cash'){
           this.accountNo = '';
           this.bankDetails = '';
         }
         if (this.isEditClicked) {
           this.isEditClicked = false;
-          const updatePayload = { "data": { "maintenance_id": this.maintenanceId, "maint_invoice_date": formattedInvoiceDate, "maint_invoice_no": this.invoiceNumber, "maint_supplier":this.supplierName, "maint_vehicle_id": this.vehicleId, "maint_invoice_amount": this.invoiceAmount, "maint_payment_method": this.paymentMethod, "maint_account_no": this.accountNo, "maint_bank_name": this.bankDetails } };
+          const updatePayload = { "data": { "maintenance_id": this.maintenanceId, "maint_invoice_date": formattedInvoiceDate, "maint_invoice_no": this.invoiceNumber, "maint_supplier":this.supplierName, "maint_vehicle_id": this.vehicleId, "maint_invoice_amount": this.invoiceAmount, "maint_payment_method": this.paymentMode, "maint_account_no": this.accountNo, "maint_bank_name": this.bankDetails } };
           this.maintenanceService.updateMaintenanceDetail(updatePayload).subscribe(response => {
             if (response.status == 200) {
               this.location.back();
@@ -132,7 +132,7 @@ export class AddMaintenanceDetailComponent implements OnInit {
               console.log(error)
             });
         } else {
-          const addPayload = { "data": { "maint_invoice_date": formattedInvoiceDate, "maint_invoice_no": this.invoiceNumber, "maint_supplier":this.supplierName, "maint_vehicle_id": this.vehicleId, "maint_invoice_amount": this.invoiceAmount, "maint_payment_method": this.paymentMethod, "maint_account_no": this.accountNo, "maint_bank_name": this.bankDetails }};
+          const addPayload = { "data": { "maint_invoice_date": formattedInvoiceDate, "maint_invoice_no": this.invoiceNumber, "maint_supplier":this.supplierName, "maint_vehicle_id": this.vehicleId, "maint_invoice_amount": this.invoiceAmount, "maint_payment_method": this.paymentMode, "maint_account_no": this.accountNo, "maint_bank_name": this.bankDetails }};
           this.maintenanceService.addMaintenanceDetail(addPayload).subscribe(response => {
             if (response.status == 200) {
               this.location.back();
@@ -161,7 +161,7 @@ export class AddMaintenanceDetailComponent implements OnInit {
     this.vehicleId = undefined;
     this.vehicleNumber = undefined;
     this.invoiceAmount = undefined;
-    this.paymentMethod = undefined;
+    this.paymentMode = undefined;
     this.accountNo = undefined;
     this.bankDetails = undefined;
   }
@@ -237,7 +237,7 @@ export class AddMaintenanceDetailComponent implements OnInit {
     this.vehicleId = maintenance.maint_vehicle_id;
     this.vehicleNumber = maintenance.maint_vehicle_no;
     this.invoiceAmount = maintenance.maint_invoice_amount;
-    this.paymentMethod = maintenance.maint_payment_method;
+    this.paymentMode = maintenance.maint_payment_method;
   }
 
   setVehicleDetail(vehicle) {
