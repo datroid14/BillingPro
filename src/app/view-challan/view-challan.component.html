@@ -53,6 +53,12 @@
                 <mat-cell *matCellDef="let chalan"> {{chalan.chal_veh_no}} </mat-cell>
             </ng-container>
 
+            <!-- Is Invoice created Column -->
+            <ng-container matColumnDef="invoice_created">
+                <mat-header-cell *matHeaderCellDef> Invoice Created </mat-header-cell>
+                <mat-cell *matCellDef="let chalan"> {{chalan.chal_is_invoice_created}} </mat-cell>
+            </ng-container>
+
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showChallanDetails(row)"></mat-row>
         </mat-table>

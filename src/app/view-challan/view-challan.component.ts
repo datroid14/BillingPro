@@ -15,7 +15,7 @@ export class ViewChallanComponent implements OnInit {
 
   challans;
 
-  displayedColumns = ['chal_no', 'name', 'address', 'material', 'unit', 'quantity', 'vehicle'];
+  displayedColumns = ['chal_no', 'name', 'address', 'material', 'unit', 'quantity', 'vehicle', 'invoice_created'];
   dataSource;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -31,6 +31,11 @@ export class ViewChallanComponent implements OnInit {
       this.challans = response.challans;
       for (let i = 0; i < this.challans.length; i++) {
         this.challans[i].cheque_date = moment(this.challans[i].cheque_date).format('DD MMM YYYY');
+        if(this.challans[i].chal_is_invoice_created == 1) {
+          this.challans[i].chal_is_invoice_created = 'Yes';
+        } else {
+          this.challans[i].chal_is_invoice_created = 'No';
+        }
       }
       this.dataSource = new MatTableDataSource<CHALLAN>(this.challans);
       this.dataSource.paginator = this.paginator;
@@ -67,5 +72,6 @@ export interface CHALLAN {
   chal_prod_unit: string;
   chal_quantity: number;
   chal_veh_no: string;
+  chal_is_invoices_created: number;
 }
 
