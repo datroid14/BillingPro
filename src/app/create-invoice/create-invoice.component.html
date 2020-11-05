@@ -156,7 +156,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let product of localProductList;let i=index " (click)="editProduct(i)">
+                    <tr *ngFor="let product of localProductList;let i=index;" (click)="editProduct(i)">
                         <td class="input-text ">{{i+1}}</td>
                         <td class="input-text ">{{product.chal_no}}</td>
                         <td class="input-text ">{{product.chal_date}}</td>
@@ -264,6 +264,6 @@
         <button mat-raised-button color="primary" (click)="cancelClicked()" [disabled]="isCancelDisabled">CANCEL</button>
         <button mat-raised-button color="primary" (click)="cancelInvoice()" [disabled]="!isCancelDisabled">CANCEL INVOICE</button>
         <button mat-raised-button color="primary" (click)="printInvoiceDetail()" [disabled]="!isFieldDisabled">PRINT</button>
-        <button mat-raised-button color="primary" (click)="printChallanStatement()" *ngIf="isFieldDisabled && localProductList.length>= 4">CHALLAN STATEMENT</button>
+        <button mat-raised-button color="primary" (click)="printChallanStatement()" *ngIf="isFieldDisabled && localProductList.length > 7">CHALLAN STATEMENT</button>
     </mat-card-actions>
 </mat-card>
