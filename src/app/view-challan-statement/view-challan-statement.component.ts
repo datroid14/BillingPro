@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { InvoiceProduct } from "../create-invoice/invoice.product";
-import { InvoiceService } from "../create-invoice/invoice.service";
-import { AppService } from '../app.service';
+import { InvoiceProduct } from '../create-invoice/invoice.product';
+import { InvoiceService } from '../create-invoice/invoice.service';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { Location } from '@angular/common';
@@ -18,9 +17,9 @@ export class ViewChallanStatementComponent implements OnInit {
   invoiceProductsQuantity: InvoiceProduct[];
 
   constructor(private invoiceService: InvoiceService, private route: ActivatedRoute,
-    private appService: AppService, private location: Location) {
+    private location: Location) {
     this.route.queryParams.subscribe(params => {
-      this.invoiceId = params["inv_id"];
+      this.invoiceId = params['inv_id'];
     });
   }
 
@@ -29,7 +28,7 @@ export class ViewChallanStatementComponent implements OnInit {
   }
 
   getInvoiceProducts() {
-    const productPayload = { "data": { "inv_id": this.invoiceId } };
+    const productPayload = { 'data': { 'inv_id': this.invoiceId } };
 
     this.invoiceService.getInvoiceProductsById(productPayload).subscribe(response => {
       this.invoiceProducts = response.products;
@@ -37,7 +36,7 @@ export class ViewChallanStatementComponent implements OnInit {
       this.getInvoiceProductsQuantity(productPayload);
     },
       error => {
-        console.log(error)
+        console.log(error);
       });
   }
 
@@ -46,11 +45,11 @@ export class ViewChallanStatementComponent implements OnInit {
     this.invoiceService.getInvoiceProductsQuantityById(payload).subscribe(response => {
       this.invoiceProductsQuantity = response.products;
       // Format date for displaying in desire format
-      if (this.invoiceProducts != undefined && this.invoiceProducts.length > 0) {
-        for (var i = 0; i < this.invoiceProducts.length; i++) {
+      if (this.invoiceProducts !== undefined && this.invoiceProducts.length > 0) {
+        for (let i = 0; i < this.invoiceProducts.length; i++) {
           this.invoiceProducts[i].chal_date = moment(this.invoiceProducts[i].chal_date).format('DD MMM YYYY');
-          for (var j = 0; j < this.invoiceProductsQuantity.length; j++) {
-            if (this.invoiceProducts[i].prod_id == this.invoiceProductsQuantity[j].prod_id) {
+          for (let j = 0; j < this.invoiceProductsQuantity.length; j++) {
+            if (this.invoiceProducts[i].prod_id === this.invoiceProductsQuantity[j].prod_id) {
               this.invoiceProducts[i].prod_total_qty = this.invoiceProductsQuantity[j].prod_total_qty;
             }
           }
@@ -58,7 +57,7 @@ export class ViewChallanStatementComponent implements OnInit {
       }
     },
       error => {
-        console.log(error)
+        console.log(error);
       });
   }
 
@@ -75,7 +74,7 @@ export class ViewChallanStatementComponent implements OnInit {
                 display: flex;
                 flex-direction: row;
             }
-            
+
             .container-vertical-css {
                 display: flex;
                 flex-direction: column;

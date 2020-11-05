@@ -7,8 +7,8 @@ export class InvoiceProduct {
     chal_date: string;
     veh_number: string;
     prod_name: string;
-    prod_gst_id:number;
-    prod_hsn: number;
+    prod_gst_id: number;
+    prod_hsn: string;
     prod_percentage: number;
     prod_unit: string;
     prod_rate: number;

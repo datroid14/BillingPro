@@ -1,5 +1,10 @@
 <mat-card class="inner-card-css">
     <div id="print-section">
+        <mat-card-header>
+            <mat-card-title>
+                <h2>Challan Details</h2>
+            </mat-card-title>
+        </mat-card-header>
         <mat-card-content>
             <table style="width: 100%;">
                 <thead>
@@ -19,17 +24,13 @@
                         <td class="input-text">{{product.chal_date}}</td>
                         <td class="input-text">{{product.chal_no}}</td>
                         <td class="input-text">{{product.veh_number}}</td>
-                        <td class="input-text"><span
-                                *ngIf=" i != 0 ? invoiceProducts[i-1].prod_id != product.prod_id : true">{{product.prod_name}}</span><br>
-                            <span
-                                *ngIf="i !=  invoiceProducts.length-1 ? invoiceProducts[i+1].prod_id != product.prod_id : true">
+                        <td class="input-text"><span *ngIf=" i != 0 ? invoiceProducts[i-1].prod_id != product.prod_id : true">{{product.prod_name}}</span><br>
+                            <span *ngIf="i !=  invoiceProducts.length-1 ? invoiceProducts[i+1].prod_id != product.prod_id : true">
                                 <hr> Total </span></td>
-                        <td class="input-text"><span
-                                *ngIf=" i != 0 ? invoiceProducts[i-1].prod_id != product.prod_id : true">{{product.prod_unit}}</span>
+                        <td class="input-text"><span *ngIf=" i != 0 ? invoiceProducts[i-1].prod_id != product.prod_id : true">{{product.prod_unit}}</span>
                         </td>
                         <td class="input-text">{{product.prod_qty}}<br>
-                            <span
-                                *ngIf="i !=  invoiceProducts.length-1 ? invoiceProducts[i+1].prod_id != product.prod_id : true">
+                            <span *ngIf="i !=  invoiceProducts.length-1 ? invoiceProducts[i+1].prod_id != product.prod_id : true">
                                 <hr> {{product.prod_total_qty}}</span>
                         </td>
                     </tr>
@@ -37,7 +38,7 @@
             </table>
         </mat-card-content>
     </div>
-    <mat-card-actions>
+    <mat-card-actions style="margin: 8px;">
         <button mat-raised-button color="primary" (click)="back()">BACK</button>
         <button mat-raised-button color="primary" (click)="printChallan()">PRINT</button>
     </mat-card-actions>

@@ -1,11 +1,13 @@
 .container-css {
     display: flex;
     flex-direction: row;
+    justify-content: center;
 }
 
 .container-vertical-css {
     display: flex;
     flex-direction: column;
+    justify-content: center;
 }
 
 .container-css>* {
@@ -21,7 +23,7 @@
 }
 
 .input-css {
-    padding: 12px;
+    padding: 8px;
     /* font-family: sans-serif;
     font-size: 0.6em; */
 }

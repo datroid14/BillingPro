@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
-import { CustomerService } from "../add-customer/customer.service";
-import { ChallanService } from "../create-challan/challan.service";
-import { ProductService } from "../add-product/product.service";
-import { VehicleService } from "../add-vehicle/vehicle.service";
-import { InvoiceService } from "../create-invoice/invoice.service";
-import { InvoiceProduct } from "../create-invoice/invoice.product";
-import { Challan } from "../create-challan/challan";
+import { CustomerService } from '../add-customer/customer.service';
+import { ChallanService } from '../create-challan/challan.service';
+import { ProductService } from '../add-product/product.service';
+import { VehicleService } from '../add-vehicle/vehicle.service';
+import { InvoiceService } from '../create-invoice/invoice.service';
+import { InvoiceProduct } from '../create-invoice/invoice.product';
 import { Location } from '@angular/common';
 import { AppService } from '../app.service';
-import { GSTService } from "../add-gst/gst.service";
+import { GSTService } from '../add-gst/gst.service';
 import * as moment from 'moment';
 
 @Component({
@@ -64,9 +63,9 @@ export class CreateInvoiceComponent implements OnInit {
   customerAddress: string;
   contactPerson: string;
   contactNo: string;
-  totalInvoiceAmount: number = 0;
-  roundOffAmount: number = 0;
-  netTotalAmount: number = 0;
+  totalInvoiceAmount = 0;
+  roundOffAmount = 0;
+  netTotalAmount = 0;
   gstId: number;
   gstPercentage: number;
   isWithoutTax: boolean;
@@ -83,10 +82,10 @@ export class CreateInvoiceComponent implements OnInit {
     private challanService: ChallanService, private invoiceService: InvoiceService, private route: ActivatedRoute,
     private appService: AppService, private location: Location, private gstService: GSTService, private vehicleService: VehicleService) {
     this.route.queryParams.subscribe(params => {
-      this.invoiceId = params["inv_id"];
+      this.invoiceId = params['inv_id'];
     });
-    this.addImagePath = "assets/images/ic_add_circle.svg";
-    this.removeImagePath = "assets/images/ic_remove_circle.svg";
+    this.addImagePath = 'assets/images/ic_add_circle.svg';
+    this.removeImagePath = 'assets/images/ic_remove_circle.svg';
   }
 
   ngOnInit() {
@@ -94,7 +93,6 @@ export class CreateInvoiceComponent implements OnInit {
     this.subTotalAmount = 0;
     this.totalInvoiceAmount = 0;
     this.isWithoutTax = false;
-    // this.isWithoutTaxCheckVisible = false;
     this.localProductList = [];
 
     this.appService.showDrawer(true);
@@ -164,9 +162,9 @@ export class CreateInvoiceComponent implements OnInit {
 
   changeButtonLabel(isDisabled) {
     if (isDisabled) {
-      this.buttonLabel = "EDIT";
+      this.buttonLabel = 'EDIT';
     } else {
-      this.buttonLabel = "SAVE";
+      this.buttonLabel = 'SAVE';
     }
   }
 
@@ -175,11 +173,11 @@ export class CreateInvoiceComponent implements OnInit {
     this.isCancelDisabled = !this.isCancelDisabled;
     // this.isWithoutTaxCheckVisible = false;
     if (this.buttonLabel === 'SAVE') {
-      this.buttonLabel = "EDIT";
+      this.buttonLabel = 'EDIT';
       // Show last shown record
       this.getInvoiceDetailById();
     } else {
-      this.buttonLabel = "SAVE";
+      this.buttonLabel = 'SAVE';
     }
   }
 
@@ -187,19 +185,21 @@ export class CreateInvoiceComponent implements OnInit {
     this.tempChallanList = [];
 
     // Add product to invoice products list
-    if (this.productName != undefined && this.productHSN != undefined && this.productQuantity != undefined && this.productRate != undefined && this.productSubTotalAmount != undefined && this.productTotalAmount != undefined) {
-      if (this.isWithoutTax || this.productTaxAmount == undefined) {
+    if (this.productName !== undefined && this.productHSN !== undefined && this.productQuantity !== undefined &&
+      this.productRate !== undefined && this.productSubTotalAmount !== undefined && this.productTotalAmount !== undefined) {
+      if (this.isWithoutTax || this.productTaxAmount === undefined) {
         this.productTaxAmount = 0;
       }
-      var formattedChallanDate = moment(this.challanDate).format('DD/MM/YYYY');
-
-      const product = new InvoiceProduct(this.productId, this.challanId, this.challanNo, formattedChallanDate, this.vehicleNo, this.productName, this.productGSTId, this.productHSN, this.gstPercentage, this.productUnit, this.productRate, this.productQuantity, this.productSubTotalAmount, this.productTaxAmount, this.productTotalAmount, 0);
+      const formattedChallanDate = moment(this.challanDate).format('DD/MM/YYYY');
+      const product = new InvoiceProduct(this.productId, this.challanId, this.challanNo, formattedChallanDate,
+        this.vehicleNo, this.productName, this.productGSTId, this.productHSN, this.gstPercentage, this.productUnit,
+        this.productRate, this.productQuantity, this.productSubTotalAmount, this.productTaxAmount, this.productTotalAmount, 0);
       this.localProductList.push(product);
       this.calculateInvoiceTotal();
       this.clearProductFields();
 
-      // Removing challan that is already added to product list 
-      for (var i = 0; i < this.challans.length; i++) {
+      // Removing challan that is already added to product list
+      for (let i = 0; i < this.challans.length; i++) {
         if (!this.challans[i].isChallanInUse) {
           this.tempChallanList.push(this.challans[i]);
         }
@@ -210,64 +210,92 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   createInvoice() {
-    if (this.buttonLabel == "SAVE") {
-      if (this.invoiceDate != undefined && this.invoiceNumber != undefined && this.customerName != undefined && this.customerAddress != undefined
-        && this.contactNo != undefined && (this.localProductList != undefined && this.localProductList.length > 0)) {
-        var formattedInvoiceDate = moment(this.invoiceDate).format('YYYY-MM-DD');
-        var isTax = 0
+    if (this.buttonLabel === 'SAVE') {
+      if (this.invoiceDate !== undefined && this.invoiceNumber !== undefined && this.customerName !== undefined &&
+        this.customerAddress !== undefined
+        && this.contactNo !== undefined && (this.localProductList !== undefined && this.localProductList.length > 0)) {
+        const formattedInvoiceDate = moment(this.invoiceDate).format('YYYY-MM-DD');
+        let isTax = 0;
         if (this.isWithoutTax) {
           isTax = 1;
         }
         if (this.isEditClicked) {
           this.isEditClicked = false;
           if (this.isWithoutTax) {
-            const updateWithoutTaxPayload = { "data": { "inv_id": this.invoiceId, "inv_date": formattedInvoiceDate, "inv_number":this.invoiceNumber, "inv_cust_id": this.customerId, "inv_product_total": this.subTotalAmount, "inv_total_amount": this.totalInvoiceAmount, "inv_round_off": this.roundOffAmount, "inv_without_tax": isTax, "inv_products": this.localProductList } };
+            const updateWithoutTaxPayload = {
+              'data': {
+                'inv_id': this.invoiceId, 'inv_date': formattedInvoiceDate,
+                'inv_number': this.invoiceNumber, 'inv_cust_id': this.customerId, 'inv_product_total': this.subTotalAmount,
+                'inv_total_amount': this.totalInvoiceAmount, 'inv_round_off': this.roundOffAmount, 'inv_without_tax': isTax,
+                'inv_products': this.localProductList
+              }
+            };
             // Update invoice without tax service
             this.invoiceService.updateInvoiceWithoutTax(updateWithoutTaxPayload).subscribe(response => {
-              if (response.status == 200) {
+              if (response.status === 200) {
                 this.location.back();
               }
             },
               error => {
-                console.log(error)
+                console.log(error);
               });
           } else {
-            const updatePayload = { "data": { "inv_id": this.invoiceId, "inv_date": formattedInvoiceDate, "inv_number":this.invoiceNumber, "inv_cust_id": this.customerId, "inv_product_total": this.subTotalAmount, "inv_total_tax": this.taxTotalAmount, "inv_total_amount": this.totalInvoiceAmount, "inv_round_off": this.roundOffAmount, "inv_without_tax": isTax, "inv_products": this.localProductList } };
+            const updatePayload = {
+              'data': {
+                'inv_id': this.invoiceId, 'inv_date': formattedInvoiceDate,
+                'inv_number': this.invoiceNumber, 'inv_cust_id': this.customerId, 'inv_product_total': this.subTotalAmount,
+                'inv_total_tax': this.taxTotalAmount, 'inv_total_amount': this.totalInvoiceAmount, 'inv_round_off': this.roundOffAmount,
+                'inv_without_tax': isTax, 'inv_products': this.localProductList
+              }
+            };
             // Update invoice with tax service
             this.invoiceService.updateInvoice(updatePayload).subscribe(response => {
-              if (response.status == 200) {
+              if (response.status === 200) {
                 this.location.back();
               }
             },
-            
+
               error => {
-                console.log(error)
+                console.log(error);
               });
           }
         } else {
           if (this.isWithoutTax) {
-            const invoiceWithoutTaxPayload = { "data": { "inv_date": formattedInvoiceDate, "inv_number":this.invoiceNumber, "inv_cust_id": this.customerId, "inv_product_total": this.subTotalAmount, "inv_total_amount": this.totalInvoiceAmount, "inv_round_off": this.roundOffAmount, "inv_without_tax": isTax, "inv_products": this.localProductList } };
+            const invoiceWithoutTaxPayload = {
+              'data': {
+                'inv_date': formattedInvoiceDate, 'inv_number': this.invoiceNumber,
+                'inv_cust_id': this.customerId, 'inv_product_total': this.subTotalAmount, 'inv_total_amount': this.totalInvoiceAmount,
+                'inv_round_off': this.roundOffAmount, 'inv_without_tax': isTax, 'inv_products': this.localProductList
+              }
+            };
             // Create invoice without tax service
             this.invoiceService.addInvoiceWithoutTax(invoiceWithoutTaxPayload).subscribe(response => {
-              if (response.status == 200) {
-                this.buttonLabel = "EDIT";
+              if (response.status === 200) {
+                this.buttonLabel = 'EDIT';
                 this.location.back();
               }
             },
               error => {
-                console.log(error)
+                console.log(error);
               });
           } else {
-            const invoicePayload = { "data": { "inv_date": formattedInvoiceDate, "inv_number":this.invoiceNumber, "inv_cust_id": this.customerId, "inv_product_total": this.subTotalAmount, "inv_total_tax": this.taxTotalAmount, "inv_total_amount": this.totalInvoiceAmount, "inv_round_off": this.roundOffAmount, "inv_without_tax": isTax, "inv_is_cancelled":0, "inv_products": this.localProductList } };
+            const invoicePayload = {
+              'data': {
+                'inv_date': formattedInvoiceDate, 'inv_number': this.invoiceNumber,
+                'inv_cust_id': this.customerId, 'inv_product_total': this.subTotalAmount, 'inv_total_tax': this.taxTotalAmount,
+                'inv_total_amount': this.totalInvoiceAmount, 'inv_round_off': this.roundOffAmount, 'inv_without_tax': isTax,
+                'inv_is_cancelled': 0, 'inv_products': this.localProductList
+              }
+            };
             // Create invoice with tax service
             this.invoiceService.addInvoice(invoicePayload).subscribe(response => {
-              if (response.status == 200) {
-                this.buttonLabel = "EDIT";
+              if (response.status === 200) {
+                this.buttonLabel = 'EDIT';
                 this.location.back();
               }
             },
               error => {
-                console.log(error)
+                console.log(error);
               });
           }
         }
@@ -276,7 +304,7 @@ export class CreateInvoiceComponent implements OnInit {
       }
     } else {
       this.isEditClicked = true;
-      this.buttonLabel = "SAVE";
+      this.buttonLabel = 'SAVE';
       this.isFieldDisabled = false;
       this.isCancelDisabled = false;
       this.getChallansByCustomerId();
@@ -315,7 +343,7 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   calculateSubTotal() {
-    if (this.productQuantity != undefined && this.productRate != undefined) {
+    if (this.productQuantity !== undefined && this.productRate !== undefined) {
       this.productSubTotalAmount = this.productQuantity * this.productRate;
 
       this.calculateTaxAmount();
@@ -328,15 +356,15 @@ export class CreateInvoiceComponent implements OnInit {
     this.taxTotalAmount = 0;
     this.totalInvoiceAmount = 0;
 
-    if (this.localProductList != undefined && this.localProductList.length > 0) {
+    if (this.localProductList !== undefined && this.localProductList.length > 0) {
       if (!this.isWithoutTax) {
-        for (var i = 0; i < this.localProductList.length; i++) {
+        for (let i = 0; i < this.localProductList.length; i++) {
           this.subTotalAmount += this.localProductList[i].prod_sub_total;
           this.taxTotalAmount += this.localProductList[i].prod_tax;
         }
         this.totalInvoiceAmount = this.subTotalAmount + this.taxTotalAmount;
       } else {
-        for (var i = 0; i < this.localProductList.length; i++) {
+        for (let i = 0; i < this.localProductList.length; i++) {
           this.subTotalAmount += this.localProductList[i].prod_sub_total;
         }
         this.totalInvoiceAmount = this.subTotalAmount;
@@ -347,7 +375,7 @@ export class CreateInvoiceComponent implements OnInit {
 
   calculateForJCB() {
 
-    let totalHours = this.getJCBHours(this.productQuantity);
+    const totalHours = this.getJCBHours(this.productQuantity);
     this.productSubTotalAmount = totalHours * this.productRate;
 
     this.calculateTaxAmount();
@@ -366,14 +394,14 @@ export class CreateInvoiceComponent implements OnInit {
     if (!this.isWithoutTax) {
       this.productTotalAmount = this.productSubTotalAmount + this.productTaxAmount;
       if (this.localProductList.length > 0) {
-        for (var i = 0; i < this.localProductList.length; i++) {
+        for (let i = 0; i < this.localProductList.length; i++) {
           this.localProductList[i].prod_total_amount = this.localProductList[i].prod_sub_total + this.localProductList[i].prod_tax;
         }
       }
     } else {
       this.productTotalAmount = this.productSubTotalAmount;
       if (this.localProductList.length > 0) {
-        for (var i = 0; i < this.localProductList.length; i++) {
+        for (let i = 0; i < this.localProductList.length; i++) {
           this.localProductList[i].prod_total_amount = this.localProductList[i].prod_sub_total;
         }
       }
@@ -404,10 +432,11 @@ export class CreateInvoiceComponent implements OnInit {
     this.productGSTId = product.prod_gst_id;
     this.productHSN = product.prod_hsn;
     this.gstPercentage = product.prod_percentage;
+    this.productQuantity = product.prod_qty;
     this.productSubTotalAmount = product.prod_sub_total_amount;
     this.productTaxAmount = product.prod_tax_amount;
 
-    if (this.productId == 18 || this.productId == 19 || this.productId == 21 || this.productId == 22){
+    if (this.productId === 18 || this.productId === 19 || this.productId === 21 || this.productId === 22) {
       this.isTimeBased = true;
       this.calculateForJCB();
     } else {
@@ -417,25 +446,24 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   setChallanDetail(challan) {
-    if (challan.chal_no != 0) {
+    if (challan.chal_no !== 0) {
       this.isChallanNotCreated = false;
       this.challanId = challan.chal_id;
       this.challanNo = challan.chal_no;
-      var formattedChallanDate = moment(challan.chal_date).format('YYYY-MM-DD');
-      this.challanDate = formattedChallanDate;
-      this.vehicleNo = challan.chal_veh_no;
+      this.challanDate = moment(challan.chal_date).format('YYYY-MM-DD');
+      this.vehicleNo = challan.veh_number;
       this.productQuantity = challan.chal_quantity;
       this.productId = challan.chal_prod_id;
-      this.productName = challan.chal_prod_name;
+      this.productName = challan.prod_name;
       this.productGSTId = challan.chal_gst_id;
       this.productHSN = challan.gst_hsn;
       this.gstPercentage = challan.gst_percentage;
-      this.productUnit = challan.chal_prod_unit;
+      this.productUnit = challan.prod_unit;
       this.productRate = challan.chal_prod_rate;
       challan.isChallanInUse = true;
-      if(this.productId == 18 || this.productId == 19 || this.productId == 21 || this.productId == 22){
+      if (this.productId === 18 || this.productId === 19 || this.productId === 21 || this.productId === 22) {
         this.isTimeBased = true;
-        let totalHours = this.getJCBHours(this.productQuantity);
+        const totalHours = this.getJCBHours(this.productQuantity);
         this.productSubTotalAmount = totalHours * this.productRate;
       } else {
         this.isTimeBased = false;
@@ -453,7 +481,7 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   printInvoiceDetail() {
-    let navigationExtras: NavigationExtras = {
+    const navigationExtras: NavigationExtras = {
       queryParams: { inv_id: this.invoiceId }
     };
     // Redirect it to View Product screen
@@ -473,8 +501,8 @@ export class CreateInvoiceComponent implements OnInit {
     this.totalInvoiceAmount = invoice.inv_total_amount;
     this.roundOffAmount = invoice.inv_round_off;
     this.netTotalAmount = this.totalInvoiceAmount + this.roundOffAmount;
-    var isTax = invoice.inv_without_tax;
-    if (isTax == 0) {
+    const isTax = invoice.inv_without_tax;
+    if (isTax === 0) {
       this.isWithoutTax = false;
     } else {
       this.isWithoutTax = true;
@@ -485,38 +513,37 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   getInvoiceProducts() {
-    const productPayload = { "data": { "inv_id": this.invoiceId } };
+    const productPayload = { 'data': { 'inv_id': this.invoiceId } };
 
     this.invoiceService.getInvoiceProductsById(productPayload).subscribe(response => {
       this.localProductList = response.products;
 
       // Format date for displaying in desire format
-      if (this.localProductList != undefined && this.localProductList.length > 0) {
-        for (var i = 0; i < this.localProductList.length; i++) {
-          var formattedChallanDate = moment(this.localProductList[i].chal_date).format('MM/DD/YYYY');
+      if (this.localProductList !== undefined && this.localProductList.length > 0) {
+        for (let i = 0; i < this.localProductList.length; i++) {
           this.localProductList[i].chal_date = moment(this.localProductList[i].chal_date).format('DD/MM/YYYY');
         }
       }
     },
       error => {
-        console.log(error)
+        console.log(error);
       });
 
     this.calculateTaxAmount();
   }
 
   getInvoiceDetailById() {
-    if (this.invoiceId != undefined) {
-      const payload = { "data": { "inv_id": this.invoiceId } };
+    if (this.invoiceId !== undefined) {
+      const payload = { 'data': { 'inv_id': this.invoiceId } };
       this.invoiceService.getInvoiceById(payload).subscribe(response => {
-        if (response.status == 200) {
-          if (response.invoices != undefined && response.invoices.length > 0) {
+        if (response.status === 200) {
+          if (response.invoices !== undefined && response.invoices.length > 0) {
             this.setInvoiceDetail(response.invoices[0]);
           }
         }
       },
         error => {
-          console.log(error)
+          console.log(error);
         });
     } else {
       this.location.back();
@@ -530,8 +557,7 @@ export class CreateInvoiceComponent implements OnInit {
 
   getChallansByCustomerId() {
     this.tempChallanList = [];
-    // this.tempChallanList.push({ "chal_id": 0, "chal_no": 0, "chal_date": null, "isChallanInUse": false });
-    const challanPayload = { "data": { "chal_cust_id": this.customerId } };
+    const challanPayload = { 'data': { 'chal_cust_id': this.customerId } };
 
     this.challanService.getChallansByCustomerId(challanPayload).subscribe(response => {
       this.challans = response.challans;
@@ -539,10 +565,13 @@ export class CreateInvoiceComponent implements OnInit {
       if (this.isEditClicked) {
         this.tempChallanList = this.challans;
       } else {
-        for (var i = 0; i < this.challans.length; i++) {
+        for (let i = 0; i < this.challans.length; i++) {
           if (!this.challans[i].chal_is_invoice_created) {
-            var formattedChallanDate = moment(this.challans[i].chal_date).format('DD MMM YYYY');
-            const product = new InvoiceProduct(this.challans[i].chal_prod_id, this.challans[i].chal_id, this.challans[i].chal_no, formattedChallanDate, this.challans[i].veh_number, this.challans[i].prod_name, this.challans[i].chal_gst_id, this.challans[i].gst_hsn, this.challans[i].gst_percentage, this.challans[i].prod_unit, this.challans[i].chal_prod_rate, this.challans[i].chal_quantity, 0, 0, 0, 0);
+            const formattedChallanDate = moment(this.challans[i].chal_date).format('DD MMM YYYY');
+            const product = new InvoiceProduct(this.challans[i].chal_prod_id, this.challans[i].chal_id, this.challans[i].chal_no,
+              formattedChallanDate, this.challans[i].veh_number, this.challans[i].prod_name, this.challans[i].chal_gst_id,
+              this.challans[i].gst_hsn, this.challans[i].gst_percentage, this.challans[i].prod_unit, this.challans[i].chal_prod_rate,
+              this.challans[i].chal_quantity, 0, 0, 0, 0);
             this.localProductList.push(product);
             this.challans[i].isChallanInUse = true;
           }
@@ -551,17 +580,17 @@ export class CreateInvoiceComponent implements OnInit {
       }
     },
       error => {
-        console.log(error)
+        console.log(error);
       });
   }
 
   calculateTaxAmount() {
-    if (this.productSubTotalAmount != undefined && !this.isWithoutTax) {
+    if (this.productSubTotalAmount !== undefined && !this.isWithoutTax) {
       this.productTaxAmount = this.productSubTotalAmount * (this.gstPercentage / 100);
     }
 
     if (this.localProductList.length > 0 && !this.isWithoutTax) {
-      for (var i = 0; i < this.localProductList.length; i++) {
+      for (let i = 0; i < this.localProductList.length; i++) {
         this.localProductList[i].prod_tax = this.localProductList[i].prod_sub_total * (this.gstPercentage / 100);
       }
     }
@@ -579,11 +608,11 @@ export class CreateInvoiceComponent implements OnInit {
     this.tempChallanList = [];
     const index = this.localProductList.indexOf(product);
 
-    const payload = { "data": { "chal_id": this.localProductList[index].chal_id } };
+    const payload = { 'data': { 'chal_id': this.localProductList[index].chal_id } };
     this.challanService.getChallanById(payload).subscribe(response => {
-      if (response.status == 200) {
-        if (response.challans != undefined && response.challans.length > 0) {
-          var challan = response.challans[0];
+      if (response.status === 200) {
+        if (response.challans !== undefined && response.challans.length > 0) {
+          const challan = response.challans[0];
           challan.isChallanInUse = false;
           this.tempChallanList.push(challan);
           this.localProductList.splice(index, 1);
@@ -593,7 +622,7 @@ export class CreateInvoiceComponent implements OnInit {
       }
     },
       error => {
-        console.log(error)
+        console.log(error);
       });
   }
 
@@ -602,14 +631,14 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   keyDownFunction(event) {
-    if (event.keyCode == 13) {
+    if (event.keyCode === 13) {
       // Add product to invoice product list on click of enter button
       this.addProduct();
     }
   }
 
   printChallanStatement() {
-    let navigationExtras: NavigationExtras = {
+    const navigationExtras: NavigationExtras = {
       queryParams: { inv_id: this.invoiceId }
     };
     // Redirect it to View Product screen
@@ -621,13 +650,14 @@ export class CreateInvoiceComponent implements OnInit {
     this.taxTotalAmount = 0;
     this.totalInvoiceAmount = 0;
 
-    if (this.localProductList != undefined && this.localProductList.length > 0) {
+    if (this.localProductList !== undefined && this.localProductList.length > 0) {
       if (!this.isWithoutTax) {
-        for (var i = 0; i < this.localProductList.length; i++) {
-          if (this.localProductList[i].prod_id == 18 || this.localProductList[i].prod_id == 19 || this.localProductList[i].prod_id == 21 || this.localProductList[i].prod_id == 22) {
+        for (let i = 0; i < this.localProductList.length; i++) {
+          if (this.localProductList[i].prod_id === 18 || this.localProductList[i].prod_id === 19 ||
+            this.localProductList[i].prod_id === 21 || this.localProductList[i].prod_id === 22) {
             // Calculation for JCB
             this.isTimeBased = true;
-            let totalHours = this.getJCBHours(this.localProductList[i].prod_qty);
+            const totalHours = this.getJCBHours(this.localProductList[i].prod_qty);
             this.localProductList[i].prod_sub_total = this.localProductList[i].prod_rate * totalHours;
           } else {
             this.isTimeBased = false;
@@ -640,11 +670,13 @@ export class CreateInvoiceComponent implements OnInit {
         }
         this.totalInvoiceAmount = this.subTotalAmount + this.taxTotalAmount;
       } else {
-        for (var i = 0; i < this.localProductList.length; i++) {
-          if (this.localProductList[i].prod_id == 18 || this.localProductList[i].prod_id == 19 || this.localProductList[i].prod_id == 21 || this.localProductList[i].prod_id == 22  || this.localProductList[i].prod_id == 24) {
+        for (let i = 0; i < this.localProductList.length; i++) {
+          if (this.localProductList[i].prod_id === 18 || this.localProductList[i].prod_id === 19 ||
+            this.localProductList[i].prod_id === 21 || this.localProductList[i].prod_id === 22 ||
+            this.localProductList[i].prod_id === 24) {
             // Calculation for JCB
             this.isTimeBased = true;
-            let totalHours = this.getJCBHours(this.localProductList[i].prod_qty);
+            const totalHours = this.getJCBHours(this.localProductList[i].prod_qty);
             this.localProductList[i].prod_sub_total = this.localProductList[i].prod_rate * totalHours;
           } else {
             this.isTimeBased = false;
@@ -665,10 +697,10 @@ export class CreateInvoiceComponent implements OnInit {
 
   getJCBHours(workingTime) {
     let hours = 0;
-    let timeArr = workingTime.toString().split('.');
-    if (timeArr.length == 2) {
-      let minuteStr = timeArr[1];
-      if (minuteStr.length == 1) {
+    const timeArr = workingTime.toString().split('.');
+    if (timeArr.length === 2) {
+      const minuteStr = timeArr[1];
+      if (minuteStr.length === 1) {
         hours = parseInt(minuteStr) * 10 / 60;
       } else {
         hours = parseInt(minuteStr) / 60;
@@ -678,7 +710,7 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   cancelInvoice() {
-    const cancelInvoicePayload = { "data": { "inv_id": this.invoiceId } };
+    const cancelInvoicePayload = { 'data': { 'inv_id': this.invoiceId } };
 
     this.invoiceService.cancelInvoiceById(cancelInvoicePayload).subscribe(response => {
       console.log(response.message);
@@ -689,7 +721,7 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   checkDuplicateInvoice() {
-    const duplicateInvoicePayload = { "data": { "inv_number": this.invoiceNumber } };
+    const duplicateInvoicePayload = { 'data': { 'inv_number': this.invoiceNumber } };
 
     this.invoiceService.checkDuplicateInvoice(duplicateInvoicePayload).subscribe(response => {
       this.isInvoiceExist = response.duplicate;
@@ -698,5 +730,17 @@ export class CreateInvoiceComponent implements OnInit {
       error => {
         console.log(error);
       });
+  }
+
+  editProduct(index) {
+    if (!this.isFieldDisabled) {
+      this.challanId = this.localProductList[index].chal_id;
+      this.challanNo = this.localProductList[index].chal_no;
+      this.challanDate = moment(this.localProductList[index].chal_date).format('DD/MM/YYYY');
+      this.vehicleNo = this.localProductList[index].veh_number;
+
+      this.setProductDetail(this.localProductList[index]);
+      this.removeProduct(this.localProductList[index]);
+    }
   }
 }

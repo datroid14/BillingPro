@@ -6,14 +6,14 @@ import * as moment from 'moment';
 import { InvoiceService } from "../create-invoice/invoice.service";
 
 @Component({
-  selector: 'view-invoice-copy',
+  selector: 'app-view-invoice-copy',
   templateUrl: './view-invoice-copy.component.html',
   styleUrls: ['./view-invoice-copy.component.css']
 })
 
 export class ViewInvoiceCopyComponent implements OnInit {
 
-  invoiceId: number
+  invoiceId: number;
   invoiceNo: string;
   invoiceDate: string;
   customerName: string;
@@ -40,15 +40,15 @@ export class ViewInvoiceCopyComponent implements OnInit {
     this.taxAmount = 0;
     this.invoiceTotalAmount = 0;
     this.route.queryParams.subscribe(params => {
-      this.invoiceId = params["inv_id"];
+      this.invoiceId = params['inv_id'];
     });
   }
 
   ngOnInit() {
 
     // Image paths
-    this.logoImagePath = "assets/images/ic_logo.png";
-    this.saiLogoImagePath = "assets/images/sai_logo.png";
+    this.logoImagePath = 'assets/images/ic_logo.png';
+    this.saiLogoImagePath = 'assets/images/sai_logo.png';
 
     this.appService.showDrawer(true);
 
