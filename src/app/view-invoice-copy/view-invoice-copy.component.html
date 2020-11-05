@@ -72,7 +72,7 @@
                                 <td class="input-css">{{product.prod_sub_total}}</td>
                             </tr>
                         </tbody>
-                        <tbody *ngIf="invoiceProducts.length >= 6">
+                        <tbody *ngIf="invoiceProducts.length > 6">
                             <tr *ngFor="let product of invoiceProductsQuantity;let i=index">
                                 <td class="input-css">{{i+1}}</td>
                                 <td class="input-css"></td>
