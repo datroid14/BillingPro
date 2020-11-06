@@ -10,6 +10,8 @@ import { Location } from '@angular/common';
 import { AppService } from '../app.service';
 import { GSTService } from '../add-gst/gst.service';
 import * as moment from 'moment';
+import { MatDialog, MatDialogConfig, MatSnackBar } from '@angular/material';
+import { Utility } from '../common/Utility';
 
 @Component({
   selector: 'app-create-invoice',
@@ -73,6 +75,7 @@ export class CreateInvoiceComponent implements OnInit {
   isChallanNotCreated: boolean;
   vehicleId: number;
   isTimeBased: boolean;
+  isInvoiceCancelled: boolean;
 
   // Variables for image paths
   addImagePath: string;
@@ -80,7 +83,8 @@ export class CreateInvoiceComponent implements OnInit {
 
   constructor(private customerService: CustomerService, private productService: ProductService, private router: Router,
     private challanService: ChallanService, private invoiceService: InvoiceService, private route: ActivatedRoute,
-    private appService: AppService, private location: Location, private gstService: GSTService, private vehicleService: VehicleService) {
+    private appService: AppService, private location: Location, private gstService: GSTService,
+    private vehicleService: VehicleService, private snackBar: MatSnackBar) {
     this.route.queryParams.subscribe(params => {
       this.invoiceId = params['inv_id'];
     });
@@ -507,6 +511,12 @@ export class CreateInvoiceComponent implements OnInit {
     } else {
       this.isWithoutTax = true;
     }
+    const isCancelled = invoice.inv_is_cancelled;
+    if (isCancelled === 0) {
+      this.isInvoiceCancelled = false;
+    } else {
+      this.isInvoiceCancelled = true;
+    }
 
     // Get Invoice products for selected invoice id
     this.getInvoiceProducts();
@@ -713,7 +723,8 @@ export class CreateInvoiceComponent implements OnInit {
     const cancelInvoicePayload = { 'data': { 'inv_id': this.invoiceId } };
 
     this.invoiceService.cancelInvoiceById(cancelInvoicePayload).subscribe(response => {
-      console.log(response.message);
+      this.openSnackBar(response.message, 'Dismiss');
+      this.location.back();
     },
       error => {
         console.log(error);
@@ -736,11 +747,18 @@ export class CreateInvoiceComponent implements OnInit {
     if (!this.isFieldDisabled) {
       this.challanId = this.localProductList[index].chal_id;
       this.challanNo = this.localProductList[index].chal_no;
-      this.challanDate = moment(this.localProductList[index].chal_date).format('DD/MM/YYYY');
+      const formattedChallanDate = moment(this.localProductList[index].chal_date).format('DD/MM/YYYY');
+      this.challanDate = formattedChallanDate;
       this.vehicleNo = this.localProductList[index].veh_number;
 
       this.setProductDetail(this.localProductList[index]);
       this.removeProduct(this.localProductList[index]);
     }
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
+    });
   }
 }

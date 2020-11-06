@@ -14,7 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material';
+import { MatDialogModule, MatNativeDateModule, MatSnackBarModule } from '@angular/material';
 import { NativeDateModule } from '@angular/material';
 import { MatDividerModule } from '@angular/material/divider';
 import { RouterModule, Routes } from '@angular/router';
@@ -95,6 +95,7 @@ import { ViewChallanStatementComponent } from './view-challan-statement/view-cha
 import { ViewMaintenanceDetailComponent } from './view-maintenance-detail/view-maintenance-detail.component';
 import { AddMaintenanceDetailComponent } from './add-maintenance-detail/add-maintenance-detail.component';
 import { ShowInventoryComponent } from './show-inventory/show-inventory.component';
+import { CommonDialogComponent } from './common/common-dialog.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -196,7 +197,8 @@ const appRoutes: Routes = [
     ViewChallanStatementComponent,
     ViewMaintenanceDetailComponent,
     AddMaintenanceDetailComponent,
-    ShowInventoryComponent
+    ShowInventoryComponent,
+    CommonDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -220,12 +222,17 @@ const appRoutes: Routes = [
     FlexLayoutModule,
     HttpModule,
     HttpClientModule,
-    PDFExportModule
+    PDFExportModule,
+    MatDialogModule,
+    MatSnackBarModule
   ],
   providers: [AppService, CustomerService, VendorService, ProductService, QuatationService, ChallanService, 
     PurchaseService, VehicleService, InvoiceService, GSTService, ChequeEntryService, EmployeeService, 
     DieselEntryService, PaymentService, AccountService, CardDetailService, EmiDetailService, TripDetailService,
     DashboardService, ExcelService, InsuranceService, MaintenanceService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    CommonDialogComponent
+  ]
 })
 export class AppModule { }
