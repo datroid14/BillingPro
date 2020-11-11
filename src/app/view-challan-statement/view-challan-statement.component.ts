@@ -15,7 +15,15 @@ export class ViewChallanStatementComponent implements OnInit {
   invoiceId: number;
   invoiceProducts: InvoiceProduct[];
   invoiceProductsQuantity: InvoiceProduct[];
-
+  invoiceNumber: string;
+  invoiceDate: Date;
+  picker: Date;
+  customerId: number;
+  customerName: string;
+  customerAddress: string;
+  contactPerson: string;
+  contactNo: string;
+  
   constructor(private invoiceService: InvoiceService, private route: ActivatedRoute,
     private location: Location) {
     this.route.queryParams.subscribe(params => {
@@ -24,8 +32,36 @@ export class ViewChallanStatementComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getInvoiceProducts();
+
+    this.getInvoiceDetailById();
   }
+
+  getInvoiceDetailById() {
+      const payload = { 'data': { 'inv_id': this.invoiceId } };
+      this.invoiceService.getInvoiceById(payload).subscribe(response => {
+        if (response.status === 200) {
+          if (response.invoices !== undefined && response.invoices.length > 0) {
+            this.setInvoiceDetail(response.invoices[0]);
+          }
+        }
+      },
+        error => {
+          console.log(error);
+        });
+    }
+
+    setInvoiceDetail(invoice) {
+      this.invoiceDate = invoice.inv_date;
+      this.invoiceNumber = invoice.inv_number;
+      this.customerId = invoice.inv_cust_id;
+      this.customerName = invoice.inv_customer;
+      this.customerAddress = invoice.inv_address;
+      this.contactNo = invoice.inv_contact;
+      this.contactPerson = invoice.inv_contact_person;
+  
+      // Get Invoice products for selected invoice id
+      this.getInvoiceProducts();
+    }
 
   getInvoiceProducts() {
     const productPayload = { 'data': { 'inv_id': this.invoiceId } };

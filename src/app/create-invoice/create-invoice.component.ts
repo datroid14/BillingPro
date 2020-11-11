@@ -344,6 +344,7 @@ export class CreateInvoiceComponent implements OnInit {
     this.roundOffAmount = 0;
     this.netTotalAmount = 0;
     this.isWithoutTax = false;
+    this.isInvoiceCancelled = false;
   }
 
   calculateSubTotal() {
