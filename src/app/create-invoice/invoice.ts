@@ -1,4 +1,4 @@
-import { InvoiceProduct } from "../create-invoice/invoice.product";
+import { InvoiceProduct } from '../create-invoice/invoice.product';
 
 export class Invoice {
     inv_id: number;

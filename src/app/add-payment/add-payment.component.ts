@@ -12,6 +12,8 @@ import { Account } from '../add-account/account';
 import { Vendor } from '../add-vendor/vendor';
 import { PurchaseService } from '../add-purchase/purchase.service';
 import { Purchase } from '../add-purchase/purchase';
+import { Customer } from '../add-customer/customer';
+import { CustomerService } from '../add-customer/customer.service';
 
 @Component({
   selector: 'add-payment',
@@ -51,17 +53,18 @@ export class AddPaymentComponent implements OnInit {
   vendors: Vendor[];
   payeeNames: Payee[];
   payeeInvoices: Purchase[];
+  customers: Customer[];
 
   // Variables for image paths
   addImagePath: string;
   removeImagePath: string;
-  payeeTypes = [{ payee_id: 101, payee_type: 'Employee' }, { payee_id: 102, payee_type: 'Vendor' }];
+  payeeTypes = [{ payee_id: 101, payee_type: 'Employee' }, { payee_id: 102, payee_type: 'Vendor' }, { payee_id: 103, payee_type: 'Customer' }];
   paymentModes = [{ payment_mode: 'Cash' }, { payment_mode: 'Cheque' }, { payment_mode: 'Demand Draft' }];
 
 
   public constructor(private route: ActivatedRoute, private appService: AppService, private paymentService: PaymentService,
     private location: Location, private employeeService: EmployeeService, private accountService: AccountService,
-    private vendorService: VendorService, private purchaseService: PurchaseService) {
+    private vendorService: VendorService, private purchaseService: PurchaseService, private customerService: CustomerService) {
     this.route.queryParams.subscribe(params => {
       this.paymentId = params['payment_id'];
     });
@@ -198,10 +201,10 @@ export class AddPaymentComponent implements OnInit {
   deletePaymentDetail() {
     const deletePayload = { "data": { "payment_id": this.paymentId } };
     this.paymentService.deletePaymentDetail(deletePayload).subscribe(response => {
-      if (response.status == 200) {
+      if (response.status === 200) {
         console.log(response.message);
         this.location.back();
-      } else if (response.status == 501) {
+      } else if (response.status === 501) {
         console.log(response.message);
       }
     },
@@ -255,6 +258,18 @@ export class AddPaymentComponent implements OnInit {
         if (response.vendors !== undefined && response.vendors.length > 0) {
           for (let i = 0; i < response.vendors.length; i++) {
             this.payeeNames.push(new Payee(response.vendors[i].vend_id, response.vendors[i].vend_name));
+          }
+        }
+      },
+        error => {
+          console.log(error);
+        });
+    } else if (payeeTypeId === 103) {
+      // Get customers from service
+      this.customerService.getCustomers().subscribe(response => {
+        if (response.customers !== undefined && response.customers.length > 0) {
+          for (let i = 0; i < response.customers.length; i++) {
+            this.payeeNames.push(new Payee(response.customers[i].cust_id, response.customers[i].cust_name));
           }
         }
       },

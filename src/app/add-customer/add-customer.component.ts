@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomerService } from "../add-customer/customer.service";
-import { ActivatedRoute } from "@angular/router";
+import { CustomerService } from '../add-customer/customer.service';
+import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { AppService } from '../app.service';
 
 @Component({
-  selector: 'add-customer',
+  selector: 'app-add-customer',
   templateUrl: './add-customer.component.html',
   styleUrls: ['./add-customer.component.css']
 })
@@ -40,11 +40,11 @@ export class AddCustomerComponent implements OnInit {
   public constructor(private route: ActivatedRoute, private appService: AppService, private customerService: CustomerService,
     private location: Location) {
     this.route.queryParams.subscribe(params => {
-      this.customerId = params["cust_id"];
+      this.customerId = params['cust_id'];
     });
     // Image paths
-    this.addImagePath = "assets/images/ic_add_circle.svg";
-    this.removeImagePath = "assets/images/ic_remove_circle.svg";
+    this.addImagePath = 'assets/images/ic_add_circle.svg';
+    this.removeImagePath = 'assets/images/ic_remove_circle.svg';
   }
 
   ngOnInit() {
@@ -57,7 +57,7 @@ export class AddCustomerComponent implements OnInit {
   }
 
   showUIChanges() {
-    if (this.customerId != undefined) {
+    if (this.customerId !== undefined) {
 
       // Disable all fields for view mode
       this.isFieldDisabled = true;
@@ -85,28 +85,32 @@ export class AddCustomerComponent implements OnInit {
   }
 
   addCustomer() {
-    if (this.buttonLabel == "SAVE") {
-      if (this.customerName != undefined && this.customerAddress != undefined && this.contactNo != undefined) {
+    if (this.buttonLabel === 'SAVE') {
+      if (this.customerName !== undefined && this.customerAddress !== undefined && this.contactNo !== undefined) {
         if (this.isEditClicked) {
           this.isEditClicked = false;
-          const updatePayload = { "data": { "cust_id": this.customerId, "cust_name": this.customerName, "cust_contact_person": this.contactPerson, "cust_contact": this.contactNo, "cust_email": this.emailAddress, "cust_address": this.customerAddress, "cust_gst_no":this.gstNumber } };
+          const updatePayload = { 'data': { 'cust_id': this.customerId, 'cust_name': this.customerName,
+          'cust_contact_person': this.contactPerson, 'cust_contact': this.contactNo, 'cust_email': this.emailAddress,
+          'cust_address': this.customerAddress, 'cust_gst_no': this.gstNumber } };
           this.customerService.updateCustomer(updatePayload).subscribe(response => {
-            if (response.status == 200) {
+            if (response.status === 200) {
               this.location.back();
             }
           },
             error => {
-              console.log(error)
+              console.log(error);
             });
         } else {
-          const addPayload = { "data": { "cust_name": this.customerName, "cust_contact_person": this.contactPerson, "cust_contact": this.contactNo, "cust_email": this.emailAddress, "cust_address": this.customerAddress, "cust_gst_no":this.gstNumber } };
+          const addPayload = { 'data': { 'cust_name': this.customerName, 'cust_contact_person': this.contactPerson,
+          'cust_contact': this.contactNo, 'cust_email': this.emailAddress, 'cust_address': this.customerAddress,
+          'cust_gst_no': this.gstNumber } };
           this.customerService.addCustomer(addPayload).subscribe(response => {
-            if (response.status == 200) {
+            if (response.status === 200) {
               this.location.back();
             }
           },
             error => {
-              console.log(error)
+              console.log(error);
             });
         }
       } else {
@@ -114,7 +118,7 @@ export class AddCustomerComponent implements OnInit {
       }
     } else {
       this.isEditClicked = true;
-      this.buttonLabel = "SAVE";
+      this.buttonLabel = 'SAVE';
       this.isFieldDisabled = false;
       this.isCancelDisabled = false;
       this.isDeleteDisabled = true;
@@ -132,9 +136,9 @@ export class AddCustomerComponent implements OnInit {
 
   changeButtonLabel(isDisabled) {
     if (isDisabled) {
-      this.buttonLabel = "EDIT";
+      this.buttonLabel = 'EDIT';
     } else {
-      this.buttonLabel = "SAVE";
+      this.buttonLabel = 'SAVE';
     }
   }
 
@@ -152,41 +156,41 @@ export class AddCustomerComponent implements OnInit {
     this.isCancelDisabled = !this.isCancelDisabled;
     this.isDeleteDisabled = false;
 
-    if (this.buttonLabel == "SAVE") {
-      this.buttonLabel = "EDIT";
+    if (this.buttonLabel === 'SAVE') {
+      this.buttonLabel = 'EDIT';
       // Show last shown record
       this.getCustomerDetailById();
     } else {
-      this.buttonLabel = "SAVE";
+      this.buttonLabel = 'SAVE';
     }
   }
 
   deleteCustomer() {
-    const deletePayload = { "data": { "cust_id": this.customerId } };
+    const deletePayload = { 'data': { 'cust_id': this.customerId } };
     this.customerService.deleteCustomer(deletePayload).subscribe(response => {
-      if (response.status == 200) {
+      if (response.status === 200) {
         this.location.back();
-      } else if (response.status == 501) {
+      } else if (response.status === 501) {
         console.log(response.message);
       }
     },
       error => {
-        console.log(error)
+        console.log(error);
       });
   }
 
   getCustomerDetailById() {
-    if (this.customerId != undefined) {
-      const payload = { "data": { "cust_id": this.customerId } };
+    if (this.customerId !== undefined) {
+      const payload = { 'data': { 'cust_id': this.customerId } };
       this.customerService.getCustomerById(payload).subscribe(response => {
-        if (response.status == 200) {
-          if (response.customers != undefined && response.customers.length > 0) {
+        if (response.status === 200) {
+          if (response.customers !== undefined && response.customers.length > 0) {
             this.setCustomerDetail(response.customers[0]);
           }
         }
       },
         error => {
-          console.log(error)
+          console.log(error);
         });
     } else {
       this.location.back();

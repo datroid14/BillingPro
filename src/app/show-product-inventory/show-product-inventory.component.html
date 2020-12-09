@@ -1,0 +1,72 @@
+<style>
+    table,
+    th,
+    td {
+        border: 1px solid grey;
+        border-collapse: collapse;
+        padding: 2px;
+    }
+</style>
+<label>Productwise Inventory Details</label>
+
+<div><label>Select month</label>
+    <mat-form-field>
+        <mat-select [(ngModel)]="monthName" name="monthName" required>
+            <mat-option *ngFor="let month of months" [value]="month.value" (click)="setMonthSelected(month.index)">
+                {{month.value}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <label>Select year</label>
+    <mat-form-field>
+        <mat-select [(ngModel)]="yearName" name="yearName" required>
+            <mat-option *ngFor="let year of years" [value]="year.value" (click)="setYearSelected(year.value)">
+                {{year.value}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <label>Select material</label>
+    <mat-form-field>
+        <mat-select [(ngModel)]="productName" name="productName" required>
+            <mat-option *ngFor="let product of products" [value]="product.prod_name" (click)="setProductSelected(product.prod_id)">
+                {{product.prod_name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <label>Select customer</label>
+    <mat-form-field>
+        <mat-select [(ngModel)]="customerName" name="customerName" required>
+            <mat-option *ngFor="let customer of customers" [value]="customer.cust_name" (click)="setCustomerSelected(customer.cust_id)">
+                {{customer.cust_name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+
+<table style="width:100%;">
+    <tr>
+        <th>Date</th>
+        <th>Customer</th>
+        <th>Material</th>
+        <th>Quantity</th>
+        <th>Rate</th>
+        <th>Amount</th>
+    </tr>
+    <tr *ngFor=" let entry of inventory" align="center ">
+        <td> {{ entry.inv_date | date }} </td>
+        <td> {{ entry.cust_name }} </td>
+        <td> {{ entry.prod_name }} </td>
+        <td> {{ entry.inv_prod_qty }} </td>
+        <td> {{ entry.inv_prod_rate }} </td>
+        <td> {{ entry.inv_total_amount }} </td>
+    </tr>
+    <!-- <tr>
+        <td> </td>
+        <th>Total</th>
+        <th> {{ this.debitTotal }}/-</th>
+        <th> {{ this.invoiceTotal }}/-</th>
+    </tr> -->
+</table>

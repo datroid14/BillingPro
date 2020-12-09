@@ -96,6 +96,7 @@ import { ViewMaintenanceDetailComponent } from './view-maintenance-detail/view-m
 import { AddMaintenanceDetailComponent } from './add-maintenance-detail/add-maintenance-detail.component';
 import { ShowInventoryComponent } from './show-inventory/show-inventory.component';
 import { CommonDialogComponent } from './common/common-dialog.component';
+import { ShowProductInventoryComponent } from './show-product-inventory/show-product-inventory.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -145,6 +146,7 @@ const appRoutes: Routes = [
   { path: 'view-maintenance-detail', component: ViewMaintenanceDetailComponent },
   { path: 'add-maintenance-detail', component: AddMaintenanceDetailComponent },
   { path: 'show-inventory', component: ShowInventoryComponent },
+  { path: 'show-product-inventory', component: ShowProductInventoryComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 
@@ -198,7 +200,8 @@ const appRoutes: Routes = [
     ViewMaintenanceDetailComponent,
     AddMaintenanceDetailComponent,
     ShowInventoryComponent,
-    CommonDialogComponent
+    CommonDialogComponent,
+    ShowProductInventoryComponent
   ],
   imports: [
     BrowserModule,

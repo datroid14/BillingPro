@@ -15,8 +15,8 @@ export class InvoiceProduct {
     prod_sub_total: number;
     prod_tax: number;
     prod_total_amount: number;
-    prod_total_qty : number; 
-  
+    prod_total_qty: number;
+
     constructor(prod_id, chal_id, chal_no, date, vehicle, name, gst_id, hsn, percentage, unit, rate, qty, subTotal, tax, total, total_qty) {
       this.prod_id = prod_id;
       this.prod_qty = qty;

@@ -7,6 +7,7 @@ import { InventoryResponse } from '../dashboard/inventory.response';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { constants } from '../common/constants';
+import { ProductInventoryResponse } from './product-inventory.response';
 
 const httpOptions = {
     headers: new HttpHeaders({
@@ -48,6 +49,11 @@ export class DashboardService {
 
     getInventoryDetails(payload): Observable<InventoryResponse> {
         return this.http.post<InventoryResponse>(constants.serverUrl + 'getInventoryDetails', payload, httpOptions)
+            .pipe(tap(res => null));
+    }
+
+    getProductwiseInventoryDetails(payload): Observable<ProductInventoryResponse> {
+        return this.http.post<ProductInventoryResponse>(constants.serverUrl + 'getProductwiseInventoryDetails', payload, httpOptions)
             .pipe(tap(res => null));
     }
 }
