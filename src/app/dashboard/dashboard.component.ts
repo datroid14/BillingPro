@@ -96,12 +96,17 @@ export class DashboardComponent implements OnInit {
   }
 
   showInventoryDetails() {
-      // Redirect it to View Product screen
-      this.router.navigate(['/show-inventory']);
+    // Redirect it to Inventory screen
+    this.router.navigate(['/show-inventory']);
   }
 
   showProductInventoryDetails() {
-    // Redirect it to View Product screen
+    // Redirect it to Product Inventory screen
     this.router.navigate(['/show-product-inventory']);
-}
+  }
+
+  showPaymentDueDetails(){
+    // Redirect it to Customer Payment Due screen
+    this.router.navigate(['/show-payment-due']);
+  }
 }

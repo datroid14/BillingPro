@@ -8,6 +8,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { constants } from '../common/constants';
 import { ProductInventoryResponse } from './product-inventory.response';
+import { PaymentDueResponse } from './payment-due.response';
 
 const httpOptions = {
     headers: new HttpHeaders({
@@ -54,6 +55,11 @@ export class DashboardService {
 
     getProductwiseInventoryDetails(payload): Observable<ProductInventoryResponse> {
         return this.http.post<ProductInventoryResponse>(constants.serverUrl + 'getProductwiseInventoryDetails', payload, httpOptions)
+            .pipe(tap(res => null));
+    }
+
+    getPaymentDueDetails(payload): Observable<PaymentDueResponse> {
+        return this.http.post<PaymentDueResponse>(constants.serverUrl + 'getPaymentDueDetails', payload, httpOptions)
             .pipe(tap(res => null));
     }
 }

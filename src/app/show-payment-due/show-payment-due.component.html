@@ -1,0 +1,56 @@
+<style>
+    table,
+    th,
+    td {
+        border: 1px solid grey;
+        border-collapse: collapse;
+        padding: 2px;
+    }
+</style>
+<label>Customer Payment Due Details</label>
+
+<div>
+    <label>Select Option</label>
+    <mat-form-field>
+        <mat-select [(ngModel)]="dateOption" name="dateOption" required>
+            <mat-option *ngFor="let option of dateOptions" [value]="option.value" (click)="setOptionSelected(option.id)">
+                {{option.value}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+
+<div *ngIf=" isDateRangeSelected ">
+    <label>Select Start Date</label>
+    <mat-form-field>
+        <input matInput [matDatepicker]="startDatePicker " [(ngModel)]="startDate ">
+        <mat-datepicker-toggle matSuffix [for]="startDatePicker "></mat-datepicker-toggle>
+        <mat-datepicker #startDatePicker></mat-datepicker>
+    </mat-form-field>
+
+    <label>Select End Date</label>
+    <mat-form-field>
+        <input matInput [matDatepicker]="endDatePicker " [(ngModel)]="endDate">
+        <mat-datepicker-toggle matSuffix [for]="endDatePicker "></mat-datepicker-toggle>
+        <mat-datepicker #endDatePicker></mat-datepicker>
+    </mat-form-field>
+
+    <button (click)="showPaymentDueDetailsForSelectedPeriod()">Payment Due Details</button>
+</div>
+
+<table style="width:100%; ">
+    <tr>
+        <th>Invoice Date</th>
+        <th>Invoice Number</th>
+        <th>Customer Name</th>
+        <th>Invoice Amount</th>
+        <th>Due Days</th>
+    </tr>
+    <tr *ngFor=" let dueEntry of paymentDueDetails" align="center ">
+        <td> {{ dueEntry.inv_date | date }} </td>
+        <td> {{ dueEntry.inv_number }} </td>
+        <td> {{ dueEntry.cust_name }} </td>
+        <td> {{ dueEntry.inv_total_amount }} </td>
+        <td> {{ dueEntry.due_days }} </td>
+    </tr>
+</table>

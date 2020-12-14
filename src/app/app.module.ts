@@ -97,6 +97,7 @@ import { AddMaintenanceDetailComponent } from './add-maintenance-detail/add-main
 import { ShowInventoryComponent } from './show-inventory/show-inventory.component';
 import { CommonDialogComponent } from './common/common-dialog.component';
 import { ShowProductInventoryComponent } from './show-product-inventory/show-product-inventory.component';
+import { ShowPaymentDueComponent } from './show-payment-due/show-payment-due.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -147,6 +148,7 @@ const appRoutes: Routes = [
   { path: 'add-maintenance-detail', component: AddMaintenanceDetailComponent },
   { path: 'show-inventory', component: ShowInventoryComponent },
   { path: 'show-product-inventory', component: ShowProductInventoryComponent },
+  { path: 'show-payment-due', component: ShowPaymentDueComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 
@@ -201,7 +203,8 @@ const appRoutes: Routes = [
     AddMaintenanceDetailComponent,
     ShowInventoryComponent,
     CommonDialogComponent,
-    ShowProductInventoryComponent
+    ShowProductInventoryComponent,
+    ShowPaymentDueComponent
   ],
   imports: [
     BrowserModule,
