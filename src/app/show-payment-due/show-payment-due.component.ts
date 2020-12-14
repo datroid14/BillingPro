@@ -25,9 +25,9 @@ export class ShowPaymentDueComponent implements OnInit {
   }
 
   setOptionSelected(optionId){
+    this.paymentDueDetails = [];
     if(optionId === 7){
       this.isDateRangeSelected = true;
-      this.paymentDueDetails = [];
     } else {
       this.isDateRangeSelected = false;
       const todaysDate = new Date();
