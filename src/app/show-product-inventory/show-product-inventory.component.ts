@@ -80,10 +80,16 @@ export class ShowProductInventoryComponent implements OnInit {
 
   setMonthSelected(month: number) {
     this.selectedMonth = month;
+    if (this.selectedMonth !== 0 && this.selectedYear !== 0 && (this.selectedProductId !== 0 || this.selectedCustomerId !== 0)) {
+      this.getInventoryDetails();
+    }
   }
 
   setYearSelected(year: number) {
     this.selectedYear = year;
+    if (this.selectedMonth !== 0 && this.selectedYear !== 0 && (this.selectedProductId !== 0 || this.selectedCustomerId !== 0)) {
+      this.getInventoryDetails();
+    }
   }
 
   setProductSelected(productId: number) {

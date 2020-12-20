@@ -40,7 +40,7 @@
     <mat-form-field>
         <mat-select [(ngModel)]="customerName" name="customerName" required>
             <mat-option *ngFor="let customer of customers" [value]="customer.cust_name" (click)="setCustomerSelected(customer.cust_id)">
-                {{customer.cust_name}}
+                {{customer.cust_name}}, {{ customer.cust_address }}
             </mat-option>
         </mat-select>
     </mat-form-field>
@@ -48,15 +48,21 @@
 
 <table style="width:100%;">
     <tr>
-        <th>Date</th>
+        <th>Invoice Date</th>
+        <th>Invoice No</th>
+        <th>Challan Date</th>
+        <th>Challan No</th>
         <th>Customer</th>
         <th>Material</th>
         <th>Quantity</th>
         <th>Rate</th>
         <th>Amount</th>
     </tr>
-    <tr *ngFor=" let entry of inventory" align="center ">
+    <tr *ngFor="let entry of inventory" align="center ">
         <td> {{ entry.inv_date | date }} </td>
+        <td> {{ entry.inv_number }} </td>
+        <td> {{ entry.chal_date | date }} </td>
+        <td> {{ entry.inv_chal_no }} </td>
         <td> {{ entry.cust_name }} </td>
         <td> {{ entry.prod_name }} </td>
         <td> {{ entry.inv_prod_qty }} </td>

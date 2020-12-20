@@ -11,6 +11,12 @@
         </mat-form-field>
 
         <mat-table #table [dataSource]="dataSource">
+            <!-- Challan Date Column -->
+            <ng-container matColumnDef="date">
+                <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                <mat-cell *matCellDef="let challan"> {{challan.chal_date}} </mat-cell>
+            </ng-container>
+
             <!-- Position Column -->
             <ng-container matColumnDef="chal_no">
                 <mat-header-cell *matHeaderCellDef> Challan No </mat-header-cell>
@@ -36,21 +42,9 @@
             </ng-container>
 
             <!-- Weight Column -->
-            <ng-container matColumnDef="unit">
-                <mat-header-cell *matHeaderCellDef> Unit </mat-header-cell>
-                <mat-cell *matCellDef="let challan"> {{challan.chal_prod_unit}} </mat-cell>
-            </ng-container>
-
-            <!-- Weight Column -->
             <ng-container matColumnDef="quantity">
                 <mat-header-cell *matHeaderCellDef> Quantity </mat-header-cell>
                 <mat-cell *matCellDef="let challan"> {{challan.chal_quantity}} </mat-cell>
-            </ng-container>
-
-            <!-- Symbol Column -->
-            <ng-container matColumnDef="vehicle">
-                <mat-header-cell *matHeaderCellDef> Vehicle Number </mat-header-cell>
-                <mat-cell *matCellDef="let chalan"> {{chalan.chal_veh_no}} </mat-cell>
             </ng-container>
 
             <!-- Is Invoice created Column -->

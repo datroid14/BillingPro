@@ -14,7 +14,7 @@ export class ViewInvoiceComponent implements OnInit {
 
   invoices;
 
-  displayedColumns = ['date', 'invoice_no', 'customer', 'contact_detail', 'email'];
+  displayedColumns = ['date', 'invoice_no', 'customer', 'customer_address', 'contact_detail', 'is_cancelled'];
   dataSource;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -58,6 +58,11 @@ export class ViewInvoiceComponent implements OnInit {
         this.invoices = response.invoices;
         for (let i = 0; i < this.invoices.length; i++) {
           this.invoices[i].inv_date = moment(this.invoices[i].inv_date).format('DD MMM YYYY');
+          if(this.invoices[i].inv_is_cancelled == 1) {
+            this.invoices[i].inv_is_cancelled = 'Yes';
+          } else {
+            this.invoices[i].inv_is_cancelled = 'No';
+          }
         }
         this.dataSource = new MatTableDataSource<INVOICE>(this.invoices);
         this.dataSource.paginator = this.paginator;
