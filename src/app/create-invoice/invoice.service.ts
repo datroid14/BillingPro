@@ -104,4 +104,9 @@ export class InvoiceService {
                   .post<DuplicateInvoiceResponse>(constants.serverUrl + 'checkDuplicateInvoice', payload, httpOptions)
                   .pipe(tap(res => null));
       }
+
+      getInvoiceListByCustomerId(payload: Object): Observable<InvoiceResponse> {
+            return this.http.post<InvoiceResponse>(constants.serverUrl + 'getPurchaseListByVendorId', payload, httpOptions)
+                  .pipe(tap(res => null));
+      }
 }

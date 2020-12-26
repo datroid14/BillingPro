@@ -384,7 +384,7 @@ export class AddPurchaseComponent implements OnInit {
   }
 
   printPurchaseDetail() {
-    const purchaseObj = new Purchase(this.purchaseId, this.purchaseDate, this.vendorName, this.vendorAddress, this.contactPerson, this.contactNo, JSON.stringify(this.localProductList));
+    const purchaseObj = new Purchase(this.purchaseId, this.purchaseDate, this.purchaseInvoiceNo, this.vendorName, this.vendorAddress, this.contactPerson, this.contactNo, JSON.stringify(this.localProductList));
     if (purchaseObj != undefined) {
       let navigationExtras: NavigationExtras = {
         queryParams: purchaseObj

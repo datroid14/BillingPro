@@ -28,15 +28,15 @@
         <mat-form-field>
             <mat-select [(ngModel)]="payeeName" name="payeeName" placeholder="Payee Name" [disabled]="isFieldDisabled" required>
                 <mat-option *ngFor="let payee of payeeNames" [value]="payee.payee_name" (click)="getPayeeInvoicesList(payee.payee_id)">
-                    {{payee.payee_name}}
+                    {{payee.payee_name}}, {{ payee.payee_address }}
                 </mat-option>
             </mat-select>
         </mat-form-field>
 
         <mat-form-field>
             <mat-select [(ngModel)]="payeeInvoiceNo" name="payeeInvoiceNo" placeholder="Payee Invoice No" [disabled]="isFieldDisabled" required>
-                <mat-option *ngFor="let payeeInvoice of payeeInvoices" [value]="payeeInvoice.pur_invoice_no" (click)="setPayeeInvoiceDetail(payeeInvoice)">
-                    {{payeeInvoice.pur_invoice_no}}
+                <mat-option *ngFor="let payeeInvoice of payeeInvoices" [value]="payeeInvoice.payee_invoice_no" (click)="setPayeeInvoiceDetail(payeeInvoice)">
+                    {{payeeInvoice.payee_invoice_no}}
                 </mat-option>
             </mat-select>
         </mat-form-field>
@@ -56,7 +56,7 @@
         <mat-form-field *ngIf="paymentMode != 'Cash'">
             <mat-select [(ngModel)]="paymentAccountNo" name="paymentAccountNo" placeholder="Account Number" [disabled]="isFieldDisabled" required>
                 <mat-option *ngFor="let account of accounts" [value]="account.account_number" (click)="setAccountDetail(account)">
-                    {{account.account_number}}
+                    {{ account.bank_name}} - {{account.account_number}}
                 </mat-option>
             </mat-select>
         </mat-form-field>

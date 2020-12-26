@@ -14,6 +14,7 @@ import { PurchaseService } from '../add-purchase/purchase.service';
 import { Purchase } from '../add-purchase/purchase';
 import { Customer } from '../add-customer/customer';
 import { CustomerService } from '../add-customer/customer.service';
+import { InvoiceService } from '../create-invoice/invoice.service';
 
 @Component({
   selector: 'add-payment',
@@ -36,6 +37,7 @@ export class AddPaymentComponent implements OnInit {
   payeeType: string;
   payeeId: number;
   payeeName: string;
+  payeeAddress: string;
   paymentAmount: number;
   paymentMode: string;
   paymentAccountId: number;
@@ -52,19 +54,20 @@ export class AddPaymentComponent implements OnInit {
   accounts: Account[];
   vendors: Vendor[];
   payeeNames: Payee[];
-  payeeInvoices: Purchase[];
+  payeeInvoices: PayeeInvoice[];
   customers: Customer[];
 
   // Variables for image paths
   addImagePath: string;
   removeImagePath: string;
   payeeTypes = [{ payee_id: 101, payee_type: 'Employee' }, { payee_id: 102, payee_type: 'Vendor' }, { payee_id: 103, payee_type: 'Customer' }];
-  paymentModes = [{ payment_mode: 'Cash' }, { payment_mode: 'Cheque' }, { payment_mode: 'Demand Draft' }];
+  paymentModes = [{ payment_mode: 'Cash' }, { payment_mode: 'Cheque' }, { payment_mode: 'NEFT/RTGS/IMPS' }];
 
 
   public constructor(private route: ActivatedRoute, private appService: AppService, private paymentService: PaymentService,
     private location: Location, private employeeService: EmployeeService, private accountService: AccountService,
-    private vendorService: VendorService, private purchaseService: PurchaseService, private customerService: CustomerService) {
+    private vendorService: VendorService, private purchaseService: PurchaseService, private customerService: CustomerService,
+    private invoiceService: InvoiceService) {
     this.route.queryParams.subscribe(params => {
       this.paymentId = params['payment_id'];
     });
@@ -191,6 +194,7 @@ export class AddPaymentComponent implements OnInit {
     this.payeeType = undefined;
     this.payeeId = undefined;
     this.payeeName = undefined;
+    this.payeeAddress = undefined;
     this.paymentAmount = undefined;
     this.paymentMode = undefined;
     this.paymentAccountNo = undefined;
@@ -218,12 +222,13 @@ export class AddPaymentComponent implements OnInit {
     this.payeeType = payment.payee_type;
     this.payeeId = payment.payee_id;
     this.payeeName = payment.payee_name;
+    this.payeeAddress = payment.payee_address;
     this.payeeNames = [];
-    this.payeeNames.push(new Payee(this.payeeId, this.payeeName));
+    this.payeeNames.push(new Payee(this.payeeId, this.payeeName, this.payeeAddress));
     this.payeeInvoiceId = payment.payee_invoice_id;
-    this.payeeInvoiceNo = payment.pur_invoice_no;
-    let tempPayeeInvoices = [];
-    tempPayeeInvoices.push(new PayeeInvoice(this.payeeInvoiceId, this.payeeInvoiceNo));
+    this.payeeInvoiceNo = payment.payee_invoice_no;
+    this.payeeInvoices = [];
+    this.payeeInvoices.push(new PayeeInvoice(this.payeeInvoiceId, this.payeeInvoiceNo));
     this.paymentAmount = payment.payment_amount;
     this.paymentMode = payment.payment_mode;
     this.paymentAccountId = payment.payment_acc_id;
@@ -245,7 +250,7 @@ export class AddPaymentComponent implements OnInit {
       this.employeeService.getEmployees().subscribe(response => {
         if (response.employees !== undefined && response.employees.length > 0) {
           for (let i = 0; i < response.employees.length; i++) {
-            this.payeeNames.push(new Payee(response.employees[i].emp_id, response.employees[i].emp_name));
+            this.payeeNames.push(new Payee(response.employees[i].emp_id, response.employees[i].emp_name, response.employees[i].emp_address));
           }
         }
       },
@@ -257,7 +262,7 @@ export class AddPaymentComponent implements OnInit {
       this.vendorService.getVendors().subscribe(response => {
         if (response.vendors !== undefined && response.vendors.length > 0) {
           for (let i = 0; i < response.vendors.length; i++) {
-            this.payeeNames.push(new Payee(response.vendors[i].vend_id, response.vendors[i].vend_name));
+            this.payeeNames.push(new Payee(response.vendors[i].vend_id, response.vendors[i].vend_name, response.vendors[i].vend_address));
           }
         }
       },
@@ -269,7 +274,7 @@ export class AddPaymentComponent implements OnInit {
       this.customerService.getCustomers().subscribe(response => {
         if (response.customers !== undefined && response.customers.length > 0) {
           for (let i = 0; i < response.customers.length; i++) {
-            this.payeeNames.push(new Payee(response.customers[i].cust_id, response.customers[i].cust_name));
+            this.payeeNames.push(new Payee(response.customers[i].cust_id, response.customers[i].cust_name, response.customers[i].cust_address));
           }
         }
       },
@@ -300,17 +305,35 @@ export class AddPaymentComponent implements OnInit {
 
   getPayeeInvoicesList(payeeId) {
     this.payeeId = payeeId;
-    const payload = { 'data': { 'vend_id': payeeId } };
-    this.purchaseService.getPurchaseListByVendorId(payload).subscribe(response => {
-      if (response.status === 200) {
-        if (response.purchases !== undefined && response.purchases.length > 0) {
-          this.payeeInvoices = response.purchases;
+    if(this.payeeTypeId == 102){
+      const payload = { 'data': { 'vend_id': payeeId } };
+      this.purchaseService.getPurchaseListByVendorId(payload).subscribe(response => {
+        if (response.status === 200) {
+          if (response.purchases !== undefined && response.purchases.length > 0) {
+            for(let i = 0; i < response.purchases.length; i++){
+              this.payeeInvoices.push(new PayeeInvoice(response.purchases[i].pur_id, response.purchases[i].pur_invoice_no));
+            }
+          }
         }
-      }
-    },
-      error => {
-        console.log(error);
-      });
+      },
+        error => {
+          console.log(error);
+        });
+    } else if(this.payeeTypeId == 103){
+      const payload = { 'data': { 'cust_id': payeeId } };
+      this.invoiceService.getInvoiceListByCustomerId(payload).subscribe(response => {
+        if (response.status === 200) {
+          if (response.invoices !== undefined && response.invoices.length > 0) {
+            for(let i = 0; i < response.invoices.length; i++){
+              this.payeeInvoices.push(new PayeeInvoice(response.invoices[i].inv_id, response.invoices[i].inv_number));
+            }
+          }
+        }
+      },
+        error => {
+          console.log(error);
+        });
+    }
   }
 
   setPayeeInvoiceDetail(purchase) {
@@ -322,18 +345,20 @@ export class AddPaymentComponent implements OnInit {
 export class Payee {
   payee_id: number;
   payee_name: string;
-  constructor(payeeId, payeeName) {
+  payee_address: string;
+  constructor(payeeId, payeeName, payeeAddress) {
     this.payee_id = payeeId;
     this.payee_name = payeeName;
+    this.payee_address = payeeAddress;
   }
 }
 
 export class PayeeInvoice {
   payee_invoice_id: number;
-  pur_invoice_no: string;
+  payee_invoice_no: string;
   constructor(payeeInvoiceId, payeeInvoiceNo) {
     this.payee_invoice_id = payeeInvoiceId;
-    this.pur_invoice_no = payeeInvoiceNo;
+    this.payee_invoice_no = payeeInvoiceNo;
   }
 }
 
