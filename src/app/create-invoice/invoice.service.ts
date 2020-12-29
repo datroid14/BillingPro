@@ -106,7 +106,7 @@ export class InvoiceService {
       }
 
       getInvoiceListByCustomerId(payload: Object): Observable<InvoiceResponse> {
-            return this.http.post<InvoiceResponse>(constants.serverUrl + 'getPurchaseListByVendorId', payload, httpOptions)
+            return this.http.post<InvoiceResponse>(constants.serverUrl + 'getInvoiceListByCustomerId', payload, httpOptions)
                   .pipe(tap(res => null));
       }
 }

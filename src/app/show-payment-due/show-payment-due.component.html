@@ -44,6 +44,8 @@
         <th>Invoice Number</th>
         <th>Customer Name</th>
         <th>Invoice Amount</th>
+        <th>Amount Paid</th>
+        <th>Balance Amount</th>
         <th>Due Days</th>
     </tr>
     <tr *ngFor=" let dueEntry of paymentDueDetails" align="center ">
@@ -51,6 +53,8 @@
         <td> {{ dueEntry.inv_number }} </td>
         <td> {{ dueEntry.cust_name }} </td>
         <td> {{ dueEntry.inv_total_amount }} </td>
+        <td> {{ dueEntry.payment_amount }} </td>
+        <td> {{ dueEntry.balance_amount }} </td>
         <td> {{ dueEntry.due_days }} </td>
     </tr>
 </table>

@@ -46,6 +46,7 @@ export class AddPaymentComponent implements OnInit {
   paymentDesc: string;
   payeeInvoiceId: number;
   payeeInvoiceNo: string;
+  payeeInvoiceAmount: number;
 
   // Variables for employees
   employees: Employee[];
@@ -154,8 +155,14 @@ export class AddPaymentComponent implements OnInit {
       if (this.paymentDate != undefined && this.payeeType != undefined && this.payeeName != undefined && this.paymentAmount != undefined && this.paymentMode != undefined) {
         this.isDeleteDisabled = false;
         const formattedPaymentDate = moment(this.paymentDate).format('YYYY-MM-DD');
+        if (this.paymentDesc === undefined) {
+          this.paymentDesc = '';
+        }
+        if (this.paymentAccountId === undefined) {
+          this.paymentAccountId = 0;
+        }
         if (this.isEditClicked) {
-          const updatePayload = { "data": { "payment_id": this.paymentId, "payment_date": formattedPaymentDate, "payee_type": this.payeeType, "payee_id": this.payeeId, "payee_name": this.payeeName, "payee_invoice_id": this.payeeInvoiceId, "payment_amount": this.paymentAmount, "payment_mode": this.paymentMode, "payment_acc_id": this.paymentAccountId, "payment_desc": this.paymentDesc } };
+          const updatePayload = { "data": { "payment_id": this.paymentId, "payment_date": formattedPaymentDate, "payee_type": this.payeeType, "payee_id": this.payeeId, "payee_name": this.payeeName, "payee_invoice_id": this.payeeInvoiceId, "payee_invoice_no": this.payeeInvoiceNo, "payment_amount": this.paymentAmount, "payment_mode": this.paymentMode, "payment_acc_id": this.paymentAccountId, "payment_desc": this.paymentDesc } };
 
           this.paymentService.updatePaymentDetail(updatePayload).subscribe(response => {
             if (response.status === 200) {
@@ -166,7 +173,7 @@ export class AddPaymentComponent implements OnInit {
               console.log(error)
             });
         } else {
-          const addPayload = { "data": { "payment_date": formattedPaymentDate, "payee_type": this.payeeType, "payee_id": this.payeeId, "payee_name": this.payeeName, "payee_invoice_id": this.payeeInvoiceId, "payment_amount": this.paymentAmount, "payment_mode": this.paymentMode, "payment_acc_id": this.paymentAccountId, "payment_desc": this.paymentDesc } };
+          const addPayload = { "data": { "payment_date": formattedPaymentDate, "payee_type": this.payeeType, "payee_id": this.payeeId, "payee_name": this.payeeName, "payee_invoice_id": this.payeeInvoiceId, "payee_invoice_no": this.payeeInvoiceNo, "payment_amount": this.paymentAmount, "payment_mode": this.paymentMode, "payment_acc_id": this.paymentAccountId, "payment_desc": this.paymentDesc } };
 
           this.paymentService.addPaymentDetail(addPayload).subscribe(response => {
             if (response.status === 200) {
@@ -227,8 +234,9 @@ export class AddPaymentComponent implements OnInit {
     this.payeeNames.push(new Payee(this.payeeId, this.payeeName, this.payeeAddress));
     this.payeeInvoiceId = payment.payee_invoice_id;
     this.payeeInvoiceNo = payment.payee_invoice_no;
+    this.payeeInvoiceAmount = payment.payee_invoice_amount;
     this.payeeInvoices = [];
-    this.payeeInvoices.push(new PayeeInvoice(this.payeeInvoiceId, this.payeeInvoiceNo));
+    this.payeeInvoices.push(new PayeeInvoice(this.payeeInvoiceId, this.payeeInvoiceNo, this.payeeInvoiceAmount));
     this.paymentAmount = payment.payment_amount;
     this.paymentMode = payment.payment_mode;
     this.paymentAccountId = payment.payment_acc_id;
@@ -305,13 +313,14 @@ export class AddPaymentComponent implements OnInit {
 
   getPayeeInvoicesList(payeeId) {
     this.payeeId = payeeId;
-    if(this.payeeTypeId == 102){
+    this.payeeInvoices = [];
+    if (this.payeeTypeId == 102) {
       const payload = { 'data': { 'vend_id': payeeId } };
       this.purchaseService.getPurchaseListByVendorId(payload).subscribe(response => {
         if (response.status === 200) {
           if (response.purchases !== undefined && response.purchases.length > 0) {
-            for(let i = 0; i < response.purchases.length; i++){
-              this.payeeInvoices.push(new PayeeInvoice(response.purchases[i].pur_id, response.purchases[i].pur_invoice_no));
+            for (let i = 0; i < response.purchases.length; i++) {
+              this.payeeInvoices.push(new PayeeInvoice(response.purchases[i].pur_id, response.purchases[i].pur_invoice_no, response.purchases[i].pur_total_amount));
             }
           }
         }
@@ -319,13 +328,13 @@ export class AddPaymentComponent implements OnInit {
         error => {
           console.log(error);
         });
-    } else if(this.payeeTypeId == 103){
+    } else if (this.payeeTypeId == 103) {
       const payload = { 'data': { 'cust_id': payeeId } };
       this.invoiceService.getInvoiceListByCustomerId(payload).subscribe(response => {
         if (response.status === 200) {
           if (response.invoices !== undefined && response.invoices.length > 0) {
-            for(let i = 0; i < response.invoices.length; i++){
-              this.payeeInvoices.push(new PayeeInvoice(response.invoices[i].inv_id, response.invoices[i].inv_number));
+            for (let i = 0; i < response.invoices.length; i++) {
+              this.payeeInvoices.push(new PayeeInvoice(response.invoices[i].inv_id, response.invoices[i].inv_number, response.invoices[i].inv_total_amount));
             }
           }
         }
@@ -336,9 +345,10 @@ export class AddPaymentComponent implements OnInit {
     }
   }
 
-  setPayeeInvoiceDetail(purchase) {
-    this.payeeInvoiceId = purchase.pur_id;
-    this.paymentAmount = purchase.pur_total_amount;
+  setPayeeInvoiceDetail(payeeInvoice) {
+    this.payeeInvoiceId = payeeInvoice.payee_invoice_id;
+    this.payeeInvoiceNo = payeeInvoice.payee_invoice_no;
+    this.paymentAmount = payeeInvoice.payee_invoice_amount;
   }
 }
 
@@ -356,9 +366,11 @@ export class Payee {
 export class PayeeInvoice {
   payee_invoice_id: number;
   payee_invoice_no: string;
-  constructor(payeeInvoiceId, payeeInvoiceNo) {
+  payee_invoice_amount: number;
+  constructor(payeeInvoiceId, payeeInvoiceNo, payeeInvoiceAmount) {
     this.payee_invoice_id = payeeInvoiceId;
     this.payee_invoice_no = payeeInvoiceNo;
+    this.payee_invoice_amount = payeeInvoiceAmount;
   }
 }
 
