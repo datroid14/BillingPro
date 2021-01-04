@@ -456,14 +456,14 @@ export class CreateInvoiceComponent implements OnInit {
       this.challanId = challan.chal_id;
       this.challanNo = challan.chal_no;
       this.challanDate = moment(challan.chal_date).format('YYYY-MM-DD');
-      this.vehicleNo = challan.chal_veh_no;
+      this.vehicleNo = challan.veh_number;
       this.productQuantity = challan.chal_quantity;
       this.productId = challan.chal_prod_id;
-      this.productName = challan.chal_prod_name;
+      this.productName = challan.prod_name;
       this.productGSTId = challan.chal_gst_id;
       this.productHSN = challan.gst_hsn;
       this.gstPercentage = challan.gst_percentage;
-      this.productUnit = challan.chal_prod_unit;
+      this.productUnit = challan.prod_unit;
       this.productRate = challan.chal_prod_rate;
       challan.isChallanInUse = true;
       if (this.productId === 18 || this.productId === 19 || this.productId === 21 || this.productId === 22) {
