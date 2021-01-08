@@ -3,11 +3,11 @@ export class Challan {
     chal_date: Date;
     chal_cust_name: string;
     chal_cust_address: string;
-    chal_prod_name: string;
-    chal_prod_unit: string;
+    prod_name: string;
+    prod_unit: string;
     chal_prod_qty: number;
     chal_prod_rate: number;
-    chal_veh_no: string;
+    veh_number: string;
     isChallanInUse: boolean;
 
     constructor(id, date, customer, address, prod_name, prod_unit, prod_qty, prod_rate, veh_no){
@@ -15,10 +15,10 @@ export class Challan {
         this.chal_date = date;
         this.chal_cust_name = customer;
         this.chal_cust_address = address;
-        this.chal_prod_name = prod_name;
-        this.chal_prod_unit = prod_unit;
+        this.prod_name = prod_name;
+        this.prod_unit = prod_unit;
         this.chal_prod_qty = prod_qty;
         this.chal_prod_rate = prod_rate;
-        this.chal_veh_no = veh_no;
+        this.veh_number = veh_no;
     }
 }

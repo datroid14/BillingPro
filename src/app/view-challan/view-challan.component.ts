@@ -68,10 +68,10 @@ export interface CHALLAN {
   chal_no: number;
   chal_cust_name: string;
   chal_cust_address: string;
-  chal_prod_name: string;
-  chal_prod_unit: string;
+  prod_name: string;
+  prod_unit: string;
   chal_quantity: number;
-  chal_veh_no: string;
+  veh_number: string;
   chal_is_invoices_created: number;
 }
 

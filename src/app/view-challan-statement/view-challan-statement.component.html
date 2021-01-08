@@ -20,6 +20,7 @@
                         <th>Material</th>
                         <th>Unit</th>
                         <th>Measurement</th>
+                        <th>Rate</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,6 +38,7 @@
                             <span *ngIf="i !=  invoiceProducts.length-1 ? invoiceProducts[i+1].prod_id != product.prod_id : true">
                                 <hr> {{product.prod_total_qty}}</span>
                         </td>
+                        <td class="input-text">{{product.prod_rate}}</td>
                     </tr>
                 </tbody>
             </table>

@@ -29,10 +29,10 @@ export class ViewChallanCopyComponent {
       this.customerAddress = params["chal_cust_address"];
       this.contactNo = params["chal_contact_no"];
       this.contactPerson = params["chal_contact_person"];
-      this.productName = params["chal_prod_name"];
-      this.productUnit = params["chal_prod_unit"];
+      this.productName = params["prod_name"];
+      this.productUnit = params["prod_unit"];
       this.productQty = params["chal_prod_qty"];
-      this.vehicleNo = params["chal_veh_no"];
+      this.vehicleNo = params["veh_number"];
     });
   }
 

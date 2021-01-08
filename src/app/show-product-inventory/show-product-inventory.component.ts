@@ -61,9 +61,11 @@ export class ShowProductInventoryComponent implements OnInit {
     this.dieselTotal = 0;
 
     let filterKey = '';
-    if (this.productName !== '') {
+    if (this.productName !== '' && this.customerName !== '') {
+      filterKey = 'combine';
+    } else if (this.productName !== '') {
       filterKey = 'product';
-    } else {
+    } else if (this.customerName !== '') {
        filterKey = 'customer';
     }
 
@@ -94,8 +96,6 @@ export class ShowProductInventoryComponent implements OnInit {
 
   setProductSelected(productId: number) {
     this.selectedProductId = productId;
-    this.selectedCustomerId = 0;
-    this.customerName = '';
     if (this.selectedMonth !== 0 && this.selectedYear !== 0 && this.selectedProductId !== 0) {
       this.getInventoryDetails();
     }
@@ -103,8 +103,6 @@ export class ShowProductInventoryComponent implements OnInit {
 
   setCustomerSelected(customerId: number) {
     this.selectedCustomerId = customerId;
-    this.selectedProductId = 0;
-    this.productName = '';
     if (this.selectedMonth !== 0 && this.selectedYear !== 0 && this.selectedCustomerId !== 0) {
       this.getInventoryDetails();
     }

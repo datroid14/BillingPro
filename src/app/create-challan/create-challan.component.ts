@@ -235,12 +235,12 @@ export class CreateChallanComponent implements OnInit {
     this.customerName = challan.chal_cust_name;
     this.customerAddress = challan.chal_cust_address;
     this.productId = challan.chal_prod_id;
-    this.productName = challan.chal_prod_name;
-    this.productUnit = challan.chal_prod_unit;
+    this.productName = challan.prod_name;
+    this.productUnit = challan.prod_unit;
     this.productQuantity = challan.chal_quantity;
     this.productRate = challan.chal_prod_rate;
     this.vehicleId = challan.chal_veh_id;
-    this.vehicleNumber = challan.chal_veh_no;
+    this.vehicleNumber = challan.veh_number;
   }
 
   clearChallanFields() {
