@@ -27,7 +27,7 @@
     "@progress/kendo-angular-common": "^1.0.0",
     "@progress/kendo-angular-pdf-export": "^2.0.0",
     "@progress/kendo-drawing": "^1.5.12",
-    "bootstrap": "^4.0.0",
+    "bootstrap": "^4.3.1",
     "circular-json": "^0.5.3",
     "core-js": "^2.4.1",
     "file-saver": "^2.0.1",
